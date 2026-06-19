@@ -64,6 +64,42 @@
   --color-fd-muted-foreground: #8b8d81;
 }
 
+.ld-architecture-diagram {
+  --bg: var(--color-fd-card);
+  --fg: var(--color-fd-foreground);
+  --muted: var(--color-fd-muted-foreground);
+  --line: color-mix(
+    in srgb,
+    var(--color-fd-foreground) 42%,
+    var(--color-fd-background)
+  );
+  --accent: var(--color-fd-primary);
+  --surface: var(--color-fd-card);
+  --border: var(--color-fd-border);
+  --_text: var(--fg);
+  --_text-sec: var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+  --_line: var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+  --_arrow: var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+  --_node-stroke: var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+  --_group-fill: var(--bg);
+  --_group-hdr: color-mix(in srgb, var(--fg) 5%, var(--bg));
+  --_inner-stroke: color-mix(in srgb, var(--fg) 12%, var(--bg));
+  --diagram-client-fill: color-mix(in srgb, #0ea5e9 14%, var(--bg));
+  --diagram-client-stroke: color-mix(in srgb, #0284c7 70%, var(--fg));
+  --diagram-dashboard-fill: color-mix(in srgb, #f59e0b 14%, var(--bg));
+  --diagram-dashboard-stroke: color-mix(in srgb, #d97706 70%, var(--fg));
+  --diagram-local-fill: color-mix(in srgb, #22c55e 14%, var(--bg));
+  --diagram-local-stroke: color-mix(in srgb, #16a34a 70%, var(--fg));
+  --diagram-upstream-fill: color-mix(in srgb, #a855f7 14%, var(--bg));
+  --diagram-upstream-stroke: color-mix(in srgb, #9333ea 70%, var(--fg));
+
+  background: var(--bg);
+}
+
+.ld-architecture-diagram text {
+  font-family: var(--font-sans);
+}
+
 body {
   font-family: var(--font-sans);
 }

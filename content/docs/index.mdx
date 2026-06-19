@@ -4,21 +4,13 @@ description: A self-hosted inference gateway and observability dashboard for loc
 icon: Rocket
 ---
 
+import ArchitectureDiagram from "./assets/architecture_001.svg?react";
+
 llama-dash turns a self-hosted local inference box into an observable, policy-controlled AI gateway: one UI for model state, request history, API keys, routing rules, proxy metrics, and client setup. The implemented inference backend is currently [llama-swap](https://github.com/mostlygeek/llama-swap) over llama.cpp.
 
 It is the single public entrypoint for OpenAI-compatible and Anthropic-compatible clients. llama-dash owns proxy policy, logging, auth, routing, and backend normalization; your inference backend owns local model processes and inference when traffic is routed to local models.
 
-```text
-OpenAI SDK / Claude Code / Continue / Open WebUI
-                    │
-                    ▼
-              llama-dash :3000
-      dashboard · auth · logs · routing · metrics
-             │                     │
-             ▼                     ▼
-      llama-swap :8080         direct /v1 upstreams
-  llama.cpp models · peers      OpenAI · Anthropic
-```
+<ArchitectureDiagram className="ld-architecture-diagram my-6 h-auto w-full rounded-lg" role="img" aria-label="llama-dash architecture diagram" />
 
 ## What it does
 
