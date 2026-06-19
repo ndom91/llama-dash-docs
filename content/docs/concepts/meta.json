@@ -1,0 +1,5 @@
+{
+  "title": "How it works",
+  "icon": "Workflow",
+  "pages": ["architecture", "proxy", "inference-backends", "request-logging"]
+}

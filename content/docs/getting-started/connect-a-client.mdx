@@ -1,0 +1,47 @@
+---
+title: Connect a client
+description: Send your first request through the gateway.
+---
+
+llama-dash exposes one OpenAI- and Anthropic-compatible `/v1/*` endpoint. Any client that can target a custom base URL works — point it at llama-dash instead of your inference backend.
+
+## Base URL
+
+Use the llama-dash origin with a `/v1` suffix:
+
+```text
+http://localhost:3000/v1
+```
+
+## Authentication
+
+If any [API keys](/docs/access-policy/api-keys) exist in the database, the proxy requires a bearer token:
+
+```text
+Authorization: Bearer sk-...
+```
+
+Create a key from the **API Keys** page in the dashboard — the secret is shown once on creation. If no keys exist yet, the proxy accepts unauthenticated requests so you can get started.
+
+## First request
+
+```bash
+curl http://localhost:3000/v1/chat/completions \
+  -H "Authorization: Bearer sk-..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "your-model-id",
+    "messages": [{ "role": "user", "content": "Hello!" }]
+  }'
+```
+
+The request appears in the **Requests** log within the dashboard, with routing, token counts, latency, and an estimated cost.
+
+<Callout type="info">
+  Use the model IDs declared in your llama-swap `config.yaml`, or a [model
+  alias](/docs/access-policy/model-aliases) you have configured.
+</Callout>
+
+## More clients
+
+The dashboard's **Endpoints** page generates ready-to-paste snippets for many clients. See [Connecting clients](/docs/clients/endpoints) for curl, Python, TypeScript, Continue, Open WebUI, Home Assistant, opencode, and Claude Code.

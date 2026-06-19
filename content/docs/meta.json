@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "index",
+    "getting-started",
+    "concepts",
+    "dashboard",
+    "clients",
+    "access-policy",
+    "operations",
+    "reference"
+  ]
+}

@@ -1,0 +1,8 @@
+---
+title: Log retention
+description: Keep the request log bounded.
+---
+
+An hourly job prunes the request log: old inference rows, short-lived successful MCP-relay rows, longer-lived relay failures, and stale body/header text. This keeps the SQLite file bounded under high-frequency relay traffic.
+
+The Settings and System pages also expose immediate request-log pruning and SQLite compaction actions. See [Request logging](/docs/concepts/request-logging).

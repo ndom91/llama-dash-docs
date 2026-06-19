@@ -1,0 +1,31 @@
+---
+title: Configuration file (config.yaml)
+description: The contract between llama-dash and llama-swap.
+---
+
+`config.yaml` is the interface between llama-dash and llama-swap. It declares your models and peers; llama-swap owns its format. When you edit it through the dashboard's config editor, llama-dash treats it as a careful round-trip.
+
+## Write contract
+
+- **Atomic writes** — write to a `.tmp` file, fsync, then rename.
+- **Preserve comments and key order** — edits round-trip through a YAML round-tripper, so your comments and ordering survive a save.
+- **Validate before writing** — content is validated against llama-swap's published `config-schema.json` before any write.
+- **Back up the previous version** — every write keeps a backup of the prior file.
+
+## Hot reload
+
+llama-swap watches the file with `-watch-config` (fsnotify) and reloads automatically on change. There is no reload endpoint — llama-dash writes the file and llama-swap picks it up.
+
+<Callout type="info">
+  Set [`INFERENCE_CONFIG_FILE`](/docs/reference/environment-variables) to the
+  absolute path of `config.yaml` to enable the in-dashboard config editor.
+</Callout>
+
+## llama-swap surface llama-dash uses
+
+- `POST /v1/*` — forward OpenAI/Anthropic calls (after llama-dash middleware)
+- `GET /running` — currently loaded models
+- `POST /models/unload` — unload a model
+- `GET /v1/models` — model list, including peers
+- `GET /health` — backend health
+- `GET /logs/stream*` — SSE log streams (proxy, upstream, per-model)

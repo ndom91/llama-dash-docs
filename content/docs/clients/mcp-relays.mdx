@@ -1,0 +1,34 @@
+---
+title: MCP relays
+description: Reverse-proxy remote MCP servers with injected, encrypted credentials.
+---
+
+MCP relays let coding agents reach remote MCP (Model Context Protocol) HTTP servers _through_ llama-dash, so the provider bearer token stays encrypted in the credential vault and every exchange is logged.
+
+Relays live at `/mcp-relays/:slug`. A relay request must include `x-llama-dash-api-key`, and that key must explicitly allow the relay. The stored upstream credential is then injected into outbound headers, the response streams through, and the exchange is logged without exposing the provider secret. Successful relay requests are metadata-only by default; failures keep bounded debug capture.
+
+## Configure a client
+
+Create the relay in **Policies**, then point your client at the relay URL with a separate llama-dash key header. The Policies page shows this snippet for each configured relay:
+
+```json
+{
+  "mcpServers": {
+    "hyperline_sandbox": {
+      "type": "http",
+      "url": "http://<llama-dash-host>:3000/mcp-relays/hyperline-sandbox",
+      "headers": {
+        "x-llama-dash-api-key": "sk-..."
+      }
+    }
+  }
+}
+```
+
+The provider bearer is injected only when an API key that is explicitly allowed to use the relay forwards the request upstream.
+
+<Callout type="info">
+  Relays require [`CREDENTIAL_ENCRYPTION_KEY`](/docs/getting-started/configuration)
+  to be set — they rely on the encrypted [credential
+  vault](/docs/access-policy/upstream-credentials).
+</Callout>

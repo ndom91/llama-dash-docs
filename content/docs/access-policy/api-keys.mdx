@@ -1,0 +1,15 @@
+---
+title: API keys
+description: Hashed keys with rate limits, model allow-lists, and system prompts.
+---
+
+API keys authenticate proxy clients. Keys are SHA-256 hashed at rest and shown once on creation. Once any key exists, the proxy requires `Authorization: Bearer sk-...`.
+
+Each key supports:
+
+- **Rate limits** — per-key RPM and TPM (token-bucket, in-memory, resets on restart).
+- **Model allow-lists** — restrict which models a key may call.
+- **MCP relay allow-lists** — which [relays](/docs/clients/mcp-relays) a key may use.
+- **System prompt** — injected into matching requests.
+
+The key detail view shows usage stats, a per-model breakdown, and recent requests.

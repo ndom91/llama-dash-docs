@@ -1,0 +1,14 @@
+{
+  "title": "The dashboard",
+  "icon": "LayoutDashboard",
+  "pages": [
+    "index",
+    "models",
+    "requests",
+    "logs",
+    "playground",
+    "system",
+    "config-editor",
+    "settings"
+  ]
+}

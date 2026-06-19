@@ -1,0 +1,8 @@
+---
+title: Config editor
+description: Edit the llama-swap config.yaml with validation.
+---
+
+The config editor reads and writes your llama-swap `config.yaml` from the dashboard. It validates content against llama-swap's schema before saving (with an explicit validate action), preserves your comments and key order, and backs up the previous version on each write. llama-swap then hot-reloads the file automatically.
+
+Requires [`INFERENCE_CONFIG_FILE`](/docs/reference/environment-variables) to be set. See the [config file contract](/docs/reference/configuration-file).

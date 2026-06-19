@@ -1,0 +1,10 @@
+{
+  "title": "Reference",
+  "icon": "BookText",
+  "pages": [
+    "environment-variables",
+    "configuration-file",
+    "admin-api",
+    "conventions"
+  ]
+}

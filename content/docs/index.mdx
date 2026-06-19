@@ -1,21 +1,41 @@
 ---
 title: Introduction
-description: A self-hosted inference gateway with an observability dashboard.
+description: A self-hosted inference gateway and observability dashboard for local LLMs.
 icon: Rocket
 ---
 
-llama-dash is a self-hosted inference gateway and dashboard. It gives you one UI for model state, request history, API keys, routing rules, and proxy metrics — fronting llama-swap and any OpenAI- or Anthropic-compatible upstream.
+llama-dash turns a self-hosted local inference box into an observable, policy-controlled AI gateway: one UI for model state, request history, API keys, routing rules, proxy metrics, and client setup. The implemented inference backend is currently [llama-swap](https://github.com/mostlygeek/llama-swap) over llama.cpp.
+
+It is the single public entrypoint for OpenAI-compatible and Anthropic-compatible clients. llama-dash owns proxy policy, logging, auth, routing, and backend normalization; your inference backend owns local model processes and inference when traffic is routed to local models.
+
+```text
+OpenAI SDK / Claude Code / Continue / Open WebUI
+                    │
+                    ▼
+              llama-dash :3000
+      dashboard · auth · logs · routing · metrics
+             │                     │
+             ▼                     ▼
+      llama-swap :8080         direct /v1 upstreams
+  llama.cpp models · peers      OpenAI · Anthropic
+```
 
 ## What it does
 
-- **Watch the box** — live request, token, model, upstream, and GPU status in one dashboard.
-- **Manage models** — load, unload, inspect per-model stats, and edit llama-swap config with validation.
-- **Track requests** — searchable history with filters, histograms, token counts, and cost estimates.
-- **Control access** — hashed API keys, per-key RPM/TPM limits, and model allow-lists.
-- **Enforce policy** — routing rules for model rewrites, passthrough auth, and encrypted credentials.
-- **Test models** — playgrounds for chat, image, speech, and article-to-speech transcription.
+- **Watch the box** — live request, token, model, upstream, GPU, and update status in one dashboard.
+- **Manage models** — load/unload models, inspect per-model stats, view residency history, and edit llama-swap config with validation.
+- **Proxy clients** — expose one OpenAI/Anthropic-compatible `/v1/*` endpoint for local models, peers, and direct upstreams.
+- **Track requests** — searchable request history with filters, histograms, detail views, attribution, token counts, and cost estimates.
+- **Control access** — dashboard login, hashed API keys, per-key RPM/TPM limits, and model allow-lists.
+- **Enforce policy** — routing rules for model rewrites, rejects, passthrough auth, direct upstreams, and encrypted credentials.
+- **Test models** — playgrounds for chat, image, speech, and transcription.
+- **Export ops data** — raw log streams, retention controls, and low-cardinality Prometheus metrics at `/metrics`.
+
+## Where to next
 
 <Cards>
-  <Card title="Getting started" href="/docs/getting-started" />
-  <Card title="GitHub repository" href="https://github.com/ndom91/llama-dash" />
+  <Card title="Get started" href="/docs/getting-started/quick-start" description="Run llama-dash with Docker Compose or a manual setup." />
+  <Card title="How it works" href="/docs/concepts/architecture" description="The proxy, the admin API, and the inference-backend model." />
+  <Card title="Connect a client" href="/docs/clients/endpoints" description="Point any OpenAI- or Anthropic-compatible client at the gateway." />
+  <Card title="Claude Code passthrough" href="/docs/clients/claude-code" description="Log and filter Anthropic traffic through llama-dash." />
 </Cards>

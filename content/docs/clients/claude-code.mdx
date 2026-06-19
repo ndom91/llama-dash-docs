@@ -1,0 +1,48 @@
+---
+title: Claude Code & Anthropic passthrough
+description: Log and filter Anthropic traffic — including Claude Code — through llama-dash.
+---
+
+Route any Anthropic SDK (including Claude Code) through llama-dash for logging, filtering, and per-request inspection. Anthropic subscriptions are supported.
+
+```text
+Claude Code ──► llama-dash :3000 (log + filter) ──► api.anthropic.com
+```
+
+## Client config
+
+In `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://<llama-dash-host>:3000",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+  }
+}
+```
+
+Leave `ANTHROPIC_AUTH_TOKEN` unset when using subscription OAuth — Claude Code manages the bearer itself and llama-dash passes it through unchanged.
+
+## Routing rule
+
+In **Policies**, add a routing rule for the Anthropic Messages API:
+
+- Match `/v1/messages` and `/v1/messages/count_tokens` (by target path or Claude source model names).
+- Action `continue`, auth mode `passthrough`, preserve the client `Authorization` header.
+- Direct target `https://api.anthropic.com/v1`.
+
+All Anthropic requests are then transparently proxied while llama-dash logs the traffic and applies filters.
+
+<Callout type="warn">
+  Credential-bearing passthrough rules still require a valid llama-dash API key —
+  they are not evaluated as pre-auth public passthrough rules.
+</Callout>
+
+## Provider-key flows
+
+For provider-key (non-subscription) flows, store the upstream token in the [credential vault](/docs/access-policy/upstream-credentials) and add a credential binding to the routing rule. A binding can set an outbound header automatically or replace a client-sent placeholder like `{{llama-dash:credential:anthropic-prod}}`. Injected values are redacted from request logs; the request detail view records non-secret credential name/slug metadata for audit.
+
+## Remote MCP servers
+
+For remote MCP servers, create an [MCP relay](/docs/clients/mcp-relays) instead of pointing Claude Code directly at the provider.

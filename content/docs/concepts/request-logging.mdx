@@ -1,0 +1,28 @@
+---
+title: Request logging
+description: What llama-dash records per request, and the privacy and retention model.
+---
+
+Every completed proxy exchange is logged as one row in SQLite. The log powers the Requests page, per-model and per-key breakdowns, and the dashboard's live counters.
+
+## Logged on completion
+
+A row is written when an exchange finishes (or the client disconnects), never on start. The write queue is **bounded** — if it fills under heavy traffic, dropping logs is preferred over blocking proxy traffic.
+
+## What's captured
+
+- Per-call metadata: model, status, latency, token counts, estimated cost.
+- Routing and attribution context: the matched routing rule, action, and auth mode, plus client, end-user, and session metadata (see [Attribution](/docs/access-policy/attribution)).
+- Row classification: `inference` or `mcp_relay`. Successful MCP relay rows are metadata-only by default; relay failures keep bounded body/header snippets for debugging.
+
+## Privacy
+
+<Callout type="info">
+  Request and response **bodies are not logged by default**. Prompts are
+  sensitive; full bodies are kept only briefly in a bounded in-memory LRU for the
+  recent-request detail view, not persisted.
+</Callout>
+
+## Retention
+
+An hourly job prunes old rows — old inference rows, short-lived successful relay rows, longer-lived relay failures, and stale body/header text — to keep the SQLite file bounded. The Settings page also exposes immediate prune and SQLite compaction actions. See [Log retention](/docs/operations/retention).

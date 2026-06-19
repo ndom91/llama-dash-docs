@@ -1,0 +1,8 @@
+---
+title: GPU monitoring
+description: NVIDIA, AMD, and Apple Silicon GPU stats.
+---
+
+A GPU poller auto-detects NVIDIA (`nvidia-smi`), AMD (`rocm-smi`), or Apple Silicon (`system_profiler`), polls every 10 seconds (static-only on Apple), caches snapshots, and publishes GPU-change events for live dashboard refresh.
+
+AMD APUs report GTT memory (not BIOS-limited VRAM) for actual usable memory; Apple shows unified memory and core count when available. In Docker, `/dev/dri` must be mounted into llama-dash for AMD stats — the AMD compose file does this.

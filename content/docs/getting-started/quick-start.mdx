@@ -1,0 +1,74 @@
+---
+title: Quick start
+description: Run llama-dash and llama-swap together with Docker Compose.
+---
+
+The fastest way to run llama-dash is with Docker Compose. Both setups bundle llama-dash with llama-swap, use `./config/config.yaml` for the llama-swap config, mount `./models/` for model files, and expose llama-dash on `http://localhost:3000`.
+
+<Steps>
+
+<Step>
+
+### Create the llama-swap config
+
+```bash
+cp config/config.example.yaml config/config.yaml
+```
+
+Edit `config/config.yaml` to declare your models. See the [config file reference](/docs/reference/configuration-file) for the contract llama-dash expects.
+
+</Step>
+
+<Step>
+
+### Start the stack
+
+Pick the compose file that matches your GPU vendor.
+
+<Tabs items={["AMD / ROCm", "NVIDIA / CUDA"]}>
+
+<Tab value="AMD / ROCm">
+
+```bash
+docker compose -f docker-compose.amd.yaml up -d
+```
+
+Runs `ghcr.io/mostlygeek/llama-swap:rocm`, passes through `/dev/kfd` and `/dev/dri`, and also mounts `/dev/dri` into llama-dash so AMD GPU stats work in the dashboard.
+
+</Tab>
+
+<Tab value="NVIDIA / CUDA">
+
+```bash
+docker compose -f docker-compose.nvidia.yaml up -d
+```
+
+Runs `ghcr.io/mostlygeek/llama-swap:cuda` and requests `gpus: all` for the llama-swap service. This requires the NVIDIA Container Toolkit on the host.
+
+</Tab>
+
+</Tabs>
+
+</Step>
+
+<Step>
+
+### Open the dashboard
+
+Visit [http://localhost:3000](http://localhost:3000). On first launch you create the dashboard user, then you can load a model and send your first request.
+
+</Step>
+
+</Steps>
+
+<Callout type="info">
+  llama-swap is not exposed on the host in the bundled compose setup — llama-dash
+  is the single public entrypoint on port `3000`.
+</Callout>
+
+## Next steps
+
+<Cards>
+  <Card title="Connect a client" href="/docs/getting-started/connect-a-client" description="Send your first request through the gateway." />
+  <Card title="Configuration" href="/docs/getting-started/configuration" description="Environment variables and where things live." />
+</Cards>

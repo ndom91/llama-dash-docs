@@ -1,0 +1,8 @@
+---
+title: Authentication
+description: Dashboard login with username/password and passkeys.
+---
+
+The dashboard is protected by [Better Auth](https://better-auth.com) sessions — username/password plus passkeys. Auth gates the UI and the `/api/*` admin surface, but **not** the `/v1/*` proxy (which uses [API keys](/docs/access-policy/api-keys)).
+
+Signup is only allowed while no dashboard user exists, so the first visit creates the single admin account. For passkeys outside localhost, set `BETTER_AUTH_URL` to your public HTTPS origin.

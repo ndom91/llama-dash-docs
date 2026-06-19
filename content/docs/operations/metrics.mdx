@@ -1,0 +1,8 @@
+---
+title: Metrics
+description: Prometheus metrics at /metrics.
+---
+
+llama-dash exposes a low-cardinality Prometheus text exporter at `/metrics`, covering proxy requests, tokens, credential-injection success/failure, latency-window gauges, queue depth/drops, upstream reachability, running models, and GPU gauges.
+
+Set [`METRICS_TOKEN`](/docs/reference/environment-variables) to require `Authorization: Bearer <token>` on the endpoint; leave it unset for unauthenticated scraping.

@@ -1,0 +1,48 @@
+---
+title: Admin API
+description: The /api/* surface the dashboard reads.
+---
+
+The admin API (`/api/*`) serves JSON to the dashboard. When dashboard auth is enabled, all routes below are gated except `/api/auth/*`. JSON `GET` responses support conditional ETag polling (`304` on a matching `If-None-Match`).
+
+## Auth
+
+- `/api/auth/*` — Better Auth: first-user signup, username/password and passkey sign-in, session lookup, sign-out.
+
+## Models
+
+- `GET /api/models` — list models (merged with running state + peer info)
+- `GET /api/models/:id` — model detail (stats, events, recent requests, config snippet, key breakdown)
+- `POST /api/models/:id/load`, `/api/models/:id/unload`, `/api/models/unload`
+- `GET /api/model-timeline` — load/unload events for the timeline
+
+## Requests
+
+- `GET /api/requests` — cursor-paginated list
+- `GET /api/requests/stats` — req/s, tok/s, p50, error rate + sparklines
+- `GET /api/requests/histogram` — bucketed req/s histogram
+- `GET /api/requests/:id` — detail with adjacent navigation
+
+## System & events
+
+- `GET /api/health` — upstream reachability, version, latency
+- `GET /api/system` — runtime, update status, DB, proxy, log queue, poller status, GPU details
+- `POST /api/system/request-logs/prune`, `POST /api/system/database/compact`
+- `GET /api/gpu` — cached GPU stats
+- `GET /api/events` — SSE dashboard invalidation/data events
+- `GET /api/log-events` — llama-swap log SSE (Logs page only)
+
+## Config & policy
+
+- `GET/POST /api/config`, `POST /api/config/validate`
+- `GET/POST /api/keys`, `GET/PATCH /api/keys/:id`
+- `/api/aliases` — model alias CRUD
+- `/api/routing-rules` — routing rule CRUD + reorder
+- `/api/upstream-credentials` — encrypted credential vault
+- `/api/mcp-relays` — MCP relay CRUD
+- `GET/PATCH /api/settings/attribution`, `GET/PATCH /api/settings/request-limits`
+
+## Playground & metrics
+
+- `POST /api/playground/article-extract` — fetch + Readability-parse an article URL for Speech TTS
+- `GET /metrics` — Prometheus text exporter (see [Metrics](/docs/operations/metrics))

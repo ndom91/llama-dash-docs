@@ -1,0 +1,5 @@
+{
+  "title": "Operations",
+  "icon": "Activity",
+  "pages": ["metrics", "retention", "updates", "gpu-monitoring"]
+}

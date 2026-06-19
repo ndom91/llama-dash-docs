@@ -1,0 +1,24 @@
+---
+title: Conventions
+description: Ports and entity ID formats.
+---
+
+## Ports
+
+| Port | Surface |
+|---|---|
+| `3000` | llama-dash (Docker / production) — UI, `/api/*`, `/v1/*`, `/metrics` |
+| `5173` | llama-dash dev server (`pnpm dev`) |
+| `8080` | llama-swap (internal; not exposed on the host in the bundled compose setup) |
+
+## Entity IDs
+
+All entity primary keys are prefixed [ULIDs](https://github.com/ulid/spec) stored as text, formatted `{prefix}_{ulid}` (e.g. `req_01J5A3KWGF9QXRZ0N1BVCH6YPM`). They sort lexicographically by creation time and are used directly for cursor-based pagination.
+
+| Entity | Prefix |
+|---|---|
+| Request | `req` |
+| Model event | `mev` |
+| API key | `key` |
+| Model alias | `mal` |
+| MCP relay | `mrl` |

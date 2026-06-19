@@ -1,0 +1,21 @@
+---
+title: Inference backends
+description: The capability-driven backend facade and the config.yaml interface.
+---
+
+llama-dash talks to inference through a backend **facade** (`src/server/inference/*`). The active backend is a singleton that normalizes model lists, running-model state, health, proxy upstream selection, lifecycle actions, logs, and config snippets.
+
+## Capability-driven
+
+Backend support is **capability-driven**: a backend advertises which operations it supports. Unsupported operations return a structured `501`, and the UI hides links or shows direct-navigation fallbacks rather than breaking. This keeps the door open for future runtimes without weakening the current path.
+
+| Backend | Status |
+|---|---|
+| `llama-swap` (llama.cpp) | Implemented |
+| Ollama | Planned |
+
+## llama-swap
+
+[llama-swap](https://github.com/mostlygeek/llama-swap) fronts llama.cpp models through its OpenAI/Anthropic-compatible `/v1/*` endpoint and a small HTTP control API (running models, unload, logs, health, `/v1/models` including peers).
+
+`config.yaml` is the interface between llama-dash and llama-swap — it declares your models and peers. llama-swap watches the file (`-watch-config`, fsnotify) and hot-reloads on change; there is no reload endpoint. See the [config file reference](/docs/reference/configuration-file) for the round-tripping and validation contract.

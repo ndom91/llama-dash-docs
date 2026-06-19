@@ -1,0 +1,33 @@
+---
+title: Architecture
+description: One public port, three surfaces, and a clear split of responsibilities.
+---
+
+llama-dash is a dashboard UI plus a logging, auth-ready proxy in front of a local inference backend. It exposes **one public port** with three surfaces:
+
+```text
+client ──► llama-dash :3000 ──► inference backend ──► model server procs
+           │
+           ├─ UI      (/)        the dashboard
+           ├─ Admin   (/api/*)   data for the UI
+           └─ Proxy   (/v1/*)    what clients actually hit
+```
+
+The inference backend is not exposed on the host in the bundled compose setup. The proxy layer is where auth, ACLs, rate-limiting, policies, and logging all hang off.
+
+## Responsibilities
+
+| llama-dash owns | The inference backend owns |
+|---|---|
+| Proxy policy, routing, and filters | Local model processes |
+| Authentication and API keys | Loading/unloading models |
+| Request logging and metrics | Running inference |
+| Backend normalization | GGUF / llama.cpp specifics |
+
+llama-dash does **not** run inference itself — that is the selected backend's job (currently [llama-swap](https://github.com/mostlygeek/llama-swap) over llama.cpp). It is a single-team, single-box tool, not a multi-tenant SaaS.
+
+## The three surfaces
+
+- **Proxy (`/v1/*`)** — the OpenAI/Anthropic-compatible pass-through clients connect to. See [The proxy](/docs/concepts/proxy).
+- **Admin API (`/api/*`)** — JSON endpoints the dashboard reads, gated by dashboard auth. See the [admin API reference](/docs/reference/admin-api).
+- **UI (`/`)** — the dashboard itself. See [The dashboard](/docs/dashboard).

@@ -1,0 +1,27 @@
+---
+title: Environment variables
+description: Every llama-dash environment variable, with defaults and notes.
+---
+
+Copy `.env.example` to `.env` and fill in the values. Variables are read once at startup.
+
+| Variable | Default | Notes |
+|---|---|---|
+| `INFERENCE_BACKEND` | `llama-swap` | Active inference backend. Only `llama-swap` is currently implemented. |
+| `INFERENCE_BASE_URL` | `http://localhost:8080` | Inference backend base URL. No trailing slash. |
+| `INFERENCE_INSECURE` | `false` | Skip TLS verification for an inference backend with self-signed certs. Sets `NODE_TLS_REJECT_UNAUTHORIZED=0` at boot. |
+| `INFERENCE_CONFIG_FILE` | _(empty)_ | Absolute path to the backend config file. Required for the config editor. In Docker Compose this is bind-mounted, defaulting to `/config/config.yaml`. |
+| `DATABASE_PATH` | `data/dash.db` | SQLite file, relative to CWD. `:memory:` and `file:` URI paths are preserved for tests/special deployments. |
+| `BETTER_AUTH_SECRET` | _(required)_ | Secret for signing Better Auth session data. Generate with `openssl rand -base64 33`. |
+| `BETTER_AUTH_URL` | inferred | External base URL for Better Auth redirects/cookies. Set to the public HTTPS origin when using passkeys outside localhost. |
+| `INTERNAL_ORIGIN` | _(empty)_ | Additional trusted origin for internal/server-to-server auth calls (e.g. `http://localhost:3000` when `BETTER_AUTH_URL` is the public host behind a reverse proxy). |
+| `CREDENTIAL_ENCRYPTION_KEY` | _(required for credentials)_ | 32+ character secret used to encrypt stored upstream provider credentials. Required before creating, placeholder-replacing, or injecting upstream credentials. |
+| `UPSTREAM_HEADERS_TIMEOUT_MS` | `600000` | Upstream proxy fetch headers timeout (ms); `0` disables. Keep generous for long non-streaming jobs (e.g. image generation) that send no headers until done. |
+| `UPSTREAM_BODY_TIMEOUT_MS` | `0` | Upstream proxy fetch body timeout (ms); `0` disables. |
+| `METRICS_TOKEN` | _(unset)_ | If set, `/metrics` requires `Authorization: Bearer <token>`. If unset, `/metrics` is unauthenticated. |
+
+<Callout type="warn">
+  `BETTER_AUTH_SECRET` is required for dashboard sessions, and
+  `CREDENTIAL_ENCRYPTION_KEY` is required before any stored upstream credential
+  can be created or used.
+</Callout>

@@ -1,0 +1,74 @@
+---
+title: Endpoints & SDKs
+description: Point any OpenAI- or Anthropic-compatible client at the gateway.
+---
+
+llama-dash speaks the OpenAI and Anthropic `/v1/*` wire formats, so most clients need only a base-URL change and a llama-dash API key. The dashboard's **Endpoints** page generates ready-to-paste snippets for curl, Python, TypeScript, Home Assistant, Claude Code, opencode, Continue, and Open WebUI.
+
+## Base URL and key
+
+| Setting | Value |
+|---|---|
+| Base URL | `http://<llama-dash-host>:3000/v1` |
+| Auth | `Authorization: Bearer sk-...` (required once API keys exist) |
+
+## Examples
+
+<Tabs items={["curl", "Python", "TypeScript"]}>
+
+<Tab value="curl">
+
+```bash
+curl http://localhost:3000/v1/chat/completions \
+  -H "Authorization: Bearer sk-..." \
+  -H "Content-Type: application/json" \
+  -d '{"model":"your-model-id","messages":[{"role":"user","content":"Hello!"}]}'
+```
+
+</Tab>
+
+<Tab value="Python">
+
+```python
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:3000/v1", api_key="sk-...")
+resp = client.chat.completions.create(
+    model="your-model-id",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+print(resp.choices[0].message.content)
+```
+
+</Tab>
+
+<Tab value="TypeScript">
+
+```ts
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "http://localhost:3000/v1",
+  apiKey: "sk-...",
+});
+const resp = await client.chat.completions.create({
+  model: "your-model-id",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+</Tab>
+
+</Tabs>
+
+## Other clients
+
+- **Continue / Open WebUI** — set the OpenAI-compatible base URL to `http://<host>:3000/v1` and paste a llama-dash key.
+- **Home Assistant** — use the OpenAI conversation integration pointed at the same base URL.
+- **Claude Code & Anthropic SDKs** — see [Claude Code passthrough](/docs/clients/claude-code).
+
+<Callout type="info">
+  The Endpoints page in the dashboard pre-fills your host, a selected model, and a
+  key, so you can copy a working snippet directly.
+</Callout>

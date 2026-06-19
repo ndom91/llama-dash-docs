@@ -1,0 +1,13 @@
+{
+  "title": "Access & policy",
+  "icon": "ShieldCheck",
+  "pages": [
+    "authentication",
+    "api-keys",
+    "routing-rules",
+    "model-aliases",
+    "upstream-credentials",
+    "attribution",
+    "request-limits"
+  ]
+}
