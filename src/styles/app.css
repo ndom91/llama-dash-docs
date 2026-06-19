@@ -2,9 +2,6 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
-/* Brand fonts — global so both the landing and the docs can use them.
-   (The landing's .ld-root scopes itself to geistMono, so --font-sans below
-   only affects the docs/body.) */
 @font-face {
   font-family: "geistMono";
   src: url("/fonts/geistmono-variable.woff2") format("woff2-variations");
@@ -18,10 +15,6 @@
   font-display: swap;
 }
 
-/* Fonts + light-mode docs palette (derived from the landing's green accent;
-   primary darkened for contrast on a light background). Overriding these as
-   runtime vars in :root drives Tailwind's font and color utilities; we use
-   :root rather than the Tailwind at-rule so Biome can parse the file. */
 :root {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "geistMono", ui-monospace, monospace;
@@ -45,8 +38,6 @@
   --color-fd-overlay: rgba(0, 0, 0, 0.2);
 }
 
-/* Dark-mode docs palette — mapped directly from the landing tokens
-   (--accent / --bg / --panel / --line / --txt / --muted). */
 .dark {
   --color-fd-background: #0c0d0b;
   --color-fd-foreground: #dadcd2;
@@ -67,16 +58,12 @@
   --color-fd-overlay: rgba(0, 0, 0, 0.5);
 }
 
-/* neutral.css re-themes the dark sidebar to greys at higher specificity;
-   mirror it with brand values so the sidebar stays on-palette. */
 .dark #nd-sidebar {
   --color-fd-muted: #131410;
   --color-fd-secondary: #181a12;
   --color-fd-muted-foreground: #8b8d81;
 }
 
-/* Ensure docs body picks up the brand sans font (the landing scopes its own
-   geistMono via .ld-root, so it is unaffected). */
 body {
   font-family: var(--font-sans);
 }
