@@ -1,20 +1,8 @@
 /* Llama Dash landing page — recreated from the Claude Design handoff
    ("Llama Dash Landing.dc.html"). Bespoke marketing styles, intentionally
    isolated from the fumadocs/Tailwind docs design system. Tokens are scoped
-   to .ld-root so they don't leak into the rest of the site. */
-
-@font-face {
-  font-family: "geistMono";
-  src: url("/fonts/geistmono-variable.woff2") format("woff2-variations");
-  font-weight: 100 900;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/inter-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
+   to .ld-root so they don't leak into the rest of the site.
+   The geistMono + Inter @font-face rules live globally in src/styles/app.css. */
 
 @keyframes ldblink {
   0%,
