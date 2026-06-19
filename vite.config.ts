@@ -15,16 +15,6 @@ export default defineConfig({
     tanstackStart({
       spa: {
         enabled: true,
-        // SPA mode prerenders a shell page at `maskPath` (default "/"). With the
-        // default, that shell page shares the "/" key with the index route and
-        // wins prerender de-duplication, so "/" emits the empty _shell.html
-        // instead of our landing page. We give the mask a query string: it
-        // still resolves to the index route (pathname "/") for the required 200
-        // response, but its de-dup key ("/?spa-shell") differs from "/", so the
-        // index route prerenders its real content AND the shell is still
-        // written to _shell.html (the shell's outputPath is independent of
-        // maskPath), keeping serve.json's SPA fallback rewrite valid.
-        maskPath: "/?spa-shell",
         prerender: {
           enabled: true,
           crawlLinks: true,
