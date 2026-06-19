@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 578.257 1080.529" width="578.257" height="1080.529">
+<title>Proxy transform pipeline</title>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.5, 8 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<polyline class="edge" data-from="Request" data-to="Auth" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.79749999999996,76.9 295.79749999999996,124.9" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Auth" data-to="Routing" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.79749999999996,161.8 295.7975,209.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Routing" data-to="Alias" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.7975,246.70000000000002 295.79749999999996,294.70000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Alias" data-to="Prompt" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.79749999999996,331.6 295.79749999999996,379.6" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Prompt" data-to="Limits" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.79749999999996,416.5 295.79749999999996,464.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Limits" data-to="Forward" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.79749999999996,501.4 295.79749999999996,549.4" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Forward" data-to="Backend" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="backend route" points="257.2652499999999,664.99675 257.2652499999999,739.529 116.17949999999996,739.529 116.17949999999996,807.829" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Forward" data-to="Upstream" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="direct upstream" points="295.79749999999996,703.529 295.7975,807.829" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Forward" data-to="Reject" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="reject rule" points="334.32975,664.99675 334.32975,715.529 468.74649999999997,715.529 468.74649999999997,807.829" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Backend" data-to="Response" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="116.17949999999999,844.7289999999999 116.17949999999999,874.7289999999999 205.9885,874.7289999999999 205.9885,904.7289999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Upstream" data-to="Response" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="295.7975,844.7289999999999 295.7975,874.7289999999999 205.9885,874.7289999999999 205.9885,904.7289999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Response" data-to="Log" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="205.9885,941.6289999999999 205.9885,965.6289999999999 130.62899999999996,965.6289999999999 130.62899999999996,989.6289999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="Response" data-to="Client" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="205.9885,941.6289999999999 205.9885,965.6289999999999 281.34799999999996,965.6289999999999 281.34799999999996,989.6289999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<g class="edge-label" data-from="Forward" data-to="Backend" data-label="backend route">
+  <rect x="73.17949999999996" y="746.529" width="85.96000000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="116.15949999999997" y="761.679" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">backend route</text>
+</g>
+<g class="edge-label" data-from="Forward" data-to="Upstream" data-label="direct upstream">
+  <rect x="250.29749999999996" y="746.529" width="90.71200000000002" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="295.65349999999995" y="761.679" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">direct upstream</text>
+</g>
+<g class="edge-label" data-from="Forward" data-to="Reject" data-label="reject rule">
+  <rect x="435.74649999999997" y="722.529" width="65.76400000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="468.6285" y="737.679" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">reject rule</text>
+</g>
+<g class="node" data-id="Request" data-label="POST /v1/* request" data-shape="rectangle">
+  <rect x="219.24749999999995" y="40" width="153.10000000000002" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.79749999999996" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">POST /v1/* request</text>
+</g>
+<g class="node" data-id="Auth" data-label="API key allow-list check" data-shape="rectangle">
+  <rect x="206.65049999999997" y="124.9" width="178.29399999999998" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.79749999999996" y="143.35000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">API key allow-list check</text>
+</g>
+<g class="node" data-id="Routing" data-label="Routing rule evaluation" data-shape="rectangle">
+  <rect x="208.1325" y="209.8" width="175.32999999999998" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.7975" y="228.25" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Routing rule evaluation</text>
+</g>
+<g class="node" data-id="Alias" data-label="Model alias resolution" data-shape="rectangle">
+  <rect x="210.72599999999994" y="294.70000000000005" width="170.143" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.79749999999996" y="313.15000000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Model alias resolution</text>
+</g>
+<g class="node" data-id="Prompt" data-label="System prompt injection" data-shape="rectangle">
+  <rect x="206.65049999999997" y="379.6" width="178.29399999999998" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.79749999999996" y="398.05" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">System prompt injection</text>
+</g>
+<g class="node" data-id="Limits" data-label="Request size limits" data-shape="rectangle">
+  <rect x="221.47049999999996" y="464.5" width="148.654" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.79749999999996" y="482.95" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Request size limits</text>
+</g>
+<g class="node" data-id="Forward" data-label="Forward target" data-shape="diamond">
+  <polygon points="295.79749999999996,549.4000000000001 372.86199999999997,626.4645 295.79749999999996,703.529 218.73299999999995,626.4645" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.79749999999996" y="626.4645" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Forward target</text>
+</g>
+<g class="node" data-id="Backend" data-label="Inference backend" data-shape="rectangle">
+  <rect x="40" y="807.829" width="152.35899999999998" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="116.17949999999999" y="826.279" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Inference backend</text>
+</g>
+<g class="node" data-id="Upstream" data-label="Direct /v1 upstream" data-shape="rectangle">
+  <rect x="220.35899999999998" y="807.829" width="150.877" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="295.7975" y="826.279" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Direct /v1 upstream</text>
+</g>
+<g class="node" data-id="Reject" data-label="Reject response" data-shape="rectangle">
+  <rect x="399.236" y="807.829" width="139.021" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="468.74649999999997" y="826.279" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Reject response</text>
+</g>
+<g class="node" data-id="Response" data-label="Stream response" data-shape="rectangle">
+  <rect x="134.255" y="904.7289999999999" width="143.46699999999998" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="205.9885" y="923.179" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Stream response</text>
+</g>
+<g class="node" data-id="Log" data-label="Completed request log" data-shape="cylinder">
+  <rect x="45.186999999999955" y="996.6289999999999" width="170.88400000000001" height="36.900000000000006" fill="var(--_node-fill)" stroke="none"/>
+  <line x1="45.186999999999955" y1="996.6289999999999" x2="45.186999999999955" y2="1033.529" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <line x1="216.07099999999997" y1="996.6289999999999" x2="216.07099999999997" y2="1033.529" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <ellipse cx="130.62899999999996" cy="1033.529" rx="85.44200000000001" ry="7" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <ellipse cx="130.62899999999996" cy="996.6289999999999" rx="85.44200000000001" ry="7" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="130.62899999999996" y="1015.079" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Completed request log</text>
+</g>
+<g class="node" data-id="Client" data-label="Client" data-shape="rectangle">
+  <rect x="244.07099999999997" y="989.6289999999999" width="74.554" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75"/>
+  <text x="281.34799999999996" y="1008.079" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Client</text>
+</g>
+</svg>

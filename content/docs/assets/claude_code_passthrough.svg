@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 805.4509999999999 400" width="805.4509999999999" height="400">
+<title>Claude Code passthrough flow</title>
+<defs>
+  <marker id="seq-arrow" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)"/>
+  </marker>
+  <marker id="seq-arrow-open" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <polyline points="0 0, 8 2.5, 0 5" fill="none" stroke="var(--_arrow)" stroke-width="1"/>
+  </marker>
+</defs>
+<line class="lifeline" data-actor="CC" x1="84.3955" y1="70" x2="84.3955" y2="370" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="LD" x1="244.672" y1="70" x2="244.672" y2="370" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Rule" x1="402.7255" y1="70" x2="402.7255" y2="370" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Anthropic" x1="563.7429999999999" y1="70" x2="563.7429999999999" y2="370" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Logs" x1="724.0194999999999" y1="70" x2="724.0194999999999" y2="370" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<g class="message" data-from="CC" data-to="LD" data-label="POST /v1/messages&#10;Authorization: Bearer oauth-token" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="84.3955" y1="90" x2="244.672" y2="90" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="164.53375" y="80" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="164.53375" dy="-3.3000000000000007">POST /v1/messages</tspan><tspan x="164.53375" dy="14.3">Authorization: Bearer oauth-token</tspan></text>
+</g>
+<g class="message" data-from="LD" data-to="Rule" data-label="Match Anthropic route" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="244.672" y1="130" x2="402.7255" y2="130" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="323.69875" y="120" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Match Anthropic route</text>
+</g>
+<g class="message" data-from="Rule" data-to="LD" data-label="continue + passthrough auth&#10;direct target api.anthropic.com/v1" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="402.7255" y1="170" x2="244.672" y2="170" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="323.69875" y="160" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="323.69875" dy="-3.3000000000000007">continue + passthrough auth</tspan><tspan x="323.69875" dy="14.3">direct target api.anthropic.com/v1</tspan></text>
+</g>
+<g class="message" data-from="LD" data-to="Anthropic" data-label="Forward request&#10;preserve Authorization header" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="244.672" y1="210" x2="563.7429999999999" y2="210" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="404.2075" y="200" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="404.2075" dy="-3.3000000000000007">Forward request</tspan><tspan x="404.2075" dy="14.3">preserve Authorization header</tspan></text>
+</g>
+<g class="message" data-from="Anthropic" data-to="LD" data-label="Stream response" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="563.7429999999999" y1="250" x2="244.672" y2="250" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="404.2075" y="240" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Stream response</text>
+</g>
+<g class="message" data-from="LD" data-to="CC" data-label="Stream response unchanged" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="244.672" y1="290" x2="84.3955" y2="290" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="164.53375" y="280" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Stream response unchanged</text>
+</g>
+<g class="message" data-from="LD" data-to="Logs" data-label="Store metadata, routing rule,&#10;latency, tokens, status" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="244.672" y1="330" x2="724.0194999999999" y2="330" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="484.34574999999995" y="320" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="484.34574999999995" dy="-3.3000000000000007">Store metadata, routing rule,</tspan><tspan x="484.34574999999995" dy="14.3">latency, tokens, status</tspan></text>
+</g>
+<g class="actor" data-id="CC" data-label="Claude Code" data-type="participant">
+  <rect x="30.000000000000007" y="30" width="108.79099999999998" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="84.3955" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Claude Code</text>
+</g>
+<g class="actor" data-id="LD" data-label="llama-dash :3000" data-type="participant">
+  <rect x="178.791" y="30" width="131.762" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="244.672" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">llama-dash :3000</text>
+</g>
+<g class="actor" data-id="Rule" data-label="Routing rule" data-type="participant">
+  <rect x="350.553" y="30" width="104.345" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="402.7255" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Routing rule</text>
+</g>
+<g class="actor" data-id="Anthropic" data-label="api.anthropic.com" data-type="participant">
+  <rect x="494.8979999999999" y="30" width="137.69" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="563.7429999999999" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">api.anthropic.com</text>
+</g>
+<g class="actor" data-id="Logs" data-label="Request log" data-type="participant">
+  <rect x="672.5879999999999" y="30" width="102.863" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="724.0194999999999" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Request log</text>
+</g>
+</svg>

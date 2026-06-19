@@ -3,9 +3,13 @@ title: MCP relays
 description: Reverse-proxy remote MCP servers with injected, encrypted credentials.
 ---
 
+import McpRelaysDiagram from "../assets/mcp_relays.svg?react";
+
 MCP relays let coding agents reach remote MCP (Model Context Protocol) HTTP servers _through_ llama-dash, so the provider bearer token stays encrypted in the credential vault and every exchange is logged.
 
 Relays live at `/mcp-relays/:slug`. A relay request must include `x-llama-dash-api-key`, and that key must explicitly allow the relay. The stored upstream credential is then injected into outbound headers, the response streams through, and the exchange is logged without exposing the provider secret. Successful relay requests are metadata-only by default; failures keep bounded debug capture.
+
+<McpRelaysDiagram className="ld-docs-diagram my-6 h-auto w-full rounded-lg" role="img" aria-label="MCP relay request flow" />
 
 ## Configure a client
 

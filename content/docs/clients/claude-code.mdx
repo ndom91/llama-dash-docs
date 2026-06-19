@@ -3,11 +3,11 @@ title: Claude Code & Anthropic passthrough
 description: Log and filter Anthropic traffic — including Claude Code — through llama-dash.
 ---
 
+import ClaudeCodePassthroughDiagram from "../assets/claude_code_passthrough.svg?react";
+
 Route any Anthropic SDK (including Claude Code) through llama-dash for logging, filtering, and per-request inspection. Anthropic subscriptions are supported.
 
-```text
-Claude Code ──► llama-dash :3000 (log + filter) ──► api.anthropic.com
-```
+<ClaudeCodePassthroughDiagram className="ld-docs-diagram my-6 h-auto w-full rounded-lg" role="img" aria-label="Claude Code passthrough flow" />
 
 ## Client config
 

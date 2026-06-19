@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1077.982 652" width="1077.982" height="652">
+<title>MCP relay request flow</title>
+<defs>
+  <marker id="seq-arrow" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)"/>
+  </marker>
+  <marker id="seq-arrow-open" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <polyline points="0 0, 8 2.5, 0 5" fill="none" stroke="var(--_arrow)" stroke-width="1"/>
+  </marker>
+</defs>
+<g class="block" data-type="alt" data-label="key is not allowed for relay">
+  <rect x="30" y="158" width="1017.982" height="444" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <rect x="30" y="158" width="174.73000000000002" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="36" y="167" font-size="11" font-weight="600" fill="var(--_text-sec)" dy="3.8499999999999996">alt [key is not allowed for relay]</text>
+  <line x1="30" y1="314" x2="1047.982" y2="314" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+  <text x="38" y="328" font-size="11" text-anchor="start" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">[key is allowed]</text>
+</g>
+<line class="lifeline" data-actor="Agent" x1="95.13649999999998" y1="70" x2="95.13649999999998" y2="622" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Relay" x1="293.20399999999995" y1="70" x2="293.20399999999995" y2="622" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Key" x1="494.60599999999994" y1="70" x2="494.60599999999994" y2="622" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Vault" x1="655.6234999999999" y1="70" x2="655.6234999999999" y2="622" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="MCP" x1="834.0545" y1="70" x2="834.0545" y2="622" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<line class="lifeline" data-actor="Logs" x1="993.9604999999999" y1="70" x2="993.9604999999999" y2="622" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4"/>
+<g class="message" data-from="Agent" data-to="Relay" data-label="MCP HTTP request&#10;x-llama-dash-api-key: sk-..." data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="95.13649999999998" y1="90" x2="293.20399999999995" y2="90" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="194.17024999999995" y="80" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="194.17024999999995" dy="-3.3000000000000007">MCP HTTP request</tspan><tspan x="194.17024999999995" dy="14.3">x-llama-dash-api-key: sk-...</tspan></text>
+</g>
+<g class="message" data-from="Relay" data-to="Key" data-label="Validate key and relay allow-list" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="130" x2="494.60599999999994" y2="130" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="393.905" y="120" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Validate key and relay allow-list</text>
+</g>
+<g class="message" data-from="Key" data-to="Relay" data-label="deny" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="494.60599999999994" y1="198" x2="293.20399999999995" y2="198" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="393.905" y="188" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">deny</text>
+</g>
+<g class="message" data-from="Relay" data-to="Agent" data-label="403 Forbidden" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="238" x2="95.13649999999998" y2="238" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="194.17024999999995" y="228" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">403 Forbidden</text>
+</g>
+<g class="message" data-from="Relay" data-to="Logs" data-label="Store failed relay attempt" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="278" x2="993.9604999999999" y2="278" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="643.5822499999999" y="268" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Store failed relay attempt</text>
+</g>
+<g class="message" data-from="Key" data-to="Relay" data-label="allow" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="494.60599999999994" y1="342" x2="293.20399999999995" y2="342" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="393.905" y="332" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">allow</text>
+</g>
+<g class="message" data-from="Relay" data-to="Vault" data-label="Load encrypted upstream credential" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="382" x2="655.6234999999999" y2="382" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="474.41374999999994" y="372" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Load encrypted upstream credential</text>
+</g>
+<g class="message" data-from="Vault" data-to="Relay" data-label="Decrypted bearer token" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="655.6234999999999" y1="422" x2="293.20399999999995" y2="422" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="474.41374999999994" y="412" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Decrypted bearer token</text>
+</g>
+<g class="message" data-from="Relay" data-to="MCP" data-label="Forward MCP request&#10;inject upstream Authorization" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="462" x2="834.0545" y2="462" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="563.62925" y="452" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="563.62925" dy="-3.3000000000000007">Forward MCP request</tspan><tspan x="563.62925" dy="14.3">inject upstream Authorization</tspan></text>
+</g>
+<g class="message" data-from="MCP" data-to="Relay" data-label="Stream MCP response" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="834.0545" y1="502" x2="293.20399999999995" y2="502" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="563.62925" y="492" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Stream MCP response</text>
+</g>
+<g class="message" data-from="Relay" data-to="Agent" data-label="Stream response" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="542" x2="95.13649999999998" y2="542" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)"/>
+  <text x="194.17024999999995" y="532" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">Stream response</text>
+</g>
+<g class="message" data-from="Relay" data-to="Logs" data-label="Store relay metadata&#10;redact provider secret" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="293.20399999999995" y1="582" x2="993.9604999999999" y2="582" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)"/>
+  <text x="643.5822499999999" y="572" font-size="11" text-anchor="middle" font-weight="400" fill="var(--_text-muted)"><tspan x="643.5822499999999" dy="-3.3000000000000007">Store relay metadata</tspan><tspan x="643.5822499999999" dy="14.3">redact provider secret</tspan></text>
+</g>
+<g class="actor" data-id="Agent" data-label="Coding agent" data-type="participant">
+  <rect x="39.99999999999999" y="30" width="110.27299999999998" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="95.13649999999998" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Coding agent</text>
+</g>
+<g class="actor" data-id="Relay" data-label="llama-dash&#10;/mcp-relays/:slug" data-type="participant">
+  <rect x="190.27299999999997" y="30" width="205.86199999999997" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="293.20399999999995" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)"><tspan x="293.20399999999995" dy="-3.9000000000000012">llama-dash</tspan><tspan x="293.20399999999995" dy="16.900000000000002">/mcp-relays/:slug</tspan></text>
+</g>
+<g class="actor" data-id="Key" data-label="API key policy" data-type="participant">
+  <rect x="436.13499999999993" y="30" width="116.942" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="494.60599999999994" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">API key policy</text>
+</g>
+<g class="actor" data-id="Vault" data-label="Credential vault" data-type="participant">
+  <rect x="593.0769999999999" y="30" width="125.09300000000002" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="655.6234999999999" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Credential vault</text>
+</g>
+<g class="actor" data-id="MCP" data-label="Remote MCP server" data-type="participant">
+  <rect x="758.17" y="30" width="151.769" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="834.0545" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Remote MCP server</text>
+</g>
+<g class="actor" data-id="Logs" data-label="Relay log" data-type="participant">
+  <rect x="949.939" y="30" width="88.04299999999999" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="993.9604999999999" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Relay log</text>
+</g>
+</svg>
