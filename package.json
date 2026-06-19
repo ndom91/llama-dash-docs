@@ -5,7 +5,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "NITRO_PRESET=node-server vite build",
     "start": "serve .output/public --config ../../serve.json",
     "preview": "vite preview",
     "preview:cf": "pnpm build && wrangler dev",
