@@ -1,4 +1,4 @@
-export const appName = "Tanstack Start";
+export const appName = "llama-dash";
 export const docsRoute = "/docs";
 export const docsImageRoute = "/og/docs";
 
