@@ -10,8 +10,6 @@ llama-dash turns a self-hosted local inference box into an observable, policy-co
 
 It is the single public entrypoint for OpenAI-compatible and Anthropic-compatible clients. llama-dash owns proxy policy, logging, auth, routing, and backend normalization; your inference backend owns local model processes and inference when traffic is routed to local models.
 
-<ArchitectureDiagram className="ld-architecture-diagram my-6 h-auto w-full rounded-lg" role="img" aria-label="llama-dash architecture diagram" />
-
 ## What it does
 
 - **Watch the box** — live request, token, model, upstream, GPU, and update status in one dashboard.
@@ -22,6 +20,8 @@ It is the single public entrypoint for OpenAI-compatible and Anthropic-compatibl
 - **Enforce policy** — routing rules for model rewrites, rejects, passthrough auth, direct upstreams, and encrypted credentials.
 - **Test models** — playgrounds for chat, image, speech, and transcription.
 - **Export ops data** — raw log streams, retention controls, and low-cardinality Prometheus metrics at `/metrics`.
+
+<ArchitectureDiagram className="ld-architecture-diagram my-6 h-auto w-full rounded-lg" role="img" aria-label="llama-dash architecture diagram" />
 
 ## Where to next
 
