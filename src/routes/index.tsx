@@ -1,26 +1,22 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
-import { baseOptions } from '@/lib/layout.shared';
+import { createFileRoute } from "@tanstack/react-router";
+import { LandingPage } from "@/components/landing/landing";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      {
+        title: "llama-dash — self-hosted inference gateway",
+      },
+      {
+        name: "description",
+        content:
+          "One UI for model state, request history, API keys, routing rules, and proxy metrics — fronting llama-swap and any OpenAI- or Anthropic-compatible upstream.",
+      },
+    ],
+  }),
   component: Home,
 });
 
 function Home() {
-  return (
-    <HomeLayout {...baseOptions()}>
-      <div className="flex flex-col items-center justify-center text-center flex-1">
-        <h1 className="font-medium text-xl mb-4">Fumadocs on Tanstack Start.</h1>
-        <Link
-          to="/docs/$"
-          params={{
-            _splat: '',
-          }}
-          className="px-3 py-2 rounded-lg bg-fd-primary text-fd-primary-foreground font-medium text-sm mx-auto"
-        >
-          Open Docs
-        </Link>
-      </div>
-    </HomeLayout>
-  );
+  return <LandingPage />;
 }
