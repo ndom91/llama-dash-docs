@@ -114,14 +114,14 @@ export function LandingPage() {
                   req/s <span className="ld-strong">0.07</span>
                 </span>
               </div>
-              <div className="ld-eyebrow">SELF-HOSTED INFERENCE GATEWAY</div>
-              <h1 className="ld-h1">
-                Your local inference box, finally observable.
+              <div className="ld-eyebrow">LOCAL INFERENCE CONTROL PLANE</div>
+              <h1 className="ld-h1 text-balance">
+                One control plane for local inference.
               </h1>
               <p className="ld-lede">
-                One UI for model state, request history, API keys, routing
-                rules, and proxy metrics — fronting llama-swap and any OpenAI-
-                or Anthropic-compatible upstream.
+                Monitor models, requests, API keys, routing rules, and proxy
+                metrics from one dashboard for llama-swap and compatible
+                upstreams.
               </p>
 
               <div className="ld-cta-row">
