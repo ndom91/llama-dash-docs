@@ -1,5 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 809.1782499999999 1041" width="809.1782499999999" height="1041">
-<title>llama-dash architecture diagram</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 596.0189999999999 927.2" width="596.0189999999999" height="927.2">
+<style>
+  text { font-family: var(--font-sans, system-ui, sans-serif); }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
 <defs>
   <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
     <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round"/>
@@ -14,44 +31,44 @@
   <text x="291.74475" y="54" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Client Applications</text>
 </g>
 <g class="subgraph" data-id="LlamaDash" data-label="llama-dash :3000">
-  <rect x="156.36825000000005" y="423.90000000000003" width="612.8099999999998" height="210.70000000000002" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
-  <rect x="156.36825000000005" y="423.90000000000003" width="612.8099999999998" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <rect x="156.36825000000005" y="423.90000000000003" width="395.54399999999987" height="96.9" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <rect x="156.36825000000005" y="423.90000000000003" width="395.54399999999987" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
   <text x="168.36825000000005" y="437.90000000000003" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">llama-dash :3000</text>
 </g>
 <g class="subgraph" data-id="LlamaSwap" data-label="llama-swap :8080">
-  <rect x="40" y="750.9000000000001" width="356.27099999999996" height="250.1" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
-  <rect x="40" y="750.9000000000001" width="356.27099999999996" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
-  <text x="52" y="764.9000000000001" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">llama-swap :8080</text>
+  <rect x="40" y="637.0999999999999" width="356.27099999999996" height="250.1" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <rect x="40" y="637.0999999999999" width="356.27099999999996" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="52" y="651.0999999999999" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">llama-swap :8080</text>
 </g>
 <g class="subgraph" data-id="Upstreams" data-label="External Providers">
-  <rect x="424.27099999999996" y="750.9000000000001" width="131.748" height="153.8" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
-  <rect x="424.27099999999996" y="750.9000000000001" width="131.748" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
-  <text x="436.27099999999996" y="764.9000000000001" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">External Providers</text>
+  <rect x="424.27099999999996" y="637.1000000000001" width="131.748" height="153.8" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <rect x="424.27099999999996" y="637.1000000000001" width="131.748" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1"/>
+  <text x="436.27099999999996" y="651.1000000000001" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">External Providers</text>
 </g>
 <polyline class="edge" data-from="Clients" data-to="LlamaDash_Details" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Requests" points="354.14025000000004,307.6 354.14025,423.90000000000003 354.14025,467.90000000000003" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
-<polyline class="edge" data-from="LlamaDash_Details" data-to="LlamaSwap_Details" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Route/Forward" points="293.5495833333333,504.80000000000007 293.5495833333333,634.6 293.5495833333333,670.6000000000001 218.13549999999998,670.6000000000001 218.13549999999998,750.9000000000001 218.13549999999998,794.9000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
-<polyline class="edge" data-from="LlamaDash_Details" data-to="Upstreams" data-style="dotted" data-arrow-start="false" data-arrow-end="true" data-label="Direct /v1" points="414.7309166666666,504.80000000000007 414.7309166666666,634.6 414.73091666666664,670.6000000000001 490.145,670.6000000000001 490.145,750.9000000000001" fill="none" stroke="var(--_line)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arrowhead)"/>
-<polyline class="edge" data-from="LlamaSwap_Details" data-to="S1" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Inference" points="164.09033333333332,831.8000000000001 164.09033333333332,843.8000000000001 149.25975,843.8000000000001 149.25975,948.1000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
-<polyline class="edge" data-from="LlamaSwap_Details" data-to="S2" data-style="solid" data-arrow-start="true" data-arrow-end="true" data-label="Sync/Share" points="272.18066666666664,831.8000000000001 272.18066666666664,843.8000000000001 287.01124999999996,843.8000000000001 287.01124999999996,948.1000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)"/>
+<polyline class="edge" data-from="LlamaDash_Details" data-to="LlamaSwap_Details" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Route/Forward" points="293.5495833333333,504.80000000000007 293.5495833333333,520.8000000000001 293.5495833333333,556.8 218.13549999999998,556.8 218.13549999999998,637.0999999999999 218.13549999999998,681.0999999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="LlamaDash_Details" data-to="Upstreams" data-style="dotted" data-arrow-start="false" data-arrow-end="true" data-label="Direct /v1" points="414.7309166666666,504.80000000000007 414.7309166666666,520.8000000000001 414.7309166666666,556.8000000000002 490.145,556.8000000000002 490.145,637.1000000000001" fill="none" stroke="var(--_line)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="LlamaSwap_Details" data-to="S1" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Inference" points="164.09033333333332,717.9999999999999 164.09033333333332,729.9999999999999 149.25975,729.9999999999999 149.25975,834.3" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)"/>
+<polyline class="edge" data-from="LlamaSwap_Details" data-to="S2" data-style="solid" data-arrow-start="true" data-arrow-end="true" data-label="Sync/Share" points="272.18066666666664,717.9999999999999 272.18066666666664,729.9999999999999 287.01124999999996,729.9999999999999 287.01124999999996,834.3" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)"/>
 <g class="edge-label" data-from="Clients" data-to="LlamaDash_Details" data-label="Requests">
   <rect x="322.64025" y="350.6" width="62.794000000000004" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
   <text x="354.03725" y="365.75" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Requests</text>
 </g>
 <g class="edge-label" data-from="LlamaDash_Details" data-to="LlamaSwap_Details" data-label="Route/Forward">
-  <rect x="173.13549999999998" y="677.6000000000001" width="89.524" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
-  <text x="217.89749999999998" y="692.7500000000001" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Route/Forward</text>
+  <rect x="173.13549999999998" y="563.8" width="89.524" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="217.89749999999998" y="578.9499999999999" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Route/Forward</text>
 </g>
 <g class="edge-label" data-from="LlamaDash_Details" data-to="Upstreams" data-label="Direct /v1">
-  <rect x="460.145" y="677.6000000000001" width="59.23000000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
-  <text x="489.76" y="692.7500000000001" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Direct /v1</text>
+  <rect x="460.145" y="563.8000000000002" width="59.23000000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="489.76" y="578.9500000000002" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Direct /v1</text>
 </g>
 <g class="edge-label" data-from="LlamaSwap_Details" data-to="S1" data-label="Inference">
-  <rect x="117.75975" y="874.8000000000001" width="62.794" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
-  <text x="149.15675" y="889.95" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Inference</text>
+  <rect x="117.75975" y="760.9999999999999" width="62.794" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="149.15675" y="776.1499999999999" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Inference</text>
 </g>
 <g class="edge-label" data-from="LlamaSwap_Details" data-to="S2" data-label="Sync/Share">
-  <rect x="249.01124999999996" y="874.8000000000001" width="75.26800000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
-  <text x="286.64525" y="889.95" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Sync/Share</text>
+  <rect x="249.01124999999996" y="760.9999999999999" width="75.26800000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1"/>
+  <text x="286.64525" y="776.1499999999999" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Sync/Share</text>
 </g>
 <g class="node" data-id="C1" data-label="OpenAI SDK" data-shape="rectangle">
   <rect x="295.74475" y="197.8" width="113.827" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-client-fill)" stroke="var(--diagram-client-stroke)" stroke-width="2px"/>
@@ -69,48 +86,28 @@
   <rect x="295.74475" y="140.9" width="113.086" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-client-fill)" stroke="var(--diagram-client-stroke)" stroke-width="2px"/>
   <text x="352.28775" y="159.35000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Open WebUI</text>
 </g>
-<g class="node" data-id="D1" data-label="Dashboard" data-shape="rectangle">
-  <rect x="555.9122499999999" y="467.90000000000003" width="108.64" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-dashboard-fill)" stroke="var(--diagram-dashboard-stroke)" stroke-width="2px"/>
-  <text x="610.2322499999999" y="486.35" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Dashboard</text>
-</g>
-<g class="node" data-id="D2" data-label="Auth" data-shape="rectangle">
-  <rect x="684.55225" y="467.90000000000003" width="68.626" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-dashboard-fill)" stroke="var(--diagram-dashboard-stroke)" stroke-width="2px"/>
-  <text x="718.86525" y="486.35" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Auth</text>
-</g>
-<g class="node" data-id="D3" data-label="Logs" data-shape="rectangle">
-  <rect x="555.9122499999999" y="524.8000000000001" width="73.072" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-dashboard-fill)" stroke="var(--diagram-dashboard-stroke)" stroke-width="2px"/>
-  <text x="592.4482499999999" y="543.2500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Logs</text>
-</g>
-<g class="node" data-id="D4" data-label="Routing" data-shape="rectangle">
-  <rect x="648.98425" y="524.8000000000001" width="86.41" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-dashboard-fill)" stroke="var(--diagram-dashboard-stroke)" stroke-width="2px"/>
-  <text x="692.18925" y="543.2500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Routing</text>
-</g>
-<g class="node" data-id="D5" data-label="Metrics" data-shape="rectangle">
-  <rect x="555.9122499999999" y="581.7" width="87.15100000000001" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-dashboard-fill)" stroke="var(--diagram-dashboard-stroke)" stroke-width="2px"/>
-  <text x="599.4877499999999" y="600.1500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Metrics</text>
-</g>
-<g class="node" data-id="LlamaDash_Details" data-label="Features: Dashboard · Auth · Logs · Routing · Metrics" data-shape="rectangle">
+<g class="node" data-id="LlamaDash_Details" data-label="Dashboard · Auth · Logs · Routing · Metrics" data-shape="rectangle">
   <rect x="172.36825000000005" y="467.90000000000003" width="363.54399999999987" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-dashboard-fill)" stroke="var(--diagram-dashboard-stroke)" stroke-width="2px"/>
-  <text x="354.14025" y="486.35" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Features: Dashboard · Auth · Logs · Routing · Metrics</text>
+  <text x="354.14025" y="486.35" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Dashboard · Auth · Logs · Routing · Metrics</text>
 </g>
 <g class="node" data-id="S1" data-label="llama.cpp models" data-shape="rectangle">
-  <rect x="79.00824999999999" y="948.1000000000001" width="140.503" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-local-fill)" stroke="var(--diagram-local-stroke)" stroke-width="2px"/>
-  <text x="149.25975" y="966.5500000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">llama.cpp models</text>
+  <rect x="79.00824999999999" y="834.3" width="140.503" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-local-fill)" stroke="var(--diagram-local-stroke)" stroke-width="2px"/>
+  <text x="149.25975" y="852.75" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">llama.cpp models</text>
 </g>
 <g class="node" data-id="S2" data-label="Peers" data-shape="rectangle">
-  <rect x="247.51124999999996" y="948.1000000000001" width="79" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-local-fill)" stroke="var(--diagram-local-stroke)" stroke-width="2px"/>
-  <text x="287.01124999999996" y="966.5500000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Peers</text>
+  <rect x="247.51124999999996" y="834.3" width="79" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-local-fill)" stroke="var(--diagram-local-stroke)" stroke-width="2px"/>
+  <text x="287.01124999999996" y="852.75" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Peers</text>
 </g>
-<g class="node" data-id="LlamaSwap_Details" data-label="Features: Direct /v1 Upstreams · Models · Peers" data-shape="rectangle">
-  <rect x="56" y="794.9000000000001" width="324.27099999999996" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-local-fill)" stroke="var(--diagram-local-stroke)" stroke-width="2px"/>
-  <text x="218.13549999999998" y="813.3500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Features: Direct /v1 Upstreams · Models · Peers</text>
+<g class="node" data-id="LlamaSwap_Details" data-label="Direct /v1 Upstreams · Models · Peers" data-shape="rectangle">
+  <rect x="56" y="681.0999999999999" width="324.27099999999996" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-local-fill)" stroke="var(--diagram-local-stroke)" stroke-width="2px"/>
+  <text x="218.13549999999998" y="699.55" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Direct /v1 Upstreams · Models · Peers</text>
 </g>
 <g class="node" data-id="U1" data-label="OpenAI" data-shape="rectangle">
-  <rect x="440.27099999999996" y="794.9000000000001" width="84.928" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-upstream-fill)" stroke="var(--diagram-upstream-stroke)" stroke-width="2px"/>
-  <text x="482.73499999999996" y="813.3500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">OpenAI</text>
+  <rect x="440.27099999999996" y="681.1000000000001" width="84.928" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-upstream-fill)" stroke="var(--diagram-upstream-stroke)" stroke-width="2px"/>
+  <text x="482.73499999999996" y="699.5500000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">OpenAI</text>
 </g>
 <g class="node" data-id="U2" data-label="Anthropic" data-shape="rectangle">
-  <rect x="440.27099999999996" y="851.8000000000001" width="99.748" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-upstream-fill)" stroke="var(--diagram-upstream-stroke)" stroke-width="2px"/>
-  <text x="490.145" y="870.2500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Anthropic</text>
+  <rect x="440.27099999999996" y="738.0000000000001" width="99.748" height="36.900000000000006" rx="0" ry="0" fill="var(--diagram-upstream-fill)" stroke="var(--diagram-upstream-stroke)" stroke-width="2px"/>
+  <text x="490.145" y="756.4500000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Anthropic</text>
 </g>
 </svg>
