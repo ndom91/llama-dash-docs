@@ -37,6 +37,10 @@
   --color-fd-accent-foreground: #0c5e36;
   --color-fd-ring: #0f9a55;
   --color-fd-overlay: rgba(0, 0, 0, 0.2);
+  --ld-soft-accent: #cfeedd;
+  --ld-soft-accent-foreground: #08210f;
+  --ld-scrollbar-thumb: #5a9c72;
+  --ld-scrollbar-track: var(--color-fd-background);
 }
 
 .dark {
@@ -57,6 +61,27 @@
   --color-fd-accent-foreground: #e6f3ec;
   --color-fd-ring: #2ce68c;
   --color-fd-overlay: rgba(0, 0, 0, 0.5);
+  --ld-soft-accent: #0b3425;
+  --ld-soft-accent-foreground: #2ce68c;
+  --ld-scrollbar-thumb: #1b704d;
+  --ld-scrollbar-track: var(--color-fd-background);
+}
+
+html:has(.ld-root) {
+  --ld-soft-accent: #0b3425;
+  --ld-soft-accent-foreground: #2ce68c;
+  --ld-scrollbar-thumb: #1b704d;
+  --ld-scrollbar-track: #070809;
+}
+
+:where(#nd-sidebar, #nd-sidebar-mobile) {
+  --color-fd-accent: var(--ld-soft-accent);
+  --color-fd-accent-foreground: var(--ld-soft-accent-foreground);
+}
+
+:where(#nd-sidebar, #nd-sidebar-mobile) [data-active="true"] {
+  background-color: var(--ld-soft-accent);
+  color: var(--ld-soft-accent-foreground);
 }
 
 .dark #nd-sidebar {
@@ -164,6 +189,11 @@ a:has(.ld-sidebar-github-link) {
 
 body {
   font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--ld-soft-accent);
+  color: var(--ld-soft-accent-foreground);
 }
 
 .prose p:has(> [data-rmiz]:has(.ld-docs-image):only-child) {
@@ -369,6 +399,34 @@ body {
 
 html {
   scrollbar-gutter: stable;
+  scrollbar-color: var(--ld-scrollbar-thumb) var(--ld-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+body,
+:where(#nd-sidebar) {
+  scrollbar-color: var(--ld-scrollbar-thumb) var(--ld-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+@media (prefers-contrast: more) {
+  html {
+    --ld-scrollbar-thumb: var(--color-fd-foreground);
+    --ld-scrollbar-track: var(--color-fd-background);
+  }
+
+  html:has(.ld-root) {
+    --ld-scrollbar-thumb: #d6dbd9;
+    --ld-scrollbar-track: #070809;
+  }
+}
+
+@media (forced-colors: active) {
+  html,
+  body,
+  :where(#nd-sidebar) {
+    scrollbar-color: auto;
+  }
 }
 
 html > body[data-scroll-locked] {
