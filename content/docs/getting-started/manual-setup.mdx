@@ -13,11 +13,7 @@ Run llama-dash directly with Node when you already have a llama-swap instance, o
 
 ## Install
 
-<Steps>
-
-<Step>
-
-### Configure the environment
+### Configure the environment [step]
 
 ```bash
 cp .env.example .env
@@ -25,11 +21,7 @@ cp .env.example .env
 
 Edit `.env` and set `INFERENCE_BASE_URL` to point at your llama-swap instance (default `http://localhost:8080`). See [Configuration](/docs/getting-started/configuration) for the full list of variables.
 
-</Step>
-
-<Step>
-
-### Install dependencies and migrate the database
+### Install dependencies and migrate the database [step]
 
 ```bash
 pnpm install
@@ -38,21 +30,13 @@ pnpm db:migrate
 
 `pnpm db:migrate` creates the SQLite database at `data/dash.db`. Migrations are always applied explicitly — they never run automatically at boot.
 
-</Step>
-
-<Step>
-
-### Start the dev server
+### Start the dev server [step]
 
 ```bash
 pnpm dev
 ```
 
 The dev server runs on `http://localhost:5173`.
-
-</Step>
-
-</Steps>
 
 <Callout type="info">
   The development server listens on `5173`; the production Docker image and the

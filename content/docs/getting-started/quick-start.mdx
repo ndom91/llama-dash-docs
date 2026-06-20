@@ -5,11 +5,7 @@ description: Run llama-dash and llama-swap together with Docker Compose.
 
 The fastest way to run llama-dash is with Docker Compose. Both setups bundle llama-dash with llama-swap, use `./config/config.yaml` for the llama-swap config, mount `./models/` for model files, and expose llama-dash on `http://localhost:3000`.
 
-<Steps>
-
-<Step>
-
-### Create the llama-swap config
+### Create the llama-swap config [step]
 
 ```bash
 cp config/config.example.yaml config/config.yaml
@@ -17,11 +13,7 @@ cp config/config.example.yaml config/config.yaml
 
 Edit `config/config.yaml` to declare your models. See the [config file reference](/docs/reference/configuration-file) for the contract llama-dash expects.
 
-</Step>
-
-<Step>
-
-### Start the stack
+### Start the stack [step]
 
 Pick the compose file that matches your GPU vendor.
 
@@ -49,17 +41,9 @@ Runs `ghcr.io/mostlygeek/llama-swap:cuda` and requests `gpus: all` for the llama
 
 </Tabs>
 
-</Step>
-
-<Step>
-
-### Open the dashboard
+### Open the dashboard [step]
 
 Visit [http://localhost:3000](http://localhost:3000). On first launch you create the dashboard user, then you can load a model and send your first request.
-
-</Step>
-
-</Steps>
 
 <Callout type="info">
   llama-swap is not exposed on the host in the bundled compose setup — llama-dash
