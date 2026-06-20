@@ -110,6 +110,32 @@ body {
   font-family: var(--font-sans);
 }
 
+.prose a[href^="http://"]:not(:has(img, svg)),
+.prose a[href^="https://"]:not(:has(img, svg)) {
+  --external-link-arrow-gap: 0.225em;
+  text-decoration: none;
+  padding-inline-end: var(--external-link-arrow-gap);
+  background-image: linear-gradient(
+    var(--color-fd-primary),
+    var(--color-fd-primary)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 2px;
+}
+
+.prose a[href^="http://"]:not(:has(img, svg))::after,
+.prose a[href^="https://"]:not(:has(img, svg))::after {
+  content: "\2197" / "";
+  position: relative;
+  display: inline;
+  inset-block-start: -0.175em;
+  inset-inline-start: var(--external-link-arrow-gap);
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1;
+}
+
 /* Project wordmark in the docs nav — mirrors the landing logo but theme-aware. */
 .ld-mark {
   display: inline-flex;
