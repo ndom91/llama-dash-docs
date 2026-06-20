@@ -27,6 +27,13 @@ export const Route = createRootRoute({
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "stylesheet", href: appCss },
     ],
+    scripts: [
+      {
+        src: "https://stats.ndo.dev/api/script.js",
+        "data-site-id": "5",
+        defer: true,
+      },
+    ],
   }),
   component: RootComponent,
 });
