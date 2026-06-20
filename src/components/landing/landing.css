@@ -191,8 +191,8 @@
   transform: translateY(-1px);
 }
 .ld-btn-icon {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
 }
 .ld-btn--primary {
