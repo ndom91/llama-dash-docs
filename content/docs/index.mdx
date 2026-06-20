@@ -6,7 +6,7 @@ icon: Rocket
 
 import ArchitectureDiagram from "./assets/architecture_001.svg?react";
 
-llama-dash turns a self-hosted local inference box into an observable, policy-controlled AI gateway: one UI for model state, request history, API keys, routing rules, proxy metrics, and client setup. The implemented inference backend is currently [llama-swap](https://github.com/mostlygeek/llama-swap) over llama.cpp.
+llama-dash turns a self-hosted local inference box into an observable, policy-controlled AI gateway: one UI for model state, request history, API keys, routing rules, proxy metrics, and client setup. The implemented inference backend is currently [llama-swap](https://github.com/mostlygeek/llama-swap) over [llama.cpp](https://github.com/ggml-org/llama.cpp).
 
 It is the single public entrypoint for OpenAI-compatible and Anthropic-compatible clients. llama-dash owns proxy policy, logging, auth, routing, and backend normalization; your inference backend owns local model processes and inference when traffic is routed to local models.
 
