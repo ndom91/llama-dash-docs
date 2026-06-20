@@ -106,12 +106,12 @@ export function LandingPage() {
                 </span>
                 <span className="ld-sep">|</span>
                 <span>
-                  running <span className="ld-strong">2</span> · peer{" "}
-                  <span className="ld-strong">1</span>
+                  running <span className="ld-strong">3</span> · peer{" "}
+                  <span className="ld-strong">2</span>
                 </span>
                 <span className="ld-sep">|</span>
                 <span>
-                  req/s <span className="ld-strong">0.07</span>
+                  req/s <span className="ld-strong">0.87</span>
                 </span>
               </div>
               <div className="ld-eyebrow">LOCAL INFERENCE CONTROL PLANE</div>
