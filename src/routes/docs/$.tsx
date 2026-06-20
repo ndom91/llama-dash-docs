@@ -14,7 +14,7 @@ import {
   PageLastUpdate,
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
-import { type ComponentType, Suspense } from "react";
+import { type ComponentType, type CSSProperties, Suspense } from "react";
 import { useMDXComponents } from "@/components/mdx";
 import { baseOptions } from "@/lib/layout.shared";
 import { gitConfig } from "@/lib/shared";
@@ -28,6 +28,10 @@ type DocsFrontmatter = {
 type MDXContent = ComponentType<{
   components?: ReturnType<typeof useMDXComponents>;
 }>;
+
+const docsLayoutStyle = {
+  "--fd-sidebar-col": "var(--ld-sidebar-col)",
+} as CSSProperties;
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -124,7 +128,11 @@ function Page() {
   );
 
   return (
-    <DocsLayout {...baseOptions()} tree={pageTree}>
+    <DocsLayout
+      {...baseOptions()}
+      tree={pageTree}
+      containerProps={{ style: docsLayoutStyle }}
+    >
       <Link to={markdownUrl} hidden />
       <Suspense>
         {clientLoader.useContent(path, { markdownUrl, path, lastModifiedTime })}

@@ -64,6 +64,36 @@
   --color-fd-muted-foreground: #8b8d81;
 }
 
+#nd-docs-layout {
+  --ld-sidebar-col: var(--fd-sidebar-width);
+}
+
+#nd-docs-layout[data-sidebar-collapsed="true"] {
+  --ld-sidebar-col: 0px;
+}
+
+/* Only reclaim the sidebar grid column when the page has room for the floating card. */
+@media (min-width: 1840px) {
+  #nd-docs-layout[data-sidebar-collapsed="false"] {
+    --ld-sidebar-col: 0px;
+  }
+
+  #nd-docs-layout[data-sidebar-collapsed="false"] #nd-sidebar {
+    width: var(--fd-sidebar-width);
+    inset-block: 0.5rem;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 0.75rem;
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.18),
+      0 4px 6px -4px rgb(0 0 0 / 0.18);
+    transform: translateX(0.5rem);
+  }
+
+  [dir="rtl"] #nd-docs-layout[data-sidebar-collapsed="false"] #nd-sidebar {
+    transform: translateX(-0.5rem);
+  }
+}
+
 a:has(.ld-sidebar-github-link) {
   width: auto;
   min-width: 0;
