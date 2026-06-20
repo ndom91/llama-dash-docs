@@ -1,5 +1,5 @@
 {
-  "title": "Connecting clients",
+  "title": "Clients",
   "icon": "Plug",
   "pages": ["endpoints", "claude-code", "mcp-relays"]
 }

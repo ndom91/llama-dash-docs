@@ -28,8 +28,6 @@ Request cost is estimated from upstream usage counters using a startup-cached [m
 
 POST `/v1/*` requests pass through an ordered transform pipeline between auth and forwarding. The body is parsed once when needed and re-serialized only if mutated:
 
-<TransformPipelineDiagram className="ld-docs-diagram mx-auto my-6 h-auto w-full max-w-xl rounded-lg" role="img" aria-label="Proxy transform pipeline" />
-
 1. API key allow-list check
 2. [Routing rule](/docs/access-policy/routing-rules) evaluation
 3. [Model alias](/docs/access-policy/model-aliases) resolution
@@ -37,3 +35,5 @@ POST `/v1/*` requests pass through an ordered transform pipeline between auth an
 5. [Request size limits](/docs/access-policy/request-limits)
 
 Routing rules are ordered and first-match-wins. See [Request logging](/docs/concepts/request-logging) for what is captured afterwards.
+
+<TransformPipelineDiagram className="ld-docs-diagram mx-auto my-6 h-auto w-full max-w-xl rounded-lg" role="img" aria-label="Proxy transform pipeline" />
