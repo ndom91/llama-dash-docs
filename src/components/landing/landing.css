@@ -27,11 +27,12 @@
 /* ---------- root + tokens ---------- */
 .ld-root {
   --accent: #2ce68c;
-  --bg: #0c0d0b;
-  --panel: #131410;
-  --line: #22241d;
-  --txt: #dadcd2;
-  --muted: #74766b;
+  --bg: #070809;
+  --panel: #0e1114;
+  --panel-raised: #161a1d;
+  --line: #1f2327;
+  --txt: #d6dbd9;
+  --muted: #8a9490;
   background: var(--bg);
   color: var(--txt);
   min-height: 100vh;
@@ -263,6 +264,7 @@
 .ld-stat {
   border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--panel-raised);
   padding: 13px 14px;
 }
 .ld-stat-label {
@@ -341,7 +343,7 @@
 .ld-pipeline {
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: #0a0b09;
+  background: var(--panel);
   padding: 34px 36px;
   margin-bottom: 64px;
 }
@@ -364,6 +366,7 @@
   justify-content: center;
   border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--panel-raised);
   padding: 18px 16px;
   text-align: center;
 }
@@ -416,6 +419,7 @@
   justify-content: center;
   border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--panel-raised);
   padding: 14px 16px;
   text-align: center;
 }
@@ -452,7 +456,7 @@
   overflow: hidden;
 }
 .ld-feature {
-  background: var(--bg);
+  background: var(--panel);
   padding: 26px 24px;
 }
 .ld-feature-code {
@@ -546,11 +550,11 @@
     padding: 9px 10px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(19, 20, 16, 0.72);
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
     text-align: center;
   }
   .ld-nav-link:hover {
-    border-color: #3b3f32;
+    border-color: #2a2f33;
     background: rgba(255, 255, 255, 0.03);
   }
   .ld-h1 {

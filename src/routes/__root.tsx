@@ -20,6 +20,14 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
+        name: "color-scheme",
+        content: "light dark",
+      },
+      {
+        name: "theme-color",
+        content: "#070809",
+      },
+      {
         title: appName,
       },
     ],
