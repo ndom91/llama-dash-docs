@@ -6,3 +6,42 @@ description: Capture client, end-user, and session identity from headers.
 Attribution maps inbound request headers to client, end-user, and session identifiers, which are persisted with each request log. Request detail surfaces this metadata, the request list can filter by it, and session IDs deep-link back into the filtered log.
 
 Configure the header mapping on the Attribution page (or via `/api/settings/attribution`).
+
+## Fields
+
+llama-dash stores three attribution fields per request:
+
+- `clientName` - the application or integration making the request.
+- `endUserId` - the user inside that application.
+- `sessionId` - a conversation, workflow, trace, or other session identifier.
+
+The Requests page can filter by all three. Request detail links a session ID back to the filtered request list.
+
+## Header mapping
+
+Configure which inbound headers populate each field. Header names are normalized before lookup, and blank header values are ignored.
+
+If no explicit client header is present, llama-dash can infer `clientName` from common user agents:
+
+- `claude-code`
+- `opencode`
+- `open-webui`
+- `home-assistant`
+- `curl`
+- `python-requests`
+
+## Client examples
+
+Use stable identifiers that help you answer operational questions later:
+
+```bash
+curl http://localhost:3000/v1/chat/completions \
+  -H 'Authorization: Bearer sk-...' \
+  -H 'Content-Type: application/json' \
+  -H 'x-client-name: open-webui' \
+  -H 'x-end-user-id: alice' \
+  -H 'x-session-id: chat_123' \
+  -d '{"model":"default-chat","messages":[{"role":"user","content":"hi"}]}'
+```
+
+Attribution is metadata only. It does not authenticate the caller; use [API keys](/docs/access-policy/api-keys) and [routing rules](/docs/access-policy/routing-rules) for enforcement.

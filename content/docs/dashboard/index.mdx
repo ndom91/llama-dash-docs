@@ -7,4 +7,21 @@ The dashboard home shows live operational state: request and token rates, a mode
 
 ![llama-dash dashboard](/screenshots/dashboard.png?url)
 
-The pages in this section walk through each surface of the UI.
+## What to watch
+
+- **Traffic rate** - requests per second and tokens per second over the last minute.
+- **Latency and errors** - p50 latency and error rate, each with a small sparkline.
+- **Telemetry rail** - inference backend health, GPU snapshot, and update status.
+- **Residency timeline** - recent model load/unload activity and peer residency.
+- **Running models** - local models currently resident plus configured peers.
+- **Recent requests** - the latest proxied exchanges, linked to the request detail view.
+
+## How it updates
+
+The dashboard reads initial state through the admin API, then receives live invalidation events over server-sent events. Request rows, model state, GPU snapshots, and update checks can refresh without a full page reload.
+
+## Related pages
+
+- [Models](/docs/dashboard/models) for lifecycle controls and per-model detail.
+- [Requests](/docs/dashboard/requests) for searchable request history.
+- [System](/docs/dashboard/system) for runtime, database, proxy, and GPU health.

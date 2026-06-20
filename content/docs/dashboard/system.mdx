@@ -3,6 +3,30 @@ title: System
 description: Runtime, update status, database, proxy, and poller health.
 ---
 
-The System page reports runtime details: update status (current / available), database and proxy state, the log-write queue, and GPU poller / device status. It also exposes manual maintenance actions — request-log pruning and SQLite compaction.
+The System page reports runtime details: update status (current / available), database and proxy state, the log-write queue, and GPU poller / device status.
 
 See [Updates & health](/docs/operations/updates) and [Log retention](/docs/operations/retention).
+
+## Top-level status
+
+The first row summarizes:
+
+- Process uptime and Node version.
+- Request-log queue depth and dropped log count.
+- GPU vendor, device count, and last snapshot age.
+- Proxy upstream host and whether insecure TLS is enabled.
+
+## Runtime panels
+
+The page then breaks down the process state:
+
+- **Control Bus** - active backend, upstream URL, upstream host, `/metrics`, direct-upstream count, and allowed direct targets.
+- **Inference Backend** - capability flags for models, running-model state, lifecycle actions, logs, and config editing.
+- **Loading Queue** - queued and dropped request-log writes. Dropped rows mean logging was shed to avoid blocking proxy traffic.
+- **GPU Telemetry** - detected driver, device count, primary device, memory, utilization, temperature, power, and cores when available.
+- **Runtime** - uptime, Node version, current git commit, and update check status.
+- **Database** - SQLite path and whether it is a special path such as `:memory:` or a `file:` URI.
+
+## Maintenance
+
+Manual prune and compaction controls live on the [Settings](/docs/dashboard/settings) page. The System page is the place to confirm whether the queue, database, proxy, or GPU poller needs attention before running maintenance.

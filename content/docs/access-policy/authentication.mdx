@@ -6,3 +6,34 @@ description: Dashboard login with username/password and passkeys.
 The dashboard is protected by [Better Auth](https://better-auth.com) sessions — username/password plus passkeys. Auth gates the UI and the `/api/*` admin surface, but **not** the `/v1/*` proxy (which uses [API keys](/docs/access-policy/api-keys)).
 
 Signup is only allowed while no dashboard user exists, so the first visit creates the single admin account. For passkeys outside localhost, set `BETTER_AUTH_URL` to your public HTTPS origin.
+
+## What dashboard auth protects
+
+Dashboard sessions protect:
+
+- The web UI.
+- Admin API routes under `/api/*`.
+- Settings, routing rules, keys, credentials, config editing, and maintenance actions.
+
+Dashboard sessions do not protect:
+
+- OpenAI/Anthropic-compatible proxy routes under `/v1/*`.
+- MCP relay gateway traffic.
+
+Those client-facing paths use [API keys](/docs/access-policy/api-keys), routing-rule auth modes, and relay allow-lists.
+
+## First user setup
+
+The first successful signup creates the dashboard admin user. After that, the `/sign-up/email` path is blocked and additional signup attempts are rejected.
+
+If you need to replace the admin account, do it deliberately at the SQLite/user-table level or recreate the database. There is no public multi-user invitation flow in the current app.
+
+## Passkeys
+
+Passkeys are configured from [Settings](/docs/dashboard/settings) after signing in. For reliable passkey registration and login:
+
+- Use HTTPS for non-localhost deployments.
+- Set `BETTER_AUTH_URL` to the browser-visible origin.
+- Set `INTERNAL_ORIGIN` when server-to-server calls need a trusted internal origin that differs from the public URL.
+
+Better Auth rate-limits auth routes, but excludes `/v1/*` from its auth-rate-limiting rules so proxy traffic is governed by API-key limits instead.

@@ -5,4 +5,38 @@ description: Keep the request log bounded.
 
 An hourly job prunes the request log: old inference rows, short-lived successful MCP-relay rows, longer-lived relay failures, and stale body/header text. This keeps the SQLite file bounded under high-frequency relay traffic.
 
-The Settings and System pages also expose immediate request-log pruning and SQLite compaction actions. See [Request logging](/docs/concepts/request-logging).
+The Settings page also exposes immediate request-log pruning and SQLite compaction actions. See [Request logging](/docs/concepts/request-logging).
+
+## Defaults
+
+The default retention policy is:
+
+| Data | Default |
+|---|---:|
+| Inference request rows | 30 days |
+| Successful MCP relay rows | 7 days |
+| Failed MCP relay rows | 30 days |
+| Stored body/header text | 3 days |
+| Max stored body bytes | 32 KiB |
+
+Successful MCP relay rows are shorter-lived because relays can be high-frequency and metadata-heavy. Failed relay rows are kept longer to preserve debugging context.
+
+## Maintenance schedule
+
+Request-log maintenance starts 60 seconds after process boot, then runs hourly. Each run:
+
+- Deletes old inference rows.
+- Deletes old successful MCP relay rows.
+- Deletes old failed MCP relay rows.
+- Clears request headers, request bodies, response headers, and response bodies from rows older than the body-retention window.
+- Evicts matching entries from the in-memory recent-body cache.
+
+## Manual maintenance
+
+Use [Settings](/docs/dashboard/settings) to:
+
+- Change retention windows.
+- Apply retention immediately.
+- Compact the SQLite database after deletes.
+
+Compaction runs a WAL checkpoint and `VACUUM`. It can reclaim disk space, but it may briefly add database I/O, so run it during a quiet period if the dashboard is handling active traffic.

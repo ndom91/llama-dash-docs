@@ -4,3 +4,35 @@ description: Appearance and global proxy, privacy, and retention defaults.
 ---
 
 The Settings page covers appearance controls plus global proxy, privacy, and retention defaults. It also exposes immediate request-log pruning and SQLite compaction actions.
+
+## Appearance
+
+Choose the dashboard theme and display mode. Theme selection changes accent and semantic status colors across the UI.
+
+## Security
+
+After signing in with username/password, register passkeys for passwordless login. Passkeys can use biometrics, a device PIN, or a hardware key depending on the browser and platform.
+
+Passkeys outside localhost require `BETTER_AUTH_URL` to match the public HTTPS origin. See [Authentication](/docs/access-policy/authentication).
+
+## Logging & privacy
+
+These settings control what the proxy persists after a request completes:
+
+- **Request bodies** - store forwarded request payloads for request detail inspection.
+- **Response bodies** - store upstream response payloads for debugging. Token usage scanning still works when disabled.
+- **MCP success bodies** - persist snippets for successful MCP relay calls. Disabled by default to reduce database growth.
+- **Max stored body bytes** - truncates persisted request and response bodies. Set to `0` to store no body text.
+
+Defaults are request-body capture on, response-body capture on, MCP success-body capture off, and `32 KiB` max stored body bytes.
+
+## Retention
+
+Automatic pruning runs hourly. The retention fields control how long llama-dash keeps:
+
+- Inference rows.
+- Successful MCP relay rows.
+- Failed MCP relay rows.
+- Stored body/header text attached to older rows.
+
+Use **Apply retention now** to prune immediately. Use **Compact database** to run SQLite checkpoint and `VACUUM` after deletes so disk space can be reclaimed.

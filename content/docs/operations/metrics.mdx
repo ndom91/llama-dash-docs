@@ -6,3 +6,69 @@ description: Prometheus metrics at /metrics.
 llama-dash exposes a low-cardinality Prometheus text exporter at `/metrics`, covering proxy requests, tokens, credential-injection success/failure, latency-window gauges, queue depth/drops, upstream reachability, running models, and GPU gauges.
 
 Set [`METRICS_TOKEN`](/docs/reference/environment-variables) to require `Authorization: Bearer <token>` on the endpoint; leave it unset for unauthenticated scraping.
+
+## Scraping
+
+```bash
+curl http://localhost:3000/metrics
+```
+
+With `METRICS_TOKEN` set:
+
+```bash
+curl http://localhost:3000/metrics \
+  -H 'Authorization: Bearer <token>'
+```
+
+The endpoint returns Prometheus text format. It is intentionally low-cardinality so it is safe to scrape from a local or homelab Prometheus setup.
+
+## Metric families
+
+Process and request metrics:
+
+- `llama_dash_process_uptime_seconds`
+- `llama_dash_requests_total`
+- `llama_dash_tokens_total`
+- `llama_dash_credential_injections_total`
+- `llama_dash_request_duration_p50_seconds_30m`
+- `llama_dash_request_duration_p95_seconds_30m`
+- `llama_dash_log_queue_depth`
+- `llama_dash_log_queue_dropped_total`
+
+Backend metrics:
+
+- `llama_dash_upstream_reachable`
+- `llama_dash_upstream_latency_seconds`
+- `llama_dash_models_running`
+
+GPU metrics, emitted per detected GPU when available:
+
+- `llama_dash_gpu_memory_used_bytes`
+- `llama_dash_gpu_memory_total_bytes`
+- `llama_dash_gpu_memory_percent`
+- `llama_dash_gpu_utilization_percent`
+- `llama_dash_gpu_temperature_celsius`
+- `llama_dash_gpu_power_watts`
+
+## Labels
+
+`llama_dash_requests_total` is labeled by endpoint, model, status class, and stream mode. Endpoint labels are allowlisted:
+
+- `/v1/chat/completions`
+- `/v1/messages`
+- `/v1/messages/count_tokens`
+- `/v1/embeddings`
+- `/v1/models`
+- `/v1/audio/transcriptions`
+- `/v1/audio/speech`
+- `/v1/images/generations`
+
+Any other endpoint is normalized to `other` to avoid unbounded label cardinality.
+
+`llama_dash_tokens_total` is labeled by model and token type: `prompt`, `completion`, `cache_creation`, `cache_read`, and `total`.
+
+GPU metrics are labeled by index, GPU name, and driver.
+
+## Notes
+
+Request and token counters are derived from rows in the request log. If the bounded log queue drops rows under heavy load, Prometheus counters based on request rows will not include those dropped rows. Watch `llama_dash_log_queue_dropped_total` for that condition.

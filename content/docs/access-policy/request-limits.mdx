@@ -4,3 +4,29 @@ description: Global request size limits.
 ---
 
 Global request size limits are enforced as the final step of the proxy [transform pipeline](/docs/concepts/proxy). Configure them on the Policies page (or via `/api/settings/request-limits`).
+
+## Available limits
+
+Two global limits can be set:
+
+- `maxMessages` - maximum number of entries in an OpenAI-style `messages` array.
+- `maxEstimatedTokens` - maximum estimated prompt tokens for the input payload.
+
+Both are optional. `null` means no limit.
+
+## Enforcement order
+
+Limits run after:
+
+- API-key allow-list checks.
+- Routing-rule evaluation and model rewrites.
+- Model alias resolution.
+- API-key system-prompt injection.
+
+This means injected system prompts count toward the estimated prompt-token limit.
+
+## Rejections
+
+When a request exceeds a configured limit, llama-dash returns `422` with `request_too_large` and does not forward the request upstream.
+
+The prompt-token limit is based on a local JSON estimate, including OpenAI `messages` and Anthropic top-level `system` and `tools`. Treat it as a protective size guard, not exact tokenizer output.

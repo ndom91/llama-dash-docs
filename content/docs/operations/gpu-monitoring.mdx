@@ -3,6 +3,51 @@ title: GPU monitoring
 description: NVIDIA, AMD, and Apple Silicon GPU stats.
 ---
 
-A GPU poller auto-detects NVIDIA (`nvidia-smi`), AMD (`rocm-smi`), or Apple Silicon (`system_profiler`), polls every 10 seconds (static-only on Apple), caches snapshots, and publishes GPU-change events for live dashboard refresh.
+A GPU poller auto-detects NVIDIA (`nvidia-smi`), AMD (`amdgpu_top` first, then `rocm-smi`), or Apple Silicon (`system_profiler`), polls every 10 seconds, caches snapshots, and publishes GPU-change events for live dashboard refresh.
 
 AMD APUs report GTT memory (not BIOS-limited VRAM) for actual usable memory; Apple shows unified memory and core count when available. In Docker, `/dev/dri` must be mounted into llama-dash for AMD stats — the AMD compose file does this.
+
+## Detection order
+
+At startup, llama-dash checks telemetry sources in this order:
+
+1. `nvidia-smi`
+2. `amdgpu_top -J -n 1`
+3. `rocm-smi`
+4. `system_profiler SPDisplaysDataType -json` on macOS
+
+The first working source becomes the poller driver until restart.
+
+Each command has a 5-second timeout. If detection finds no supported source, GPU telemetry is marked unavailable and no polling interval is started.
+
+## Polling behavior
+
+When a driver is detected, llama-dash polls every 10 seconds. Each poll updates the cached GPU snapshot and publishes `gpu.updated` only when the snapshot changes.
+
+If a later poll fails, the snapshot is marked unavailable with the detected driver preserved. This helps distinguish "no GPU source was found" from "the detected source stopped responding".
+
+## Reported fields
+
+NVIDIA can report:
+
+- Memory used and total.
+- Memory percentage.
+- GPU utilization.
+- Temperature.
+- Power draw and power limit.
+
+AMD via `amdgpu_top` can report:
+
+- VRAM or GTT memory depending on device type.
+- Utilization from GFX and compute fdinfo.
+- Temperature.
+- Power.
+- Compute unit count when available.
+
+AMD via `rocm-smi` can report memory, utilization, and temperature from CSV output.
+
+Apple Silicon reports GPU model and core count from `system_profiler`, plus unified-memory usage from `sysctl` and `vm_stat`.
+
+## Containers
+
+For AMD telemetry inside Docker, mount `/dev/dri` into the llama-dash container. Without the device mount, the dashboard may still work but GPU polling will remain unavailable.

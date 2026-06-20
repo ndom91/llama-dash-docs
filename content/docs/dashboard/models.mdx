@@ -6,3 +6,27 @@ description: List, load, unload, and inspect models.
 The Models page lists every model from your backend, merged with live running state and peer info. You can load and unload models, and open a per-model detail view with stats, residency history, recent requests, a config snippet, and a per-key breakdown.
 
 ![Model detail](/screenshots/model-details.png?url)
+
+## Model list
+
+The table is built from the backend model list and live running-model state:
+
+- **Local models** can be loaded or unloaded when the backend supports lifecycle actions.
+- **Peer models** show as remote capacity and are not managed by the local load/unload buttons.
+- **Refresh** re-reads model state from the backend.
+- **Unload all** unloads every currently running local model.
+
+If no models appear, check the llama-swap `config.yaml` that llama-dash points at with [`INFERENCE_CONFIG_FILE`](/docs/reference/environment-variables).
+
+## Model detail
+
+Open a model to inspect:
+
+- State, kind, context length, TTL, port, and aliases parsed from the model config snippet.
+- Load/unload action for local models.
+- Recent residency events.
+- Recent requests for that model.
+- Request stats and per-key usage breakdowns.
+- The command/config snippet that declares the model.
+
+The detail sidecar also links to the [Playground](/docs/dashboard/playground) and the [config editor](/docs/dashboard/config-editor) for quick testing and edits.

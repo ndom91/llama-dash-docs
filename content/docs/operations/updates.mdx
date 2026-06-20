@@ -4,3 +4,44 @@ description: Update checks and runtime health.
 ---
 
 llama-dash checks for updates against the GitHub `main` branch head commit (with a short in-memory cache) and surfaces current / available / error state in the System runtime panel. The same panel reports database, proxy, log-queue, and GPU poller health.
+
+## Update checks
+
+The update checker compares the running git commit to the `main` branch head from:
+
+```text
+https://api.github.com/repos/ndom91/llama-dash/branches/main
+```
+
+Results are cached in memory for 1 hour per running commit.
+
+Statuses:
+
+- `unknown` - the running commit is unknown, so llama-dash cannot compare versions.
+- `current` - the running commit matches the latest branch commit, or the latest branch commit starts with the running short SHA.
+- `available` - GitHub reports a different latest commit.
+- `error` - the GitHub check failed.
+
+When the status changes, llama-dash publishes a system-change event so the dashboard can refresh.
+
+## Runtime health
+
+The System page reports:
+
+- Runtime uptime and Node version.
+- Current git commit.
+- Update status and latest commit URL when available.
+- Database path and whether it is a special SQLite path.
+- Inference backend capabilities.
+- Proxy upstream URL, host, direct-target count, and TLS mode.
+- Request-log queue depth and dropped rows.
+- GPU poller status and device telemetry.
+
+## Interpreting health
+
+Use the queue and GPU panels as operational signals:
+
+- Non-zero log queue depth can be normal during bursts.
+- Increasing dropped log count means llama-dash is shedding request-log writes to protect proxy traffic.
+- GPU unavailable means no supported GPU telemetry source was detected, or polling failed for the detected source.
+- Update check errors usually mean GitHub was unreachable from the process, not that the app is unhealthy.

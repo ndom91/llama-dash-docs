@@ -3,4 +3,31 @@ title: Model aliases
 description: Global model-name mapping.
 ---
 
-Model aliases map a global model name to a target the backend understands. Alias resolution happens in the proxy [transform pipeline](/docs/concepts/proxy) after routing rules, so clients can use stable names regardless of how models are declared in `config.yaml`.
+Model aliases map a global model name to a target the backend understands. Alias resolution happens in the proxy [transform pipeline](/docs/concepts/proxy) after routing-rule evaluation and model-allow-list checks, so clients can use stable names regardless of how models are declared in `config.yaml`.
+
+## How aliases are applied
+
+For POST `/v1/*` requests with a JSON body, llama-dash checks the `model` field against the alias table. If the model equals an alias, the request body is rewritten to the configured target model before system-prompt injection, request-size checks, and forwarding.
+
+Aliases are exact string matches. They do not use wildcards or prefixes.
+
+## Interaction with routing rules
+
+Routing rules see the original requested model. If a routing rule uses `rewrite_model`, that rewrite runs before alias resolution. This means aliases can be used as a final compatibility layer after explicit policy decisions.
+
+Examples:
+
+- Client requests `gpt-4o-mini`; a routing rule rewrites it to `openai-fast`; an alias maps `openai-fast` to the backend model ID.
+- Client requests `default-chat`; no routing rule matches; an alias maps `default-chat` directly to a local llama-swap model.
+
+## Interaction with API keys
+
+Model allow-lists are checked before and after routing rewrites, but before alias resolution. Use API key allow-lists for the public names and routed names you want clients to request. Use aliases to translate those names into backend config names.
+
+## When to use aliases
+
+Use aliases when:
+
+- Client configuration should stay stable while backend model IDs change.
+- Multiple clients expect OpenAI-style model names.
+- A llama-swap model ID includes local details you do not want clients to depend on.

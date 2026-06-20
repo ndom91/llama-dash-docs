@@ -10,3 +10,41 @@ The Requests page is a searchable, sortable log of every proxied exchange, with 
 ![Request detail](/screenshots/request-details.png?url)
 
 See [Request logging](/docs/concepts/request-logging) for what is captured and how long it is kept.
+
+## Filters
+
+Use the sidebar to narrow the log by:
+
+- Status: success or errors.
+- Model.
+- API key, including requests with no key.
+- Routed vs unrouted requests.
+- MCP relay rows, which are hidden by default.
+- Client host.
+- Attribution fields: client, end user, and session.
+- Text search across endpoint, method, model, client, host, end user, session, and status code.
+
+The search field is debounced and can be focused with `/`. Filters are reflected in the URL, so a filtered view can be shared.
+
+## Request table
+
+The table shows time, endpoint, API key, model, status, input tokens, output tokens, cache-read tokens, estimated cost, and duration. Columns collapse on narrower screens, but each row still opens the same detail page.
+
+Keyboard shortcuts:
+
+- `/` focuses search.
+- `j` or `ArrowDown` selects the next row.
+- `k` or `ArrowUp` selects the previous row.
+- `Enter` opens the selected row.
+
+## Detail view
+
+The request detail view is the audit trail for a single exchange:
+
+- Summary: method, endpoint, status, stream mode, API key, inferred client, and timestamp.
+- Attribution: client, end user, session, and session deep links.
+- Model routing: requested model, served model, rewrite label, matched rule, auth mode, target, and reject reason.
+- Credential injection audit: which stored credential was injected and where, when applicable.
+- Timing: queue, prefill, time to first token, decode, stream close, and total duration when data is available.
+- Payload panes: request/response bodies and headers, subject to privacy settings and retention.
+- Actions: copy curl, copy link, download `.jsonl`, and move to newer/older requests with `H` and `L`.

@@ -13,3 +13,51 @@ Each key supports:
 - **System prompt** — injected into matching requests.
 
 The key detail view shows usage stats, a per-model breakdown, and recent requests.
+
+## Creating keys
+
+When creating a key, choose:
+
+- A display name.
+- Optional allowed models. Empty means all models for normal `/v1/*` proxy requests.
+- Optional allowed MCP relays. Empty means no MCP relay access.
+- Optional RPM and TPM limits.
+- Expiry: 30 days, 60 days, 90 days, 1 year, or never.
+- Optional system prompt.
+
+The secret starts with `sk-` and is shown only once. llama-dash stores only a SHA-256 hash and a short prefix.
+
+## Enforcement
+
+For `/v1/*` requests, llama-dash accepts `Authorization: Bearer sk-...`.
+
+If no user-created API keys exist, `/v1/*` proxy requests are allowed without a key. After the first key is created, unmatched proxy traffic requires a valid key unless a matched [routing rule](/docs/access-policy/routing-rules) uses `passthrough` auth.
+
+API key checks include:
+
+- Hash match using a timing-safe comparison.
+- Revocation status.
+- Expiry.
+- RPM token bucket.
+- TPM token bucket for normal proxy requests.
+- Model allow-list before routing rewrites and again after routing rewrites.
+
+TPM accounting records token usage after upstream usage data is available, so it is an operational rate limiter, not a hard preflight token budget.
+
+## Key management
+
+The key detail view supports:
+
+- Rename.
+- Rotate. Rotation immediately invalidates the old secret and shows the new secret once.
+- Revoke. Revoked keys stop authenticating but remain visible for audit context.
+- Update system prompt.
+- Update model access.
+- Update MCP relay access.
+- Inspect 30-minute activity, recent requests, and per-model usage.
+
+<Callout type="info">
+  The database schema includes a monthly token quota field, but the current proxy
+  path does not enforce monthly quotas. Use RPM and TPM limits for active rate
+  limiting.
+</Callout>

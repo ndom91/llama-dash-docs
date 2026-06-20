@@ -3,14 +3,19 @@ title: Configuration file (config.yaml)
 description: The contract between llama-dash and llama-swap.
 ---
 
-`config.yaml` is the interface between llama-dash and llama-swap. It declares your models and peers; llama-swap owns its format. When you edit it through the dashboard's config editor, llama-dash treats it as a careful round-trip.
+`config.yaml` is the interface between llama-dash and llama-swap. It declares your models and peers; llama-swap owns its format. When you edit it through the dashboard's config editor, llama-dash validates the file before writing and checks for external modifications.
 
 ## Write contract
 
-- **Atomic writes** — write to a `.tmp` file, fsync, then rename.
-- **Preserve comments and key order** — edits round-trip through a YAML round-tripper, so your comments and ordering survive a save.
-- **Validate before writing** — content is validated against llama-swap's published `config-schema.json` before any write.
-- **Back up the previous version** — every write keeps a backup of the prior file.
+- **Validate before writing** - content is parsed as YAML and validated against llama-swap's published `config-schema.json` before any write.
+- **Detect external edits** - the editor sends the mtime it loaded; if the file changed on disk, llama-dash rejects the save and asks you to reload.
+- **Write exactly what is in the editor** - comments and key order are preserved when you do not use the Format action. Format intentionally reparses and reprints YAML.
+
+<Callout type="warn">
+  The current config editor writes the file directly and does not create an
+  automatic backup. Keep `config.yaml` in version control or make a manual backup
+  before high-risk edits.
+</Callout>
 
 ## Hot reload
 

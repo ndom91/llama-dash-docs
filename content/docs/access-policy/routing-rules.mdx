@@ -14,3 +14,55 @@ Routing rules are an ordered, first-match-wins list evaluated in the proxy [tran
 Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth / API-key validation — this is how [Claude Code passthrough](/docs/clients/claude-code) is configured.
 
 ![Policies](/screenshots/policies_2.png?url)
+
+## Evaluation order
+
+Rules are stored with an explicit order. The first enabled rule whose matchers all pass wins. If no rule matches, the request targets llama-swap with `require_key` auth and no routing action.
+
+Match fields:
+
+- Endpoint, such as `/v1/chat/completions` or `/v1/messages`.
+- Requested model from the request body.
+- API key ID.
+- Stream mode: any, stream, or non-stream.
+- Minimum estimated prompt tokens.
+- Maximum estimated prompt tokens.
+
+Prompt-token bounds use llama-dash's local estimate from the incoming JSON body. They are useful for coarse routing and rejection, not billing-grade token accounting.
+
+## Actions
+
+- `continue` records that the rule matched but leaves the model unchanged.
+- `rewrite_model` changes the request body's `model` before alias resolution and forwarding.
+- `reject` returns `422` with `routing_rule_rejected` and the configured reason.
+
+API-key model allow-lists are checked before routing and again after a rewrite. This prevents a key from requesting an allowed alias that rewrites into a disallowed target.
+
+## Targets
+
+The default target is llama-swap. A rule can also target a direct HTTPS `/v1` upstream while keeping llama-dash logging, metrics, attribution, and request detail.
+
+Direct upstream URLs must:
+
+- Use `https:`.
+- Contain no username, password, query, or hash.
+- End with `/v1`.
+- Use an allowed host. The current allow-list is `api.openai.com` and `api.anthropic.com`.
+
+## Auth modes
+
+- `require_key` means llama-dash authenticates with one of its API keys.
+- `passthrough` means the matched request can skip llama-dash API-key auth. If `preserveAuthorization` is enabled, the upstream can validate the client-supplied credential.
+
+Direct passthrough rules must have at least one matcher. This prevents a broad direct passthrough catch-all rule from forwarding every request to an external upstream without a condition.
+
+When `preserveAuthorization` is enabled on a passthrough rule, llama-dash forwards the inbound `Authorization` header instead of stripping it before upstream forwarding.
+
+## Credential bindings
+
+Rules can attach stored upstream credentials in two ways:
+
+- Replace a placeholder such as `{{llama-dash:credential:<slug>}}` in a header template.
+- Set a header directly from a stored credential.
+
+Credential-bearing rules still require a valid llama-dash API key first. See [Upstream credentials](/docs/access-policy/upstream-credentials).

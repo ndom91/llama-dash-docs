@@ -12,3 +12,36 @@ The Playground tests models directly from the dashboard:
 ![Chat playground](/screenshots/playground-chat.png?url)
 
 ![Speech playground](/screenshots/playground-speech_2.png?url)
+
+## Chat
+
+The chat tab sends through llama-dash using a system API key generated for the dashboard playground. It supports:
+
+- Model selection from local models and peers.
+- System prompt and sampling controls.
+- Streaming generation with stop, regenerate, edit, and fork actions.
+- Per-response metrics such as TTFT, tokens per second, and output tokens.
+- Inspector tabs for request, response, timing, events, and a reproducible curl command.
+
+Shortcuts:
+
+- `Enter` sends.
+- `Shift+Enter` inserts a newline.
+- `r` sends and re-runs when supported by the chat flow.
+
+## Speech
+
+The speech tab targets `/v1/audio/speech` compatible models. It supports plain text input and article mode:
+
+- Text mode speaks the textarea content.
+- Article mode fetches a URL server-side, extracts readable text, lets you edit it, then generates segmented speech.
+- Voice selection uses the model's reported voices when available, or accepts a manual voice name.
+- Output is MP3 at 24 kHz with preview playback, segmented playback, and download actions.
+
+## Image
+
+The image tab targets `/v1/images/generations`. Select a model, choose `256x256`, `512x512`, or `1024x1024`, then submit a prompt. Generated images remain in the page history until cleared and can be downloaded.
+
+## Transcribe
+
+The transcribe tab targets `/v1/audio/transcriptions` with `verbose_json` output. Drop or select an audio file, or record from the browser, then transcribe with the selected model. Supported upload types include MP3, OGG, WAV, FLAC, M4A, and WebM up to 20 MB.

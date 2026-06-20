@@ -17,10 +17,19 @@ A row is written when an exchange finishes (or the client disconnects), never on
 
 ## Privacy
 
-<Callout type="info">
-  Request and response **bodies are not logged by default**. Prompts are
-  sensitive; full bodies are kept only briefly in a bounded in-memory LRU for the
-  recent-request detail view, not persisted.
+By default, llama-dash persists request and response body snippets for inference requests, truncated at `32 KiB`, and clears stored body/header text after 3 days. Successful MCP relay calls do not persist body snippets by default; relay errors keep bounded snippets for investigation.
+
+You can change this on the [Settings](/docs/dashboard/settings) page:
+
+- Disable request-body persistence.
+- Disable response-body persistence.
+- Enable or disable successful MCP relay body persistence.
+- Set max stored body bytes from `0` to `1 MiB`.
+
+<Callout type="warn">
+  Prompts and responses can contain sensitive data. Set max stored body bytes to
+  `0`, or disable request/response body capture, if request detail should keep
+  metadata only.
 </Callout>
 
 ## Retention
