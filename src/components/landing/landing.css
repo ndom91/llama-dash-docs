@@ -190,6 +190,11 @@
 .ld-btn:hover {
   transform: translateY(-1px);
 }
+.ld-btn-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
 .ld-btn--primary {
   background: var(--accent);
   color: #08210f;
