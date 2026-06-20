@@ -61,9 +61,6 @@ export function LandingPage() {
   return (
     <div className="ld-root">
       <div className="ld-shell">
-        <a className="ld-skip" href="#content">
-          Skip to content
-        </a>
         {/* ===================== NAV ===================== */}
         <nav className="ld-nav" aria-label="Primary">
           <div className="ld-logo">
@@ -98,7 +95,7 @@ export function LandingPage() {
         </nav>
 
         {/* ===================== HERO ===================== */}
-        <main className="ld-main" id="content" tabIndex={-1}>
+        <main className="ld-main">
           <section className="ld-hero">
             {/* left column */}
             <div>

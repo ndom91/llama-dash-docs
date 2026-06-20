@@ -49,25 +49,6 @@
   outline-offset: 4px;
 }
 
-.ld-skip {
-  position: fixed;
-  inset-block-start: 16px;
-  inset-inline-start: 16px;
-  z-index: 20;
-  padding: 10px 14px;
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  background: var(--bg);
-  color: var(--accent);
-  text-decoration: none;
-  transform: translateY(calc(-100% - 24px));
-  transition: transform 160ms ease;
-}
-
-.ld-skip:focus-visible {
-  transform: translateY(0);
-}
-
 .ld-shell {
   max-width: 1200px;
   margin: 0 auto;
@@ -613,7 +594,6 @@
   .ld-mock-dot {
     animation: none;
   }
-  .ld-skip,
   .ld-nav-link,
   .ld-btn {
     transition: none;
