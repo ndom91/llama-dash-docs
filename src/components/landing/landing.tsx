@@ -68,8 +68,20 @@ export function LandingPage() {
             <span className="ld-caret" />
           </div>
           <div className="ld-nav-links">
-            <span className="ld-nav-num">01 / SYSTEM</span>
-            <span className="ld-nav-num">02 / SURFACES</span>
+            <Link
+              to="/docs/$"
+              params={{ _splat: "getting-started/quick-start" }}
+              className="ld-nav-link"
+            >
+              01 / QUICK START
+            </Link>
+            <Link
+              to="/docs/$"
+              params={{ _splat: "concepts/architecture" }}
+              className="ld-nav-link"
+            >
+              02 / ARCHITECTURE
+            </Link>
             <DocsLink className="ld-nav-link">03 / DOCS</DocsLink>
             <a
               className="ld-nav-link ld-nav-link--accent"
@@ -89,7 +101,7 @@ export function LandingPage() {
             <div className="ld-statusline">
               <span className="ld-status-item">
                 <span className="ld-dot" />
-                upstream <span className="ld-strong">v202</span>
+                gateway <span className="ld-strong">online</span>
               </span>
               <span className="ld-sep">|</span>
               <span>
