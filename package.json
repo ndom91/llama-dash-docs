@@ -3,6 +3,19 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
+  "version": "0.0.1",
+  "description": "Marketing and docs project for llama-dash",
+  "license": "MIT",
+  "author": "ndom91 <info@llama-dash.dev>",
+  "homepage": "https://llama-dash.dev/",
+  "bugs": "https://github.com/ndom91/llama-dash-doc/issues",
+  "repository": "https://github.com/ndom91/llama-dash-docs",
+  "keywords": [
+    "llama-dash",
+    "fumadocs",
+    "documentation",
+    "marketing"
+  ],
   "scripts": {
     "dev": "vite dev",
     "build": "NITRO_PRESET=node-server vite build",
@@ -16,7 +29,7 @@
     "format:fix": "biome format --write"
   },
   "dependencies": {
-    "@orama/orama": "^3.1.18",
+    "@orama/orama": "3.1.18",
     "@tanstack/react-router": "1.170.15",
     "@tanstack/react-router-devtools": "1.167.0",
     "@tanstack/react-start": "1.168.25",
@@ -24,27 +37,27 @@
     "fumadocs-core": "16.10.4",
     "fumadocs-mdx": "15.0.12",
     "fumadocs-ui": "16.10.4",
-    "lucide-react": "^1.20.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "tailwind-merge": "^3.6.0",
-    "vite": "^8.0.16"
+    "lucide-react": "1.20.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwind-merge": "3.6.0",
+    "vite": "8.0.16"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.0",
-    "@tailwindcss/vite": "^4.3.1",
-    "@types/mdx": "^2.0.14",
-    "@types/node": "^25.9.3",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
+    "@biomejs/biome": "2.5.0",
+    "@tailwindcss/vite": "4.3.1",
+    "@types/mdx": "2.0.14",
+    "@types/node": "25.9.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
     "nitro": "3.0.260610-beta",
-    "serve": "^14.2.6",
-    "srvx": "^0.11.16",
-    "tailwindcss": "^4.3.1",
+    "serve": "14.2.6",
+    "srvx": "0.11.16",
+    "tailwindcss": "4.3.1",
     "@typescript/native-preview": "7.0.0-dev.20260619.1",
-    "vite-plugin-svgr": "^5.2.0",
-    "wrangler": "^4.102.0"
+    "vite-plugin-svgr": "5.2.0",
+    "wrangler": "4.102.0"
   },
   "packageManager": "pnpm@11.8.0+sha512.c1f5e7c4cb241c8f174b743851d82f42b802324afc8b0f116b96adb15aa06664948dde36960a3ba1079ba5b4b29dd0140135b94b5b5f5263592249d68e555f26"
 }
