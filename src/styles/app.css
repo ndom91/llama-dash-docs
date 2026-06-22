@@ -189,6 +189,8 @@ a:has(.ld-sidebar-github-link) {
 
 body {
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
@@ -237,10 +239,16 @@ body {
   width: 100%;
   height: auto;
   margin: 0;
-  border: 1px solid color-mix(in srgb, var(--color-fd-border) 80%, transparent);
+  /* Pure black at low opacity for a clean edge — a tinted neutral picks up the
+     surface underneath and reads as dirt on the image border (see dark override). */
+  border: 1px solid rgb(0 0 0 / 0.1);
   border-radius: 0.625rem;
   background: var(--color-fd-background);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.dark .prose .ld-docs-image {
+  border-color: rgb(255 255 255 / 0.1);
 }
 
 .prose [data-rmiz]:has(.ld-docs-image) [data-rmiz-ghost] {

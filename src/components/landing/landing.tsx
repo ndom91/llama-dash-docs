@@ -98,7 +98,7 @@ export function LandingPage() {
         <main className="ld-main">
           <section className="ld-hero">
             {/* left column */}
-            <div>
+            <div className="ld-hero-copy">
               <div className="ld-statusline">
                 <span className="ld-status-item">
                   <span className="ld-dot" />

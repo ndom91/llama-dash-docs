@@ -23,6 +23,16 @@
     opacity: 0.35;
   }
 }
+@keyframes ldrise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* ---------- root + tokens ---------- */
 .ld-root {
@@ -97,7 +107,8 @@
   transition:
     color 160ms ease,
     border-color 160ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 .ld-nav-link:hover {
   color: var(--txt);
@@ -166,6 +177,7 @@
   line-height: 1.6;
   color: #a7a99e;
   max-width: 500px;
+  text-wrap: pretty;
 }
 .ld-cta-row {
   display: flex;
@@ -190,6 +202,9 @@
 }
 .ld-btn:hover {
   transform: translateY(-1px);
+}
+.ld-btn:active {
+  transform: scale(0.96);
 }
 .ld-btn-icon {
   width: 15px;
@@ -475,6 +490,7 @@
   font-size: 13px;
   line-height: 1.6;
   color: #8d8f84;
+  text-wrap: pretty;
 }
 
 /* ---------- footer ---------- */
@@ -506,6 +522,37 @@
   font-size: 12px;
   color: var(--muted);
   letter-spacing: 0.05em;
+}
+
+/* ---------- entrance ----------
+   One-time staged rise for the hero. Gated behind no-preference so the copy is
+   never hidden when motion is reduced or animations don't run. */
+@media (prefers-reduced-motion: no-preference) {
+  .ld-hero-copy > *,
+  .ld-mock {
+    animation: ldrise 600ms cubic-bezier(0.2, 0, 0, 1) both;
+  }
+  .ld-hero-copy > .ld-statusline {
+    animation-delay: 0ms;
+  }
+  .ld-hero-copy > .ld-eyebrow {
+    animation-delay: 80ms;
+  }
+  .ld-hero-copy > .ld-h1 {
+    animation-delay: 160ms;
+  }
+  .ld-hero-copy > .ld-lede {
+    animation-delay: 240ms;
+  }
+  .ld-hero-copy > .ld-cta-row {
+    animation-delay: 320ms;
+  }
+  .ld-hero-copy > .ld-works {
+    animation-delay: 400ms;
+  }
+  .ld-mock {
+    animation-delay: 200ms;
+  }
 }
 
 /* ---------- responsive ---------- */
@@ -557,6 +604,9 @@
     border-color: #2a2f33;
     background: rgba(255, 255, 255, 0.03);
   }
+  .ld-nav-link:active {
+    transform: scale(0.96);
+  }
   .ld-h1 {
     font-size: 34px;
   }
@@ -607,7 +657,9 @@
   .ld-btn {
     transition: none;
   }
-  .ld-btn:hover {
+  .ld-btn:hover,
+  .ld-btn:active,
+  .ld-nav-link:active {
     transform: none;
   }
 }
