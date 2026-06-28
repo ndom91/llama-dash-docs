@@ -14,8 +14,8 @@ Copy `.env.example` to `.env` and set at least these:
 
 | Variable | Why |
 |---|---|
-| `INFERENCE_BASE_URL` | Where your llama-swap instance is reachable (no trailing slash). |
-| `INFERENCE_CONFIG_FILE` | Absolute path to `config.yaml` — required for the in-dashboard config editor. |
+| `INFERENCE_BASE_URL` | Where your llama-swap instance is reachable (no trailing slash). If running the default docker setup, leave the value from the `.env.example`. |
+| `INFERENCE_CONFIG_FILE` | Absolute path to `config.yaml` — required for the in-dashboard config editor. When running the default docker setup, leave this one as set in `.env.example` as well |
 | `BETTER_AUTH_SECRET` | Signs dashboard sessions. Generate with `openssl rand -base64 33`. |
 | `CREDENTIAL_ENCRYPTION_KEY` | 32+ characters. Required before storing any upstream provider credentials. |
 
