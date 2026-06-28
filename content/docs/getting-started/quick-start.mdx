@@ -5,6 +5,14 @@ description: Run llama-dash and llama-swap together with Docker Compose.
 
 The fastest way to run llama-dash is with Docker Compose. Both setups bundle llama-dash with llama-swap, use `./config/config.yaml` for the llama-swap config, mount `./models/` for model files, and expose llama-dash on `http://localhost:3000`.
 
+### Configure the environment [step]
+
+```bash
+cp .env.example .env
+```
+
+Set `BETTER_AUTH_SECRET` (generate with `openssl rand -base64 33`) and, if you'll store upstream provider credentials, `CREDENTIAL_ENCRYPTION_KEY` (32+ chars). The compose files load `.env` via `env_file` and won't start without it. See [Configuration](/docs/getting-started/configuration) for the values to set first.
+
 ### Create the llama-swap config [step]
 
 ```bash
