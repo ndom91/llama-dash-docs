@@ -9,9 +9,9 @@ Routing rules are an ordered, first-match-wins list evaluated in the proxy [tran
 - `rewrite_model` — map the requested model to another
 - `reject` — block the request
 - set a per-rule **auth mode**: `require_key` or `passthrough`
-- target a configured **direct HTTPS `/v1` upstream**, bypassing llama-swap for that request while keeping proxy logging
+- target a configured direct HTTPS upstream, bypassing llama-swap for that request while keeping proxy logging
 
-Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth / API-key validation — this is how [Claude Code passthrough](/docs/clients/claude-code) is configured.
+Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth / API-key validation — this is how [Claude Code passthrough](/docs/clients/claude-code) and [OpenCode & ChatGPT passthrough](/docs/clients/opencode) are configured.
 
 ![Policies](/screenshots/policies_2.png?url)
 
@@ -40,14 +40,14 @@ API-key model allow-lists are checked before routing and again after a rewrite. 
 
 ## Targets
 
-The default target is llama-swap. A rule can also target a direct HTTPS `/v1` upstream while keeping llama-dash logging, metrics, attribution, and request detail.
+The default target is llama-swap. A rule can also target a direct HTTPS upstream while keeping llama-dash logging, metrics, attribution, and request detail.
 
 Direct upstream URLs must:
 
 - Use `https:`.
 - Contain no username, password, query, or hash.
-- End with `/v1`.
-- Use an allowed host. The current allow-list is `api.openai.com` and `api.anthropic.com`.
+- End with `/v1`, except for the ChatGPT Codex target `https://chatgpt.com/backend-api/codex`.
+- Use an allowed host. The current allow-list is `api.openai.com`, `api.anthropic.com`, and `chatgpt.com`.
 
 ## Auth modes
 
