@@ -12,9 +12,9 @@ description: The contract between llama-dash and llama-swap.
 - **Write exactly what is in the editor** - comments and key order are preserved when you do not use the Format action. Format intentionally reparses and reprints YAML.
 
 <Callout type="warn">
-  The current config editor writes the file directly and does not create an
-  automatic backup. Keep `config.yaml` in version control or make a manual backup
-  before high-risk edits.
+  Before replacing the file, the config editor saves the previous version as
+  `config.yaml.bak`. Keep `config.yaml` in version control as well for durable
+  history and rollback.
 </Callout>
 
 ## Hot reload

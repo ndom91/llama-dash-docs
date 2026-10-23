@@ -5,13 +5,30 @@ description: Run llama-dash and llama-swap together with Docker Compose.
 
 The fastest way to run llama-dash is with Docker Compose. Both setups pull the published [`ghcr.io/ndom91/llama-dash`](https://github.com/ndom91/llama-dash/pkgs/container/llama-dash) image, bundle it with llama-swap, use `./config/config.yaml` for the llama-swap config, mount `./models/` for model files, and expose llama-dash on `http://localhost:3000`.
 
+## Before you start
+
+- Install Docker Engine with the Docker Compose plugin.
+- For NVIDIA, install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). For AMD, use a Linux host with the ROCm devices available at `/dev/kfd` and `/dev/dri`.
+- Download a GGUF model file. Its path must match the `cmd` you place in `config.yaml`.
+
+The bundled Compose files target NVIDIA or AMD GPUs. If you already run llama-swap elsewhere or need a non-GPU setup, use [Manual setup](/docs/getting-started/manual-setup) instead.
+
+### Get the Compose files [step]
+
+The application image is prebuilt, but the repository provides the Compose files and example llama-swap configuration.
+
+```bash
+git clone https://github.com/ndom91/llama-dash.git
+cd llama-dash
+```
+
 ### Configure the environment [step]
 
 ```bash
 cp .env.example .env
 ```
 
-Set `BETTER_AUTH_SECRET` (generate with `openssl rand -base64 33`) and, if you'll store upstream provider credentials, `CREDENTIAL_ENCRYPTION_KEY` (32+ chars). The compose files load `.env` via `env_file` and won't start without it. See [Configuration](/docs/getting-started/configuration) for the values to set first.
+Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. The compose files load `.env` via `env_file` and won't start without it. Leave `BETTER_AUTH_URL` empty for a local install; set it to your browser-visible HTTPS origin when deploying behind a reverse proxy or using passkeys remotely. `CREDENTIAL_ENCRYPTION_KEY` (32+ characters) is optional until you store an upstream provider credential. See [Configuration](/docs/getting-started/configuration) for details.
 
 ### Create the llama-swap config [step]
 
@@ -19,7 +36,15 @@ Set `BETTER_AUTH_SECRET` (generate with `openssl rand -base64 33`) and, if you'l
 cp config/config.example.yaml config/config.yaml
 ```
 
-Edit `config/config.yaml` to declare your models. See the [config file reference](/docs/reference/configuration-file) for the contract llama-dash expects.
+Place your GGUF file in `./models/`, then set a model ID and its matching container path in `config/config.yaml`. For example, a file at `./models/my-model.gguf` needs `/models/my-model.gguf` in the command:
+
+```yaml
+models:
+  my-model:
+    cmd: llama-server --port ${PORT} --model /models/my-model.gguf
+```
+
+`my-model` is the model ID clients use. See the [config file reference](/docs/reference/configuration-file) for the full llama-swap contract.
 
 ### Start the stack [step]
 
@@ -51,6 +76,14 @@ Runs `ghcr.io/mostlygeek/llama-swap:cuda` and requests `gpus: all` for the llama
 
 </Tabs>
 
+After startup, confirm that llama-swap is healthy before opening the dashboard:
+
+```bash
+docker compose -f docker-compose.amd.yaml ps
+```
+
+Use the Compose filename you started. If a service does not start, inspect its logs with `docker compose -f docker-compose.amd.yaml logs llama-swap` or `docker compose -f docker-compose.amd.yaml logs llama-dash`.
+
 The default image tag is `latest`. To pin a deployment, set `LLAMA_DASH_IMAGE_TAG` to a [release tag](https://github.com/ndom91/llama-dash/releases). Contributors can build llama-dash from a local checkout by adding `-f docker-compose.build.yaml` and `--build`, for example:
 
 ```bash
@@ -59,7 +92,7 @@ docker compose -f docker-compose.amd.yaml -f docker-compose.build.yaml up -d --b
 
 ### Open the dashboard [step]
 
-Visit [http://localhost:3000](http://localhost:3000). On first launch you create the dashboard user, then you can load a model and send your first request.
+Visit [http://localhost:3000](http://localhost:3000). On first launch, create the dashboard user. Then open **Models**, load your configured model, and follow [Connect a client](/docs/getting-started/connect-a-client) to send a request. Database migrations run automatically when llama-dash starts.
 
 <Callout type="info">
   llama-swap is not exposed on the host in the bundled compose setup — llama-dash

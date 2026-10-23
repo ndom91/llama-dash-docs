@@ -10,14 +10,15 @@ llama-dash has two configuration surfaces:
 
 ## Values to set first
 
-Copy `.env.example` to `.env` and set at least these:
+Copy `.env.example` to `.env` and set these values for a local Docker Compose install:
 
 | Variable | Why |
 |---|---|
-| `INFERENCE_BASE_URL` | Where your llama-swap instance is reachable (no trailing slash). If running the default docker setup, leave the value from the `.env.example`. |
-| `INFERENCE_CONFIG_FILE` | Absolute path to `config.yaml` — required for the in-dashboard config editor. When running the default docker setup, leave this one as set in `.env.example` as well |
+| `INFERENCE_BASE_URL` | Where your llama-swap instance is reachable (no trailing slash). The bundled Compose files override this with their internal service address; do not change it for that setup. |
+| `INFERENCE_CONFIG_FILE` | Absolute path to `config.yaml` — required for the in-dashboard config editor. The bundled Compose files override this with `/config/config.yaml`; do not change it for that setup. |
 | `BETTER_AUTH_SECRET` | Signs dashboard sessions. Generate with `openssl rand -base64 33`. |
-| `CREDENTIAL_ENCRYPTION_KEY` | 32+ characters. Required before storing any upstream provider credentials. |
+| `BETTER_AUTH_URL` | Leave blank locally. Set this to the browser-visible HTTPS origin when using a reverse proxy or remote passkeys. |
+| `CREDENTIAL_ENCRYPTION_KEY` | Optional until you store upstream provider credentials. When needed, set a 32+ character secret. |
 
 <Callout type="warn">
   `CREDENTIAL_ENCRYPTION_KEY` must be set before you create or use stored upstream

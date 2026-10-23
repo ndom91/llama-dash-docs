@@ -19,16 +19,15 @@ Run llama-dash directly with Node when you already have a llama-swap instance, o
 cp .env.example .env
 ```
 
-Edit `.env` and set `INFERENCE_BASE_URL` to point at your llama-swap instance (default `http://localhost:8080`). See [Configuration](/docs/getting-started/configuration) for the full list of variables.
+Edit `.env` and set `INFERENCE_BASE_URL` to point at your llama-swap instance (default `http://localhost:8080`). Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. Leave `BETTER_AUTH_URL` blank for local development, or set it to `http://localhost:5173` when testing passkeys locally. See [Configuration](/docs/getting-started/configuration) for the full list of variables.
 
-### Install dependencies and migrate the database [step]
+### Install dependencies [step]
 
 ```bash
 pnpm install
-pnpm db:migrate
 ```
 
-`pnpm db:migrate` creates the SQLite database at `data/dash.db`. Migrations are always applied explicitly — they never run automatically at boot.
+llama-dash creates the SQLite database at `data/dash.db` and applies migrations when the server starts. You can also run `pnpm db:migrate` manually before startup if needed. To use the dashboard config editor in this setup, set `INFERENCE_CONFIG_FILE` to the absolute path of your llama-swap `config.yaml`.
 
 ### Start the dev server [step]
 
