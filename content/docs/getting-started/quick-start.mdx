@@ -3,7 +3,7 @@ title: Quick start
 description: Run llama-dash and llama-swap together with Docker Compose.
 ---
 
-The fastest way to run llama-dash is with Docker Compose. Both setups bundle llama-dash with llama-swap, use `./config/config.yaml` for the llama-swap config, mount `./models/` for model files, and expose llama-dash on `http://localhost:3000`.
+The fastest way to run llama-dash is with Docker Compose. Both setups pull the published [`ghcr.io/ndom91/llama-dash`](https://github.com/ndom91/llama-dash/pkgs/container/llama-dash) image, bundle it with llama-swap, use `./config/config.yaml` for the llama-swap config, mount `./models/` for model files, and expose llama-dash on `http://localhost:3000`.
 
 ### Configure the environment [step]
 
@@ -30,6 +30,7 @@ Pick the compose file that matches your GPU vendor.
 <Tab value="AMD / ROCm">
 
 ```bash
+docker compose -f docker-compose.amd.yaml pull
 docker compose -f docker-compose.amd.yaml up -d
 ```
 
@@ -40,6 +41,7 @@ Runs `ghcr.io/mostlygeek/llama-swap:rocm`, passes through `/dev/kfd` and `/dev/d
 <Tab value="NVIDIA / CUDA">
 
 ```bash
+docker compose -f docker-compose.nvidia.yaml pull
 docker compose -f docker-compose.nvidia.yaml up -d
 ```
 
@@ -48,6 +50,12 @@ Runs `ghcr.io/mostlygeek/llama-swap:cuda` and requests `gpus: all` for the llama
 </Tab>
 
 </Tabs>
+
+The default image tag is `latest`. To pin a deployment, set `LLAMA_DASH_IMAGE_TAG` to a [release tag](https://github.com/ndom91/llama-dash/releases). Contributors can build llama-dash from a local checkout by adding `-f docker-compose.build.yaml` and `--build`, for example:
+
+```bash
+docker compose -f docker-compose.amd.yaml -f docker-compose.build.yaml up -d --build
+```
 
 ### Open the dashboard [step]
 
