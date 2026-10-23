@@ -3,7 +3,7 @@ title: Connect a client
 description: Send your first request through the gateway.
 ---
 
-llama-dash exposes one OpenAI- and Anthropic-compatible `/v1/*` endpoint. Any client that can target a custom base URL works — point it at llama-dash instead of your inference backend.
+llama-dash exposes one OpenAI- and Anthropic-compatible `/v1/*` endpoint. Point any client that supports a custom base URL at llama-dash instead of the inference backend.
 
 ## Base URL
 
@@ -21,7 +21,7 @@ If any [API keys](/docs/access-policy/api-keys) exist in the database, the proxy
 Authorization: Bearer sk-...
 ```
 
-Create a key from the **API Keys** page in the dashboard — the secret is shown once on creation. If no keys exist yet, the proxy accepts unauthenticated requests so you can get started.
+Create a key from **API Keys** before connecting a real client. The secret is shown once. If no keys exist yet, the proxy accepts unauthenticated requests, so you can test a new install without an `Authorization` header.
 
 ## First request
 
@@ -34,6 +34,8 @@ curl http://localhost:3000/v1/chat/completions \
     "messages": [{ "role": "user", "content": "Hello!" }]
   }'
 ```
+
+Replace `your-model-id` with the ID from the **Models** page. The example includes an API key because that is the normal operating mode. Remove the `Authorization` header only when your installation has no keys yet.
 
 The request appears in the **Requests** log within the dashboard, with routing, token counts, latency, and an estimated cost.
 

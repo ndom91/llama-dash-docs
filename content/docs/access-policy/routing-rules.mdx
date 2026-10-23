@@ -3,21 +3,32 @@ title: Routing rules
 description: Ordered, first-match request routing.
 ---
 
-Routing rules are an ordered, first-match-wins list evaluated in the proxy [transform pipeline](/docs/concepts/proxy). Each rule can:
+Routing rules are an ordered list in the proxy [transform pipeline](/docs/concepts/proxy). The first enabled rule that matches a request decides what happens next. Requests that match no rule go to llama-swap and require a llama-dash API key.
 
-- `continue` — pass through unchanged
-- `rewrite_model` — map the requested model to another
-- `reject` — block the request
+- `continue`: pass through unchanged
+- `rewrite_model`: map the requested model to another
+- `reject`: block the request
 - set a per-rule **auth mode**: `require_key` or `passthrough`
 - target a configured direct HTTPS upstream, bypassing llama-swap for that request while keeping proxy logging
 
-Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth / API-key validation — this is how [Claude Code passthrough](/docs/clients/claude-code) and [OpenCode & ChatGPT passthrough](/docs/clients/opencode) are configured.
+Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth or API-key validation. This is how [Claude Code passthrough](/docs/clients/claude-code) and [OpenCode & ChatGPT passthrough](/docs/clients/opencode) work.
 
 ![Policies](/screenshots/policies_2.png?url)
 
+## Start simple
+
+You do not need routing rules to send local requests through llama-swap. Add a rule when a request needs a different destination, model name, or authentication mode. Put narrow rules above broad rules, because only the first match applies.
+
+| If you want to... | Use |
+|---|---|
+| Send local requests to llama-swap | No rule. The default applies. |
+| Translate a public model name | `rewrite_model`, or an [alias](/docs/access-policy/model-aliases) when the mapping should apply everywhere. |
+| Forward Claude Code or OpenCode OAuth | `continue` with `passthrough` auth and preserved `Authorization`. |
+| Use a stored provider secret | A direct target or relay with a credential binding. The caller still needs a valid llama-dash API key. |
+
 ## Evaluation order
 
-Rules are stored with an explicit order. The first enabled rule whose matchers all pass wins. If no rule matches, the request targets llama-swap with `require_key` auth and no routing action.
+Rules are stored with an explicit order. The first enabled rule whose matchers all pass wins.
 
 Match fields:
 
@@ -32,7 +43,7 @@ Prompt-token bounds use llama-dash's local estimate from the incoming JSON body.
 
 ## Actions
 
-- `continue` records that the rule matched but leaves the model unchanged.
+- `continue` records the match and leaves the model unchanged.
 - `rewrite_model` changes the request body's `model` before alias resolution and forwarding.
 - `reject` returns `422` with `routing_rule_rejected` and the configured reason.
 

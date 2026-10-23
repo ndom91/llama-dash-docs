@@ -6,24 +6,27 @@ icon: House
 
 import ArchitectureDiagram from "./assets/architecture_001.svg?react";
 
-llama-dash turns a self-hosted local inference box into an observable, policy-controlled AI gateway: one UI for model state, request history, API keys, routing rules, proxy metrics, and client setup. The implemented inference backend is currently [llama-swap](https://github.com/mostlygeek/llama-swap) over [llama.cpp](https://github.com/ggml-org/llama.cpp).
+llama-dash is the front door for a self-hosted inference box. It gives a small team one place to load models, create client keys, inspect requests, set routing rules, and watch the host. The current backend is [llama-swap](https://github.com/mostlygeek/llama-swap), which runs [llama.cpp](https://github.com/ggml-org/llama.cpp) model servers.
 
-It is the single public entrypoint for OpenAI-compatible and Anthropic-compatible clients. llama-dash owns proxy policy, logging, auth, routing, and backend normalization; your inference backend owns local model processes and inference when traffic is routed to local models.
+Clients call llama-dash, not llama-swap. llama-dash handles proxy policy, logging, authentication, and routing. The backend starts model processes and runs inference.
 
-## What it does
+## Start here
 
-- **Watch the box** — live request, token, model, upstream, GPU, and update status in one dashboard.
-- **Manage models** — load/unload models, inspect per-model stats, view residency history, and edit llama-swap config with validation.
-- **Proxy clients** — expose one OpenAI/Anthropic-compatible `/v1/*` endpoint for local models, peers, and direct upstreams.
-- **Track requests** — searchable request history with filters, histograms, detail views, attribution, token counts, and cost estimates.
-- **Control access** — dashboard login, hashed API keys, per-key RPM/TPM limits, and model allow-lists.
-- **Enforce policy** — routing rules for model rewrites, rejects, passthrough auth, direct upstreams, and encrypted credentials.
-- **Test models** — playgrounds for chat, image, speech, and transcription.
-- **Export ops data** — raw log streams, retention controls, and low-cardinality Prometheus metrics at `/metrics`.
+- Have an NVIDIA or AMD inference host and want the bundled stack? Start with [Docker Compose](/docs/getting-started/quick-start).
+- Already run llama-swap or want to work from source? Use [Manual setup](/docs/getting-started/manual-setup).
+- Have a running dashboard and want to send a request? Read [Connect a client](/docs/getting-started/connect-a-client).
+
+## What you get
+
+- Dashboard pages for model state, request history, host health, and raw logs.
+- An OpenAI- and Anthropic-compatible proxy at `/v1/*`.
+- API keys, rate limits, model restrictions, aliases, and ordered routing rules.
+- Optional direct-upstream routing and encrypted credentials for provider APIs and MCP relays.
+- Prometheus metrics at `/metrics`.
 
 <ArchitectureDiagram className="ld-architecture-diagram my-6 h-228 rounded-lg" role="img" aria-label="llama-dash architecture diagram" />
 
-## Where to next
+## Learn more
 
 <Cards>
   <Card title="Get started" href="/docs/getting-started/quick-start" description="Run llama-dash with Docker Compose or a manual setup." />
