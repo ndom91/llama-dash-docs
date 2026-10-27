@@ -159,7 +159,7 @@ export function LandingPage() {
                 <span className="ld-sep">·</span>
                 <span className="ld-strong">Claude Code</span>
                 <span className="ld-sep">·</span>
-                <span className="ld-strong">Continue</span>
+                <span className="ld-strong">opencode</span>
                 <span className="ld-sep">·</span>
                 <span className="ld-strong">Open WebUI</span>
               </div>
@@ -266,7 +266,7 @@ export function LandingPage() {
                   <br />
                   Claude Code
                   <br />
-                  Continue · Open WebUI
+                  opencode · Open WebUI
                 </div>
               </div>
               <div className="ld-pipe-arrow">──▶</div>

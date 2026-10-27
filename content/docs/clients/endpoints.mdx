@@ -3,7 +3,7 @@ title: Endpoints & SDKs
 description: Point any OpenAI- or Anthropic-compatible client at the gateway.
 ---
 
-llama-dash speaks the OpenAI and Anthropic `/v1/*` wire formats, so most clients need only a base-URL change and a llama-dash API key. The dashboard's **Endpoints** page generates ready-to-paste snippets for curl, Python, TypeScript, Home Assistant, Claude Code, opencode, Continue, and Open WebUI.
+llama-dash speaks the OpenAI and Anthropic `/v1/*` wire formats, so most clients need only a base-URL change and a llama-dash API key. The dashboard's **Endpoints** page generates ready-to-paste snippets for curl, Python, TypeScript, Home Assistant, Claude Code, opencode, and Open WebUI.
 
 ## Base URL and key
 
@@ -64,7 +64,7 @@ console.log(resp.choices[0].message.content);
 
 ## Other clients
 
-- **Continue / Open WebUI** — set the OpenAI-compatible base URL to `http://<host>:3000/v1` and paste a llama-dash key.
+- **Open WebUI** — set the OpenAI-compatible base URL to `http://<host>:3000/v1` and paste a llama-dash key.
 - **Home Assistant** — use the OpenAI conversation integration pointed at the same base URL.
 - **Claude Code & Anthropic SDKs** — see [Claude Code passthrough](/docs/clients/claude-code).
 - **OpenCode with a ChatGPT subscription** — see [OpenCode & ChatGPT passthrough](/docs/clients/opencode).
