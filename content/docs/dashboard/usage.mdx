@@ -3,7 +3,7 @@ title: Usage
 description: Explore input and output tokens over time and by app, model, key, and other dimensions.
 ---
 
-The Usage page shows inference activity for today or the last 7, 30, or 90 UTC calendar days, including today. Use it to compare token usage over time and see which apps, models, or keys account for it. MCP relay exchanges are not included.
+The Usage page shows inference activity for the last 24 hours or the last 7, 30, or 90 UTC calendar days, including today. Use it to compare token usage over time and see which apps, models, or keys account for it. MCP relay exchanges are not included.
 
 ![Usage page showing token totals, daily chart, and breakdowns](/screenshots/usage.png?url)
 
@@ -11,7 +11,7 @@ The Usage page shows inference activity for today or the last 7, 30, or 90 UTC c
 
 The summary cards show output tokens, input tokens, requests, and either estimated cost or total tokens when no cost estimate is available. Each card compares the selected period with the preceding period of the same length. Cost is an estimate based on available model pricing; it may not include every request.
 
-For the 1-day period, the Usage page compares today so far with the whole previous UTC day. The dashboard's Today card instead compares today so far with yesterday up to the same time.
+For the 1-day period, both the Usage page and the dashboard's 24-hour card compare the last 24 hours with the preceding 24 hours. The daily chart groups the rolling window's portions by UTC date.
 
 The daily chart shows input and output tokens together. Select **output** to show only output tokens, or **all** to show both. Hover over a day to see its token and request counts. The chart preference is saved in your browser.
 
@@ -29,6 +29,6 @@ Client, end-user, and session attribution depends on the configured headers. See
 
 ## History and retention
 
-Daily usage totals are retained beyond inference request-log pruning. On startup, historical requests are backfilled into daily rollups; historical totals can be incomplete while backfill is in progress. Inference request deletion waits for backfill to finish.
+Daily usage totals are retained beyond inference request-log pruning. Inference request rows are kept for at least two days to support the rolling 24-hour window and its comparison; this does not extend body or header retention. Previously pruned rows cannot be recovered, so the comparison may be incomplete until enough new history has accumulated. On startup, historical requests are backfilled into daily rollups; historical totals can be incomplete while backfill is in progress. Inference request deletion waits for backfill to finish.
 
 Session IDs are not included in daily rollups. A session breakdown uses retained request rows and can therefore be incomplete when the selected period exceeds request-log retention. Other breakdowns use the retained daily rollups. See [Log retention](/docs/operations/retention).

@@ -25,8 +25,8 @@ The admin API (`/api/*`) serves JSON to the dashboard. When dashboard auth is en
 
 ## Usage
 
-- `GET /api/usage?days=1|7|30|90` — daily input/output token totals, previous-period comparison, and configured breakdowns
-- `GET /api/usage/summary` — output-token totals and series for today, 7 days, and 30 days
+- `GET /api/usage?days=1|7|30|90` — rolling 24-hour or UTC-day input/output token totals, previous-period comparison, and configured breakdowns
+- `GET /api/usage/summary` — output-token totals and series for the last 24 hours, UTC today, 7 days, and 30 days
 - `GET/PATCH /api/settings/usage` — read or update the three breakdown dimensions
 
 See [Usage](/docs/dashboard/usage) for the reporting and retention behavior.
