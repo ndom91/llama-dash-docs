@@ -1,0 +1,32 @@
+---
+title: Usage
+description: Explore input and output tokens over time and by app, model, key, and other dimensions.
+---
+
+The Usage page shows inference activity over the last 7, 30, or 90 UTC calendar days, including today. Use it to compare token usage over time and see which apps, models, or keys account for it. MCP relay exchanges are not included.
+
+![Usage page showing token totals, daily chart, and breakdowns](/screenshots/usage.png?url)
+
+## Totals and daily chart
+
+The summary cards show output tokens, input tokens, requests, and either estimated cost or total tokens when no cost estimate is available. Each card compares the selected period with the preceding period of the same length. Cost is an estimate based on available model pricing; it may not include every request.
+
+The daily chart shows input and output tokens together. Select **output** to show only output tokens, or **all** to show both. Hover over a day to see its token and request counts. The chart preference is saved in your browser.
+
+## Breakdowns
+
+Three panels group usage by configurable dimensions. The defaults are app (client), API key, and model. In [Settings](/docs/dashboard/settings), choose a dimension for each panel:
+
+- App (client), API key, or model.
+- Status class or routing action.
+- Client host, end user, or session.
+
+Each panel shows token share, token counts, and requests. The model breakdown also shows output tokens per second when available, based on successful streamed requests and including prefill time. Panels show the top 10 values by token count; remaining values are combined in an **others** row. Some rows link to the corresponding filtered request log.
+
+Client, end-user, and session attribution depends on the configured headers. See [Attribution](/docs/access-policy/attribution).
+
+## History and retention
+
+Daily usage totals are retained beyond inference request-log pruning. On startup, historical requests are backfilled into daily rollups; historical totals can be incomplete while backfill is in progress. Inference request deletion waits for backfill to finish.
+
+Session IDs are not included in daily rollups. A session breakdown uses retained request rows and can therefore be incomplete when the selected period exceeds request-log retention. Other breakdowns use the retained daily rollups. See [Log retention](/docs/operations/retention).

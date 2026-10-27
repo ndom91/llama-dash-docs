@@ -21,6 +21,8 @@ The default retention policy is:
 
 Successful MCP relay rows are shorter-lived because relays can be high-frequency and metadata-heavy. Failed relay rows are kept longer to preserve debugging context.
 
+Daily inference usage rollups remain available after request rows are pruned. Session IDs are not rolled up, so session breakdowns are limited to retained request rows. On startup, historical requests are backfilled into rollups one UTC day at a time; inference deletion waits for backfill to finish, while body and MCP relay cleanup can continue. See [Usage](/docs/dashboard/usage).
+
 ## Maintenance schedule
 
 Request-log maintenance starts 60 seconds after process boot, then runs hourly. Each run:
