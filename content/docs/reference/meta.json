@@ -5,6 +5,7 @@
     "environment-variables",
     "configuration-file",
     "admin-api",
-    "conventions"
+    "conventions",
+    "contributing"
   ]
 }

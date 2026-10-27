@@ -1,0 +1,40 @@
+---
+title: Contributing
+description: Set up llama-dash locally for development and run its checks.
+---
+
+This guide is for working on the [llama-dash application](https://github.com/ndom91/llama-dash). For a production deployment without Docker, see [Manual setup](/docs/getting-started/manual-setup).
+
+## Development setup
+
+Install Node 24+, [pnpm](https://pnpm.io), Git, and any native build tools required by `better-sqlite3`. Run a reachable [llama-swap](https://github.com/mostlygeek/llama-swap) instance for inference and model management.
+
+```bash
+git clone https://github.com/ndom91/llama-dash.git
+cd llama-dash
+cp .env.example .env
+pnpm install --frozen-lockfile
+```
+
+Edit `.env` and set `INFERENCE_BASE_URL` to your instance, such as `http://localhost:8080`; the example hostname is for Docker Compose. Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. Leave `BETTER_AUTH_URL` empty for local development, or set it to `http://localhost:5173` when testing passkeys locally. Set `INFERENCE_CONFIG_FILE` to the absolute path of your llama-swap `config.yaml` to use the config editor, or clear the Docker-specific example value.
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+Open `http://localhost:5173`. The server creates the default SQLite database at `data/dash.db` and applies migrations at startup. You can also run `pnpm db:migrate` manually. Configuration options are documented in [Environment variables](/docs/reference/environment-variables).
+
+## Checks
+
+Before submitting changes, run the project's formatter, linter, typecheck, and tests:
+
+```bash
+pnpm lint:fix
+pnpm format:fix
+pnpm typecheck
+pnpm test
+```
+
+Follow the repository's `AGENTS.md` for architecture, style, and contribution conventions.

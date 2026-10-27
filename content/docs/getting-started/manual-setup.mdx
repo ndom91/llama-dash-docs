@@ -1,17 +1,28 @@
 ---
 title: Manual setup
-description: Run llama-dash from source against an existing llama-swap instance.
+description: Run a production build of llama-dash against an existing llama-swap instance.
 ---
 
-Run llama-dash directly with Node when you already have a llama-swap instance, or you want a development setup.
+Run llama-dash directly on a host with Node when you already have a reachable llama-swap instance. This guide builds from source and uses systemd to keep the production server running. For local development, see [Contributing](/docs/reference/contributing).
 
 ## Requirements
 
-- Node 24+
-- [pnpm](https://pnpm.io)
-- A reachable llama-swap instance
+- Linux with systemd for the service example below.
+- Node 24+ and [pnpm](https://pnpm.io), available to the service account.
+- Git and native build tools for dependencies such as `better-sqlite3` (Python, a C++ compiler, and `make`).
+- A reachable [llama-swap](https://github.com/mostlygeek/llama-swap) instance.
 
-## Install
+### Get the source and install dependencies [step]
+
+Clone the repository into a location accessible to the account that will run the service. For example:
+
+```bash
+git clone https://github.com/ndom91/llama-dash.git /opt/llama-dash
+cd /opt/llama-dash
+pnpm install --frozen-lockfile
+```
+
+The destination must be writable by your installation account. Use a release tag instead of the default branch if you want to pin a version.
 
 ### Configure the environment [step]
 
@@ -19,25 +30,59 @@ Run llama-dash directly with Node when you already have a llama-swap instance, o
 cp .env.example .env
 ```
 
-Edit `.env` and set `INFERENCE_BASE_URL` to point at your llama-swap instance (default `http://localhost:8080`). Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. Leave `BETTER_AUTH_URL` blank for local development, or set it to `http://localhost:5173` when testing passkeys locally. See [Configuration](/docs/getting-started/configuration) for the full list of variables.
+Edit `.env` before starting:
 
-### Install dependencies [step]
+- Set `INFERENCE_BASE_URL` to your llama-swap address, for example `http://127.0.0.1:8080`. The example file's `http://llama-swap:8080` address is for Docker Compose.
+- Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. Keep `.env` readable only by the service account and administrators.
+- Set `BETTER_AUTH_URL` to the browser-visible HTTPS origin when deploying behind a reverse proxy or using passkeys remotely. It can be left empty for a local install.
+- To use the config editor, set `INFERENCE_CONFIG_FILE` to the absolute path of your llama-swap `config.yaml`. Otherwise, clear the example's Docker-specific `/config/config.yaml` value.
+- Set `CREDENTIAL_ENCRYPTION_KEY` to a secret of at least 32 characters before storing upstream credentials.
+
+The service account needs write access to the database directory and, if using the config editor, the llama-swap config directory. The default database path is `data/dash.db`, relative to the working directory. Migrations run automatically at startup. See [Configuration](/docs/getting-started/configuration) for the full list of variables.
+
+### Build and start [step]
 
 ```bash
-pnpm install
+pnpm build
+pnpm start
 ```
 
-llama-dash creates the SQLite database at `data/dash.db` and applies migrations when the server starts. You can also run `pnpm db:migrate` manually before startup if needed. To use the dashboard config editor in this setup, set `INFERENCE_CONFIG_FILE` to the absolute path of your llama-swap `config.yaml`.
+The production server listens on port `3000` on all interfaces by default. Stop the foreground process with `Ctrl+C` before starting it under systemd. For remote access, use HTTPS via a reverse proxy and restrict access to the service as appropriate.
 
-### Start the dev server [step]
+### Run as a systemd service [step]
+
+Create `/etc/systemd/system/llama-dash.service`. Replace `llama` with an existing non-root service account, `/opt/llama-dash` with your checkout path, and `/usr/local/bin/pnpm` with the absolute path from `command -v pnpm`. Make sure Node is also on the service's `PATH`; a version-manager installation may require an explicit `Environment=PATH=...` in the unit.
+
+```ini
+[Unit]
+Description=llama-dash inference gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=llama
+WorkingDirectory=/opt/llama-dash
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3000
+ExecStart=/usr/local/bin/pnpm start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The example binds to loopback for use with a local reverse proxy. Change `HOST` only if the server should listen on another interface. `HOST` and `PORT` can be set in the service environment; the working directory lets the app find `.env`, the database, and migrations.
+
+Ensure the service account can read the checkout and `.env` and write the configured database directory. Then enable the service and inspect its status:
 
 ```bash
-pnpm dev
+sudo systemctl daemon-reload
+sudo systemctl enable --now llama-dash
+sudo systemctl status llama-dash
+sudo journalctl -u llama-dash -f
 ```
 
-The dev server runs on `http://localhost:5173`.
-
-<Callout type="info">
-  The development server listens on `5173`; the production Docker image and the
-  diagrams in these docs use `3000`. Adjust client base URLs to match how you run it.
-</Callout>
+Open `http://localhost:3000` locally or your configured HTTPS origin, create the first dashboard user, and [connect a client](/docs/getting-started/connect-a-client). After updating the checkout, run `pnpm install --frozen-lockfile` and `pnpm build` again, then restart with `sudo systemctl restart llama-dash`.
