@@ -1,0 +1,88 @@
+---
+title: llama.cpp & llama-swap
+description: What llama-dash needs from the inference backend, and how much of it you have to set up yourself.
+---
+
+llama-dash does not run models itself. It sits in front of two upstream projects:
+
+- **[llama.cpp](https://github.com/ggml-org/llama.cpp)** provides `llama-server`, the process that loads a GGUF model and serves inference.
+- **[llama-swap](https://github.com/mostlygeek/llama-swap)** starts and stops `llama-server` processes on demand, based on the models declared in its `config.yaml`.
+
+llama-dash proxies client requests to llama-swap and reads and edits llama-swap's `config.yaml`. How much of the upstream setup you have to do depends on how you install llama-dash.
+
+| | Docker Compose | Manual setup |
+|---|---|---|
+| Install llama.cpp | No, bundled in the llama-swap image | Yes |
+| Install llama-swap | No, the Compose file runs it | Yes |
+| Write a llama-swap `config.yaml` | Yes | Yes |
+| Download GGUF model files | Yes | Yes |
+
+## Docker Compose
+
+The [Docker Compose setup](/docs/getting-started/quick-start) runs llama-swap's recommended [unified image](https://github.com/mostlygeek/llama-swap#unified-container-recommended). It contains llama-swap and `llama-server`, along with whisper.cpp, stable-diffusion.cpp, and audio.cpp, so you don't need to install or build llama.cpp or llama-swap.
+
+| Compose file | Image | GPUs |
+|---|---|---|
+| `docker-compose.nvidia.yaml` | `unified-cuda13` | NVIDIA Turing (RTX 20xx, GTX 16xx) and newer |
+| `docker-compose.amd.yaml` | `unified-vulkan` | AMD and other Vulkan GPUs |
+
+For older NVIDIA cards (Pascal, such as the GTX 10xx or P40), change the image to `unified-cuda`.
+
+You still provide two things:
+
+1. One or more GGUF model files in `./models/`. [Hugging Face](https://huggingface.co/models?library=gguf) hosts most models in GGUF format.
+2. A llama-swap `config.yaml` in `./config/` that declares each model and the `llama-server` command that runs it. The repository's `config/config.example.yaml` is a working starting point.
+
+From llama-swap's documentation, you only need the [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md). Skip its installation and Docker sections; the Compose file handles them.
+
+## Manual setup
+
+For a [manual setup](/docs/getting-started/manual-setup), llama-dash expects a llama-swap instance that is already running and reachable over HTTP. Set it up before you install llama-dash.
+
+### Install llama.cpp [step]
+
+Install a `llama-server` build that supports your GPU. llama.cpp's [install guide](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md) covers package managers and the [prebuilt release binaries](https://github.com/ggml-org/llama.cpp/releases). If no prebuilt binary matches your hardware, follow the [build guide](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) for your backend, such as CUDA, ROCm/HIP, Vulkan, or Metal.
+
+Confirm the binary runs:
+
+```bash
+llama-server --version
+```
+
+You only need `llama-server`. llama.cpp's other tools are optional.
+
+### Install llama-swap [step]
+
+Follow llama-swap's [installation instructions](https://github.com/mostlygeek/llama-swap#installation). Homebrew or a [release binary](https://github.com/mostlygeek/llama-swap/releases) is the simplest option on a bare-metal host. You can also run llama-swap with Docker while llama-dash runs directly on the host.
+
+### Write the llama-swap config [step]
+
+Create a `config.yaml` that declares your models. Model paths are host paths in this setup:
+
+```yaml
+models:
+  my-model:
+    cmd: llama-server --port ${PORT} --model /srv/models/my-model.gguf
+```
+
+`my-model` is the model ID clients send. llama-swap replaces `${PORT}` with a free port when it starts the model. See llama-swap's [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md) for TTLs, aliases, groups, and other options.
+
+### Start llama-swap [step]
+
+```bash
+llama-swap -config /etc/llama-swap/config.yaml -listen 127.0.0.1:8080 -watch-config
+```
+
+`-watch-config` makes llama-swap reload the file when it changes, which is how edits from the dashboard's [config editor](/docs/dashboard/config-editor) take effect. Run llama-swap under systemd or another supervisor so it restarts with the host.
+
+Confirm llama-swap responds and lists your models:
+
+```bash
+curl http://127.0.0.1:8080/v1/models
+```
+
+Then continue with [Manual setup](/docs/getting-started/manual-setup) and set `INFERENCE_BASE_URL` to this address and `INFERENCE_CONFIG_FILE` to the absolute path of this `config.yaml`.
+
+## Where the config fits
+
+The **Config** page in the dashboard edits this llama-swap `config.yaml`, not a separate llama-dash config. `INFERENCE_CONFIG_FILE` tells llama-dash where that file is. llama-dash's own settings live in `.env` and in the dashboard's database. See [Configuration](/docs/getting-started/configuration).

@@ -6,7 +6,14 @@ description: The two config surfaces and the values you need to set first.
 llama-dash has two configuration surfaces:
 
 - **`.env`** — llama-dash's own settings (backend URL, database, auth secrets, timeouts). Loaded at startup.
-- **`config.yaml`** — the llama-swap config (your models and peers). llama-dash reads and, with the config editor enabled, writes this file. See the [config file reference](/docs/reference/configuration-file), or start from its [example upstream config](https://github.com/mostlygeek/llama-swap/blob/main/config.example.yaml).
+- **`config.yaml`** — llama-swap's config file (your models and peers). llama-dash reads and, with the config editor enabled, writes this file. See the [config file reference](/docs/reference/configuration-file), or start from its [example upstream config](https://github.com/mostlygeek/llama-swap/blob/main/config.example.yaml).
+
+<Callout type="info">
+  llama-dash has no config file of its own. The dashboard's **Config** page edits
+  llama-swap's `config.yaml`, and `INFERENCE_CONFIG_FILE` tells llama-dash where
+  that file is. Point it at the same file llama-swap loads with `-config`.
+  Settings you change on the **Settings** page are stored in the database.
+</Callout>
 
 ## Values to set first
 
@@ -15,7 +22,7 @@ Copy `.env.example` to `.env` and set these values for a local Docker Compose in
 | Variable | Why |
 |---|---|
 | `INFERENCE_BASE_URL` | Where your llama-swap instance is reachable (no trailing slash). The bundled Compose files override this with their internal service address; do not change it for that setup. |
-| `INFERENCE_CONFIG_FILE` | Absolute path to `config.yaml` — required for the in-dashboard config editor. The bundled Compose files override this with `/config/config.yaml`; do not change it for that setup. |
+| `INFERENCE_CONFIG_FILE` | Absolute path to llama-swap's `config.yaml` — required for the in-dashboard config editor. The bundled Compose files override this with `/config/config.yaml`; do not change it for that setup. |
 | `BETTER_AUTH_SECRET` | Signs dashboard sessions. Generate with `openssl rand -base64 33`. |
 | `BETTER_AUTH_URL` | Leave blank locally. Set this to the browser-visible HTTPS origin when using a reverse proxy or remote passkeys. |
 | `CREDENTIAL_ENCRYPTION_KEY` | Optional until you store upstream provider credentials. When needed, set a 32+ character secret. |

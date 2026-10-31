@@ -1,0 +1,90 @@
+---
+title: Updating
+description: Keep llama-dash, llama-swap, and llama.cpp up to date.
+---
+
+New llama-dash builds are published from the `main` branch. The [System page](/docs/operations/updates) shows when your running commit is behind `main`. Database migrations run automatically when llama-dash starts, so updating means fetching the new version and restarting.
+
+Your data is kept across updates:
+
+- **`.env`** and **`config/config.yaml`** are ignored by Git, so `git pull` does not overwrite them.
+- **The database** lives in the `llama-dash-data` Docker volume, or at `DATABASE_PATH` (default `data/dash.db`) in a manual setup.
+
+<Callout type="info">
+  Migrations are not reversed when you roll back. Before a large update, stop
+  llama-dash and back up its data directory so you can restore it.
+</Callout>
+
+## Docker Compose
+
+Run these commands from your `llama-dash` checkout. Use the Compose file you started with.
+
+<Tabs items={["AMD / Vulkan", "NVIDIA / CUDA"]}>
+
+<Tab value="AMD / Vulkan">
+
+```bash
+git pull
+docker compose -f docker-compose.amd.yaml pull
+docker compose -f docker-compose.amd.yaml up -d
+```
+
+</Tab>
+
+<Tab value="NVIDIA / CUDA">
+
+```bash
+git pull
+docker compose -f docker-compose.nvidia.yaml pull
+docker compose -f docker-compose.nvidia.yaml up -d
+```
+
+</Tab>
+
+</Tabs>
+
+- `git pull` updates the Compose files and example config. It can fail if you edited a tracked file such as the Compose file; move local changes into `.env` where possible, or commit them on a local branch.
+- `pull` fetches the latest llama-dash image and the latest llama-swap image. llama-swap rebuilds its `unified-*` images nightly from the latest upstream sources, so this also updates `llama-server`.
+- `up -d` recreates only the containers whose image or configuration changed.
+
+Remove old images afterwards with `docker image prune`.
+
+### Pinning versions
+
+To stay on a known llama-dash build, set `LLAMA_DASH_IMAGE_TAG` in `.env` to a [published image tag](https://github.com/ndom91/llama-dash/pkgs/container/llama-dash), such as a `sha-` commit tag. Compose reads this value when it resolves the image. `pull` and `up -d` then keep that build until you change the tag.
+
+The llama-swap image tag is set in the Compose file. To pin llama-swap and llama.cpp, replace the floating tag with a fixed one from [llama-swap's image list](https://github.com/mostlygeek/llama-swap/pkgs/container/llama-swap): a release tag such as `unified-cuda13-268`, or a nightly build such as `unified-vulkan-2026-10-31`.
+
+### Backing up the database
+
+The database uses SQLite WAL mode, so copy the whole `/data` directory while llama-dash is stopped:
+
+```bash
+docker compose -f docker-compose.amd.yaml stop llama-dash
+docker compose -f docker-compose.amd.yaml cp llama-dash:/data ./llama-dash-backup
+docker compose -f docker-compose.amd.yaml start llama-dash
+```
+
+## Manual setup
+
+From your checkout, for example `/opt/llama-dash`:
+
+```bash
+git pull
+pnpm install --frozen-lockfile
+pnpm build
+sudo systemctl restart llama-dash
+```
+
+Run these as the account that owns the checkout. Check that the service started with `sudo systemctl status llama-dash`. To stay on a specific build, check out that commit instead of pulling `main`.
+
+To back up the database, stop the service and copy the directory that holds `data/dash.db` (or your `DATABASE_PATH`), including any `-wal` and `-shm` files, before you restart it.
+
+### llama-swap and llama.cpp
+
+In a manual setup, llama-swap and llama.cpp update separately from llama-dash:
+
+- **llama-swap**: run `brew upgrade llama-swap`, or replace the binary with a newer [release](https://github.com/mostlygeek/llama-swap/releases), then restart llama-swap.
+- **llama.cpp**: update `llama-server` the same way you installed it, through your package manager, a newer [release binary](https://github.com/ggml-org/llama.cpp/releases), or a rebuild from source. llama-swap uses the new binary the next time it starts a model; unload running models from the **Models** page to pick it up immediately.
+
+llama-dash talks to llama-swap over its HTTP API, so you can update each component independently.
