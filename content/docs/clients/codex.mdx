@@ -1,0 +1,48 @@
+---
+title: Codex & ChatGPT passthrough
+description: Inspect Codex CLI traffic while using a ChatGPT subscription through llama-dash.
+---
+
+Route the Codex CLI through llama-dash to log and inspect ChatGPT subscription requests. Codex keeps ownership of the subscription OAuth bearer; llama-dash preserves it while forwarding requests to the ChatGPT Codex backend.
+
+## Client config
+
+Sign in to Codex with your ChatGPT subscription first (`codex login`). Then add a custom model provider in `~/.codex/config.toml`:
+
+```toml
+model_provider = "llama-dash"
+
+[model_providers.llama-dash]
+name = "llama-dash"
+base_url = "https://<llama-dash-host>/v1"
+wire_api = "responses"
+requires_openai_auth = true
+# Only necessary for request attribution to a specific llama-dash API key
+http_headers = { "x-llama-dash-api-key" = "sk-..." }
+```
+
+- `wire_api = "responses"` makes Codex call the OpenAI Responses API at `/v1/responses`.
+- `requires_openai_auth = true` makes Codex attach its own ChatGPT credentials to requests sent to the custom provider.
+- `http_headers` is optional. Set `x-llama-dash-api-key` to attribute requests to a specific llama-dash [API key](/docs/access-policy/api-keys).
+
+Do not set an OpenAI API key for this flow. Codex supplies its subscription credentials, and llama-dash forwards them unchanged.
+
+## Routing rule
+
+In **Policies**, add a first-match routing rule for the OpenAI Responses API:
+
+- Match endpoint `/v1/responses`.
+- Match the exact model IDs you use in Codex.
+- Set action to `continue`.
+- Set auth mode to `passthrough` and preserve the client `Authorization` header.
+- Set direct target to `https://chatgpt.com/backend-api/codex`.
+
+Do not leave **Requested model** empty. Other OpenAI-compatible clients can use `/v1/responses`; exact model matching limits this rule to the selected Codex models.
+
+<Callout type="info">
+  If you already have the [OpenCode & ChatGPT passthrough](/docs/clients/opencode)
+  rule, Codex can share it. Add any extra Codex model IDs to that rule's model
+  match.
+</Callout>
+
+The resulting requests remain visible in **Requests**, including routing metadata and the redacted authorization header.

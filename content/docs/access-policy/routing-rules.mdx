@@ -11,7 +11,7 @@ Routing rules are an ordered list in the proxy [transform pipeline](/docs/concep
 - set a per-rule **auth mode**: `require_key` or `passthrough`
 - target a configured direct HTTPS upstream, bypassing llama-swap for that request while keeping proxy logging
 
-Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth or API-key validation. This is how [Claude Code passthrough](/docs/clients/claude-code) and [OpenCode & ChatGPT passthrough](/docs/clients/opencode) work.
+Direct targets can reference [encrypted upstream credentials](/docs/access-policy/upstream-credentials). Passthrough rules can preserve the client `Authorization` header for upstream OAuth or API-key validation. This is how [Claude Code passthrough](/docs/clients/claude-code), [OpenCode & ChatGPT passthrough](/docs/clients/opencode), and [Codex & ChatGPT passthrough](/docs/clients/codex) work.
 
 ![Policies](/screenshots/policies_2.png?url)
 
@@ -23,7 +23,7 @@ You do not need routing rules to send local requests through llama-swap. Add a r
 |---|---|
 | Send local requests to llama-swap | No rule. The default applies. |
 | Translate a public model name | `rewrite_model`, or an [alias](/docs/access-policy/model-aliases) when the mapping should apply everywhere. |
-| Forward Claude Code or OpenCode OAuth | `continue` with `passthrough` auth and preserved `Authorization`. |
+| Forward Claude Code, OpenCode, or Codex OAuth | `continue` with `passthrough` auth and preserved `Authorization`. |
 | Use a stored provider secret | A direct target or relay with a credential binding. The caller still needs a valid llama-dash API key. |
 
 ## Evaluation order
