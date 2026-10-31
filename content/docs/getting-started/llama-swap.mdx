@@ -17,6 +17,22 @@ llama-dash proxies client requests to llama-swap and reads and edits llama-swap'
 | Write a llama-swap `config.yaml` | Yes | Yes |
 | Download GGUF model files | Yes | Yes |
 
+## Supported llama-swap versions
+
+The current llama-dash release is tested against **llama-swap v266**. Use v266 or newer. Earlier llama-dash releases were also run against v202 and v229.
+
+Some llama-dash features rely on newer llama-swap APIs. On an older llama-swap, the rest of the dashboard and the proxy keep working, but these features are missing:
+
+| Feature | Minimum llama-swap |
+|---|---|
+| **Logs** page, which reads llama-swap's split proxy and upstream log streams | v259 |
+| Inference-host hardware on the **System** page | v247 |
+| Model capability badges on the **Models** page | v229 |
+
+Run `llama-swap -version` to check your version. The upstream panel on the **Dashboard** also shows the version of the connected llama-swap.
+
+The Docker Compose files use llama-swap's floating `unified-*` image tags, which always pull the newest build. To stay on a tested version, pin a release tag such as `unified-cuda13-266`. See [Updating](/docs/getting-started/updating#pinning-versions).
+
 ## Docker Compose
 
 The [Docker Compose setup](/docs/getting-started/quick-start) runs llama-swap's recommended [unified image](https://github.com/mostlygeek/llama-swap#unified-container-recommended). It contains llama-swap and `llama-server`, along with whisper.cpp, stable-diffusion.cpp, and audio.cpp, so you don't need to install or build llama.cpp or llama-swap.
