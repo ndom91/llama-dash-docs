@@ -1,5 +1,12 @@
 {
   "title": "Getting started",
   "icon": "Rocket",
-  "pages": ["quick-start", "manual-setup", "configuration", "connect-a-client"]
+  "pages": [
+    "llama-swap",
+    "quick-start",
+    "manual-setup",
+    "configuration",
+    "connect-a-client",
+    "updating"
+  ]
 }

@@ -8,8 +8,10 @@ The fastest way to run llama-dash is with Docker Compose. Both setups pull the p
 ## Before you start
 
 - Install Docker Engine with the Docker Compose plugin.
-- For NVIDIA, install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). For AMD, use a Linux host with the ROCm devices available at `/dev/kfd` and `/dev/dri`.
+- For NVIDIA, install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). For AMD, use a Linux host with a working Vulkan driver and the GPU available at `/dev/dri`.
 - Download a GGUF model file. Its path must match the `cmd` you place in `config.yaml`.
+
+You don't need to install llama.cpp or llama-swap: the Compose file runs llama-swap's recommended unified image, which includes `llama-server`. See [llama.cpp & llama-swap](/docs/getting-started/llama-swap) for what that image provides.
 
 The bundled Compose files target NVIDIA or AMD GPUs. If you already run llama-swap elsewhere or need a non-GPU setup, use [Manual setup](/docs/getting-started/manual-setup) instead.
 
@@ -32,6 +34,8 @@ Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. The compose
 
 ### Create the llama-swap config [step]
 
+`config/config.yaml` is llama-swap's config file, not a llama-dash config. It lists the models llama-swap can start. The dashboard's **Config** page edits this same file.
+
 ```bash
 cp config/config.example.yaml config/config.yaml
 ```
@@ -44,22 +48,22 @@ models:
     cmd: llama-server --port ${PORT} --model /models/my-model.gguf
 ```
 
-`my-model` is the model ID clients use. See the [config file reference](/docs/reference/configuration-file) for the full llama-swap contract.
+`my-model` is the model ID clients use. See llama-swap's [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md) for more options, and the [config file reference](/docs/reference/configuration-file) for how llama-dash reads and writes the file.
 
 ### Start the stack [step]
 
 Pick the compose file that matches your GPU vendor.
 
-<Tabs items={["AMD / ROCm", "NVIDIA / CUDA"]}>
+<Tabs items={["AMD / Vulkan", "NVIDIA / CUDA"]}>
 
-<Tab value="AMD / ROCm">
+<Tab value="AMD / Vulkan">
 
 ```bash
 docker compose -f docker-compose.amd.yaml pull
 docker compose -f docker-compose.amd.yaml up -d
 ```
 
-Runs `ghcr.io/mostlygeek/llama-swap:rocm`, passes through `/dev/kfd` and `/dev/dri`, and also mounts `/dev/dri` into llama-dash so AMD GPU stats work in the dashboard.
+Runs `ghcr.io/mostlygeek/llama-swap:unified-vulkan`, passes through `/dev/dri`, and also mounts `/dev/dri` into llama-dash so AMD GPU stats work in the dashboard.
 
 </Tab>
 
@@ -70,7 +74,9 @@ docker compose -f docker-compose.nvidia.yaml pull
 docker compose -f docker-compose.nvidia.yaml up -d
 ```
 
-Runs `ghcr.io/mostlygeek/llama-swap:cuda` and requests `gpus: all` for the llama-swap service. This requires the NVIDIA Container Toolkit on the host.
+Runs `ghcr.io/mostlygeek/llama-swap:unified-cuda13` and requests `gpus: all` for the llama-swap service. This requires the NVIDIA Container Toolkit on the host.
+
+`unified-cuda13` supports Turing (RTX 20xx, GTX 16xx) and newer GPUs. For Pascal cards such as the GTX 10xx or P40, change the llama-swap image in the Compose file to `ghcr.io/mostlygeek/llama-swap:unified-cuda`.
 
 </Tab>
 
@@ -98,6 +104,8 @@ Visit [http://localhost:3000](http://localhost:3000). On first launch, create th
   llama-swap is not exposed on the host in the bundled compose setup — llama-dash
   is the single public entrypoint on port `3000`.
 </Callout>
+
+To pull newer images later, see [Updating](/docs/getting-started/updating).
 
 ## Next steps
 

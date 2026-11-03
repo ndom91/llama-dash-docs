@@ -10,7 +10,7 @@ Run llama-dash directly on a host with Node when you already have a reachable ll
 - Linux with systemd for the service example below.
 - Node 24+ and [pnpm](https://pnpm.io), available to the service account.
 - Git and native build tools for dependencies such as `better-sqlite3` (Python, a C++ compiler, and `make`).
-- A reachable [llama-swap](https://github.com/mostlygeek/llama-swap) instance.
+- A reachable [llama-swap](https://github.com/mostlygeek/llama-swap) instance running llama.cpp's `llama-server`, and the path to its `config.yaml`. If you haven't set these up yet, follow [llama.cpp & llama-swap](/docs/getting-started/llama-swap) first.
 
 ### Get the source and install dependencies [step]
 
@@ -35,7 +35,7 @@ Edit `.env` before starting:
 - Set `INFERENCE_BASE_URL` to your llama-swap address, for example `http://127.0.0.1:8080`. The example file's `http://llama-swap:8080` address is for Docker Compose.
 - Set `BETTER_AUTH_SECRET` to the output of `openssl rand -base64 33`. Keep `.env` readable only by the service account and administrators.
 - Set `BETTER_AUTH_URL` to the browser-visible HTTPS origin when deploying behind a reverse proxy or using passkeys remotely. It can be left empty for a local install.
-- To use the config editor, set `INFERENCE_CONFIG_FILE` to the absolute path of your llama-swap `config.yaml`. Otherwise, clear the example's Docker-specific `/config/config.yaml` value.
+- To use the dashboard's **Config** page, set `INFERENCE_CONFIG_FILE` to the absolute path of the `config.yaml` your llama-swap instance loads. This is llama-swap's config file, not a separate llama-dash config. Otherwise, clear the example's Docker-specific `/config/config.yaml` value.
 - Set `CREDENTIAL_ENCRYPTION_KEY` to a secret of at least 32 characters before storing upstream credentials.
 
 The service account needs write access to the database directory and, if using the config editor, the llama-swap config directory. The default database path is `data/dash.db`, relative to the working directory. Migrations run automatically at startup. See [Configuration](/docs/getting-started/configuration) for the full list of variables.
@@ -85,4 +85,4 @@ sudo systemctl status llama-dash
 sudo journalctl -u llama-dash -f
 ```
 
-Open `http://localhost:3000` locally or your configured HTTPS origin, create the first dashboard user, and [connect a client](/docs/getting-started/connect-a-client). After updating the checkout, run `pnpm install --frozen-lockfile` and `pnpm build` again, then restart with `sudo systemctl restart llama-dash`.
+Open `http://localhost:3000` locally or your configured HTTPS origin, create the first dashboard user, and [connect a client](/docs/getting-started/connect-a-client). To update later, see [Updating](/docs/getting-started/updating).

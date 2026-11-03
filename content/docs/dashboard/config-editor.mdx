@@ -3,13 +3,13 @@ title: Config editor
 description: Edit the llama-swap config.yaml with validation.
 ---
 
-The config editor reads and writes your llama-swap `config.yaml` from the dashboard. It validates content against llama-swap's schema before saving, offers an explicit validate action, and preserves your current text unless you choose to format it. If you are creating a config from scratch, start with llama-swap's [example upstream config](https://github.com/mostlygeek/llama-swap/blob/main/config.example.yaml). llama-swap then hot-reloads the file automatically.
+The config editor, the **Config** page in the dashboard, reads and writes your llama-swap `config.yaml`. This is llama-swap's model config, not a llama-dash settings file; llama-dash's own settings live in `.env` and on the [Settings](/docs/dashboard/settings) page. It validates content against llama-swap's schema before saving, offers an explicit validate action, and preserves your current text unless you choose to format it. If you are creating a config from scratch, start with llama-swap's [example upstream config](https://github.com/mostlygeek/llama-swap/blob/main/config.example.yaml). llama-swap then hot-reloads the file automatically.
 
 Requires [`INFERENCE_CONFIG_FILE`](/docs/reference/environment-variables) to be set. See the [config file contract](/docs/reference/configuration-file).
 
 ## Availability
 
-The editor is enabled when the active inference backend supports config editing and `INFERENCE_CONFIG_FILE` points at the backend config file. In Docker Compose this is usually the bind-mounted `/config/config.yaml`.
+The editor is enabled when the active inference backend supports config editing and `INFERENCE_CONFIG_FILE` points at the same `config.yaml` that llama-swap loads. In Docker Compose this is usually the bind-mounted `/config/config.yaml`.
 
 If the backend does not support editable config, or the variable is not set, the page shows an unavailable state instead of an editor.
 
@@ -26,6 +26,7 @@ If the backend does not support editable config, or the variable is not set, the
 llama-dash records the file mtime when it loads `config.yaml`. If the file changes on disk before you save, the write is rejected and the page asks you to reload. This avoids overwriting edits made by another terminal, editor, or process.
 
 <Callout type="warn">
-  The current implementation does not create a backup file before saving. Keep
-  `config.yaml` in version control or make your own backup before large edits.
+  Before each save, llama-dash copies the previous file to `config.yaml.bak`.
+  Only one backup is kept, so keep `config.yaml` in version control for longer
+  history.
 </Callout>
