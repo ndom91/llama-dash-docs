@@ -83,6 +83,13 @@ export function LandingPage() {
               02 / ARCHITECTURE
             </Link>
             <DocsLink className="ld-nav-link">03 / DOCS</DocsLink>
+            <Link
+              to="/docs/$"
+              params={{ _splat: "reference/screenshots" }}
+              className="ld-nav-link"
+            >
+              04 / SCREENSHOTS
+            </Link>
             <a
               className="ld-nav-link ld-nav-link--accent"
               href={githubUrl}

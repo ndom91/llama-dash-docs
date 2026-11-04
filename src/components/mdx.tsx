@@ -5,7 +5,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import type { ComponentProps } from "react";
 
-function DocsImage({ alt, className, ...props }: ComponentProps<"img">) {
+export function DocsImage({ alt, className, ...props }: ComponentProps<"img">) {
   const imageAlt = alt ?? "";
 
   return (
