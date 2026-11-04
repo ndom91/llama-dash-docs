@@ -3,9 +3,9 @@ title: Overview
 description: The dashboard home — live traffic, models, and health at a glance.
 ---
 
-The dashboard home shows live operational state: request and token rates, a model-residency timeline, currently running models, upstream and GPU health, update status, and recent requests. It refreshes in real time over server-sent events.
+The dashboard home shows live operational state: request and token rates, model activity and residency, upstream and GPU health, update status, and recent requests. It refreshes in real time over server-sent events.
 
-![llama-dash dashboard](/screenshots/dashboard.png?url)
+![llama-dash dashboard](/screenshots/dashboard_001.png?url)
 
 ## What to watch
 
@@ -13,8 +13,7 @@ The dashboard home shows live operational state: request and token rates, a mode
 - **Output usage** - output tokens for the last 24 hours, 7 days, and 30 days, with comparisons to earlier periods. Select a card to open [Usage](/docs/dashboard/usage).
 - **Latency and errors** - p50 latency and error rate, each with a small sparkline.
 - **Telemetry rail** - inference backend health, GPU snapshot, and update status.
-- **Residency timeline** - recent model load/unload activity and peer residency.
-- **Running models** - local models currently resident plus configured peers.
+- **Models** - loaded local models and configured peers, their state, request activity, and resident time when available. Select a 15-minute, 1-hour, 6-hour, or 24-hour window. Peer residency is not reported.
 - **Recent requests** - the latest proxied exchanges, linked to the request detail view.
 
 ## How it updates

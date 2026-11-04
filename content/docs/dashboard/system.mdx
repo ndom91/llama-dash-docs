@@ -18,7 +18,15 @@ The first row summarizes:
 - GPU memory usage and available capacity.
 - System RAM usage, cache, and swap.
 
-Below the summary, charts show utilization, temperature, and power over the selected time range. The component list and thresholds highlight health signals, while the events panel records recent changes.
+Below the summary, charts show utilization, temperature, and power over the selected time range. Hover over a chart to inspect a point. Choose a range from 5 minutes to 24 hours; samples are collected every 10 seconds, and longer ranges are downsampled.
+
+Telemetry history is held in memory and resets on restart. When available, llama-swap's recent performance history is used to backfill CPU and memory data at startup. GPU readings come from the host running llama-dash, which may differ from a remote inference host.
+
+## Memory and thresholds
+
+The memory panel shows GPU allocations and, on supported unified-memory systems, the shared CPU/GPU memory pool. Per-model allocations are estimates measured when a single model load can be isolated; unmeasured models are included in other GPU allocations.
+
+The component list highlights health signals. Use **edit** in the thresholds panel to change the defaults: GPU temperature 90 °C, GPU memory 90%, system RAM 85%, and five-minute average CPU utilization 80%. The log queue is unhealthy by default when any log rows have been dropped. The events panel shows recent threshold breaches and recoveries, model events, and other system events; in-memory system events are lost on restart.
 
 ## Runtime panels
 
@@ -26,10 +34,9 @@ The page then breaks down the process state:
 
 - **Control Bus** - active backend, upstream URL, upstream host, `/metrics`, direct-upstream count, and allowed direct targets.
 - **Inference Backend** - capability flags for models, running-model state, lifecycle actions, logs, and config editing.
-- **Loading Queue** - queued and dropped request-log writes. Dropped rows mean logging was shed to avoid blocking proxy traffic.
-- **GPU Telemetry** - detected driver, device count, primary device, memory, utilization, temperature, power, and cores when available.
-- **Runtime** - uptime, Node version, current git commit, and update check status.
-- **Database** - SQLite path and whether it is a special path such as `:memory:` or a `file:` URI.
+- **Inference Backend** also shows queued and dropped request-log writes. Dropped rows mean logging was shed to avoid blocking proxy traffic.
+- **Inference Host and CPU Cores** - available hardware details and per-core utilization.
+- **Runtime & Database** - uptime, Node version, current git commit, update and pricing catalog status, and SQLite database details.
 
 ## Maintenance
 
