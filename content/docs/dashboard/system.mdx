@@ -3,7 +3,9 @@ title: System
 description: Runtime, update status, database, proxy, and poller health.
 ---
 
-The System page reports runtime details: update status (current / available), database and proxy state, the log-write queue, and GPU poller / device status.
+The System page brings resource telemetry, process health, control-bus state, and database status together in one view.
+
+![System page showing resource telemetry, health indicators, and runtime details](/screenshots/system_001.png?url)
 
 See [Updates & health](/docs/operations/updates) and [Log retention](/docs/operations/retention).
 
@@ -11,10 +13,12 @@ See [Updates & health](/docs/operations/updates) and [Log retention](/docs/opera
 
 The first row summarizes:
 
-- Process uptime and Node version.
-- Request-log queue depth and dropped log count.
-- GPU vendor, device count, and last snapshot age.
-- Proxy upstream host and whether insecure TLS is enabled.
+- CPU utilization and load.
+- GPU utilization, temperature, and power.
+- GPU memory usage and available capacity.
+- System RAM usage, cache, and swap.
+
+Below the summary, charts show utilization, temperature, and power over the selected time range. The component list and thresholds highlight health signals, while the events panel records recent changes.
 
 ## Runtime panels
 
