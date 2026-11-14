@@ -1,11 +1,11 @@
 ---
 title: The proxy
-description: How the /v1/* pass-through streams, logs, and transforms requests.
+description: How the /v1/* pass-through and llama-swap's other routes stream, log, and transform requests.
 ---
 
 import TransformPipelineDiagram from "../assets/transform_pipeline.svg?react";
 
-The proxy is the client-facing `/v1/*` endpoint. It sends OpenAI and Anthropic requests to the selected backend or a configured direct upstream, and logs the completed exchange.
+The proxy is the client-facing `/v1/*` endpoint, plus llama-swap's routes outside `/v1`. It sends requests to the selected backend or a configured direct upstream, and logs the completed exchange.
 
 ## Streaming and token counting
 
@@ -19,7 +19,45 @@ The proxy supports these request families:
 
 - **OpenAI**: `/v1/chat/completions` and other `/v1/*` endpoints with flat `usage` fields.
 - **Anthropic**: `/v1/messages` and `/v1/messages/count_tokens`, with nested `message.usage` and a `message_stop` stream terminator.
-- **llama.cpp and llama-swap extensions**: native `/infill` and `/audiocpp/*` pass-throughs.
+- **Realtime**: the `/v1/realtime` WebSocket. See [Realtime voice](/docs/clients/realtime).
+- **llama.cpp and llama-swap extensions**: the routes listed below.
+
+## llama.cpp and llama-swap routes
+
+These routes go to llama-swap with the same auth, routing rules, and logging as `/v1/*`:
+
+- **llama.cpp native**: `/infill`, `/completion`, `/rerank`, `/reranking`, and `GET /props?model=`.
+- **Versionless aliases**: `/v/*`, such as `/v/chat/completions`.
+- **Automatic1111 image API**: `/sdapi/v1/txt2img`, `/sdapi/v1/img2img`, and `/sdapi/v1/loras`.
+- **UI passthroughs**: `/audiocpp/*` and `/comfyui/*`, including the `/comfyui/ws` WebSocket.
+
+`/v/*` requests are forwarded unchanged. For routing rules, logs, usage, and metrics, llama-dash treats them as the matching `/v1/*` endpoint.
+
+`GET /props` passes other query parameters through. With `autoload=false`, llama-swap answers `409` for a stopped model instead of loading it.
+
+GETs through the `/comfyui` and `/audiocpp` UI passthroughs are logged without bodies.
+
+<Callout type="warn">
+  Browsers can't send a bearer key. Once API keys exist, the `/comfyui` and
+  `/audiocpp` UIs only work through a [routing rule](/docs/access-policy/routing-rules)
+  with `passthrough` auth. A passthrough rule lets matching requests skip key
+  checks, so keep its matchers narrow.
+</Callout>
+
+## Speech
+
+llama.cpp TTS models use llama-server's standard `/v1/audio/speech` endpoint, like any other speech model.
+
+<Callout type="warn">
+  `/v1/audio/llama-tts` has been **removed**. Clients that still call it must
+  switch to `/v1/audio/speech`.
+</Callout>
+
+llama-server has stricter limits than other speech backends:
+
+- `response_format` must be `wav` or `pcm`. `mp3` is rejected.
+- Any `speed` other than `1.0` is rejected.
+- `/v1/audio/voices` returns `404` unless the model's llama-swap config sets `capabilities.voices`, such as `voices: [female, male]`.
 
 ## Cost estimates
 
@@ -27,7 +65,7 @@ llama-dash estimates cost from upstream usage counters and a [models.dev](https:
 
 ## Transform pipeline
 
-POST `/v1/*` requests pass through an ordered transform pipeline between auth and forwarding. The body is parsed once when needed and re-serialized only if mutated:
+POST `/v1/*` requests pass through an ordered transform pipeline between auth and forwarding. The body is parsed once when needed and re-serialized only if mutated. GET routes that name the model in `?model=` (`/props`, `/v1/audio/voices`, and `/sdapi/v1/loras`) get the same allow-list, rewrite, and alias checks:
 
 1. API key allow-list check
 2. [Routing rule](/docs/access-policy/routing-rules) evaluation

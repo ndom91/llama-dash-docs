@@ -32,8 +32,8 @@ Rules are stored with an explicit order. The first enabled rule whose matchers a
 
 Match fields:
 
-- Endpoint, such as `/v1/chat/completions` or `/v1/messages`.
-- Requested model from the request body.
+- Endpoint, such as `/v1/chat/completions` or `/v1/messages`. Versionless `/v/*` requests match as their `/v1/*` endpoint.
+- Requested model from the request body, or from `?model=` on GET routes such as `/props`.
 - API key ID.
 - Stream mode: any, stream, or non-stream.
 - Minimum estimated prompt tokens.
@@ -65,6 +65,8 @@ Direct upstream URLs must:
 - `require_key` means llama-dash authenticates with one of its API keys.
 - `passthrough` means the matched request can skip llama-dash API-key auth. If `preserveAuthorization` is enabled, the upstream can validate the client-supplied credential.
 
+The `/comfyui` and `/audiocpp` browser UIs can't send a bearer key. Once API keys exist, they need a `passthrough` rule to load.
+
 Direct passthrough rules must have at least one matcher. This prevents a broad direct passthrough catch-all rule from forwarding every request to an external upstream without a condition.
 
 When `preserveAuthorization` is enabled on a passthrough rule, llama-dash forwards the inbound `Authorization` header instead of stripping it before upstream forwarding.
@@ -77,3 +79,5 @@ Rules can attach stored upstream credentials in two ways:
 - Set a header directly from a stored credential.
 
 Credential-bearing rules still require a valid llama-dash API key first. See [Upstream credentials](/docs/access-policy/upstream-credentials).
+
+[Realtime](/docs/clients/realtime) WebSocket sessions can only target llama-swap. Direct targets and credential bindings are rejected with `422`.

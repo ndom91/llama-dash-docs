@@ -45,10 +45,10 @@ Place your GGUF file in `./models/`, then set a model ID and its matching contai
 ```yaml
 models:
   my-model:
-    cmd: llama-server --port ${PORT} --model /models/my-model.gguf
+    cmd: llama-server --host 127.0.0.1 --port ${PORT} --model /models/my-model.gguf
 ```
 
-`my-model` is the model ID clients use. See llama-swap's [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md) for more options, and the [config file reference](/docs/reference/configuration-file) for how llama-dash reads and writes the file.
+`my-model` is the model ID clients use. `--host 127.0.0.1` keeps the model port off the network; see [Recommended llama-swap settings](/docs/getting-started/llama-swap#recommended-llama-swap-settings). See llama-swap's [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md) for more options, and the [config file reference](/docs/reference/configuration-file) for how llama-dash reads and writes the file.
 
 ### Start the stack [step]
 

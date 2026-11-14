@@ -1,6 +1,6 @@
 ---
 title: Playground
-description: Test chat, speech, image, and transcription against your endpoints.
+description: Test chat, speech, image, transcription, and realtime voice against your endpoints.
 ---
 
 The Playground tests models directly from the dashboard:
@@ -8,6 +8,7 @@ The Playground tests models directly from the dashboard:
 - **Chat** with request / response / timing / events / curl inspector tabs. When upstream llama.cpp timing metadata is present, the timing sidebar shows TTFT, prefill, decode, and stream-close.
 - **Speech (TTS)** from plain text or a server-extracted article URL (paragraph-chunked), with waveform playback.
 - **Image** and **transcription** testing.
+- **Realtime** voice chat over the `/v1/realtime` WebSocket.
 
 <img src="/screenshots/playground-chat.png" alt="Chat playground" />
 
@@ -19,6 +20,7 @@ The chat tab sends through llama-dash using a system API key generated for the d
 
 - Model selection from local models and peers.
 - System prompt and sampling controls.
+- A reasoning-effort select that sends `reasoning_effort`. It shows when the selected model is running and its chat template reports effort levels.
 - Streaming generation with stop, regenerate, edit, and fork actions.
 - Per-response metrics such as TTFT, tokens per second, and output tokens.
 - Inspector tabs for request, response, timing, events, and a reproducible curl command.
@@ -31,12 +33,14 @@ Shortcuts:
 
 ## Speech
 
-The speech tab targets `/v1/audio/speech` compatible models. It supports plain text input and article mode:
+The speech tab sends every model to `/v1/audio/speech`, including llama.cpp TTS models. It supports plain text input and article mode:
 
 - Text mode speaks the textarea content.
 - Article mode fetches a URL server-side, extracts readable text, lets you edit it, then generates segmented speech.
 - Voice selection uses the model's reported voices when available, or accepts a manual voice name.
-- Output is MP3 at 24 kHz with preview playback, segmented playback, and download actions.
+- Output plays in the format the model returns, with preview playback, segmented playback, and download actions. llama.cpp models return WAV.
+
+llama.cpp models list voices only when their llama-swap config sets `capabilities.voices`. Otherwise type the voice name. See [Speech](/docs/concepts/proxy#speech) for the other llama.cpp limits.
 
 ## Image
 
@@ -45,3 +49,28 @@ The image tab targets `/v1/images/generations`. Select a model, choose `256x256`
 ## Transcribe
 
 The transcribe tab targets `/v1/audio/transcriptions` with `verbose_json` output. Drop or select an audio file, or record from the browser, then transcribe with the selected model. Supported upload types include MP3, OGG, WAV, FLAC, M4A, and WebM up to 20 MB.
+
+## Realtime
+
+The realtime tab runs a voice conversation with a model over [`/v1/realtime`](/docs/clients/realtime). Pick a model, select **connect**, then talk or type.
+
+<Callout type="warn">
+  Browsers allow microphone access only on **HTTPS or localhost**. Over plain
+  HTTP on a LAN address, the tab explains this and you can still send typed
+  messages. Use HTTPS, or reach llama-dash through localhost, such as with an
+  SSH tunnel.
+</Callout>
+
+Turn modes:
+
+- **Push to talk** records while you hold the talk button or `Space`.
+- **Hands-free** starts and ends turns with voice detection. Tune its **threshold** and **silence** settings in the rail.
+
+The settings rail also has:
+
+- Editable **instructions**. The default starts with "Respond with interleaved text and audio."
+- A **microphone** input selector.
+- A **voice processing** toggle for the browser's echo cancellation, noise suppression, and auto gain. Turn it off if your voice comes through silent.
+- A live input level meter.
+
+The transcript keeps the **last 50 turns**. You can replay any turn or download it as WAV. The inspector has **events**, **timing**, and **session** tabs.

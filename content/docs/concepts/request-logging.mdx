@@ -15,6 +15,13 @@ A row is written when an exchange finishes (or the client disconnects), never on
 - Routing and attribution context: the matched routing rule, action, and auth mode, plus client, end-user, and session metadata (see [Attribution](/docs/access-policy/attribution)).
 - Row classification: `inference` or `mcp_relay`. Successful MCP relay rows are metadata-only by default; relay failures keep bounded body/header snippets for debugging.
 
+## Special cases
+
+- **WebSocket sessions.** Each [Realtime](/docs/clients/realtime) or `/comfyui/ws` session is one row, written on close. A clean session has status `200` and stream mode **WebSocket**. The body columns hold per-event-type counts, never audio.
+- **Paused inference.** Requests rejected with `503` while [inference is paused](/docs/dashboard/models#pausing-inference) are logged with an `inference_paused` error.
+- **UI passthroughs.** GETs through `/comfyui` and `/audiocpp` are logged without bodies.
+- **Versionless routes.** `/v/*` requests are logged under the matching `/v1/*` endpoint.
+
 ## Privacy
 
 By default, llama-dash persists request and response body snippets for inference requests, truncated at `32 KiB`, and clears stored body/header text after 3 days. Successful MCP relay calls do not persist body snippets by default; relay errors keep bounded snippets for investigation.

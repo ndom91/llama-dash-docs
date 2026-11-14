@@ -34,3 +34,11 @@ llama-swap watches the file with `-watch-config` (fsnotify) and reloads automati
 - `GET /v1/models` — model list, including peers
 - `GET /health` — backend health
 - `GET /logs/stream*` — SSE log streams (proxy, upstream, per-model)
+- `POST /api/models/pause`, `POST /api/models/resume` — inference pause (v268+)
+- `GET /api/events` — dashboard event stream, followed for `pauseChanged` messages
+- `GET /api/performance` — inference-host performance for the System page
+- `GET /upstream/:model_id/props` — reasoning effort levels, only for running models
+- `/v1/realtime` — WebSocket voice sessions (v270+)
+- `/infill`, `/completion`, `/rerank`, `/reranking`, `/props`, `/v/*`, `/sdapi/v1/*`, `/audiocpp/*`, `/comfyui/*` — proxied routes outside `/v1`
+
+See [Recommended llama-swap settings](/docs/getting-started/llama-swap#recommended-llama-swap-settings) for the defaults to set in this file.

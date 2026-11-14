@@ -1,5 +1,12 @@
 {
   "title": "Clients",
   "icon": "Plug",
-  "pages": ["endpoints", "claude-code", "opencode", "codex", "mcp-relays"]
+  "pages": [
+    "endpoints",
+    "realtime",
+    "claude-code",
+    "opencode",
+    "codex",
+    "mcp-relays"
+  ]
 }

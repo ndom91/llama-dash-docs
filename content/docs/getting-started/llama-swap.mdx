@@ -19,19 +19,21 @@ llama-dash proxies client requests to llama-swap and reads and edits llama-swap'
 
 ## Supported llama-swap versions
 
-The current llama-dash release is tested against **llama-swap v266**. Use v266 or newer. Earlier llama-dash releases were also run against v202 and v229.
+The current llama-dash release is tested against **llama-swap v272** and **llama.cpp b12383**. Use these or newer. Earlier llama-dash releases were also run against llama-swap v202, v229, and v266.
 
 Some llama-dash features rely on newer llama-swap APIs. On an older llama-swap, the rest of the dashboard and the proxy keep working, but these features are missing:
 
 | Feature | Minimum llama-swap |
 |---|---|
+| [Realtime voice](/docs/clients/realtime) over `/v1/realtime` (also needs the latest llama.cpp) | v270 |
+| [Pause and resume](/docs/dashboard/models#pausing-inference) inference | v268 |
 | **Logs** page, which reads llama-swap's split proxy and upstream log streams | v259 |
 | Inference-host hardware on the **System** page | v247 |
 | Model capability badges on the **Models** page | v229 |
 
 Run `llama-swap -version` to check your version. The upstream panel on the **Dashboard** also shows the version of the connected llama-swap.
 
-The Docker Compose files use llama-swap's floating `unified-*` image tags, which always pull the newest build. To stay on a tested version, pin a release tag such as `unified-cuda13-266`. See [Updating](/docs/getting-started/updating#pinning-versions).
+The Docker Compose files use llama-swap's floating `unified-*` image tags, which always pull the newest build. To stay on a tested version, pin a release tag such as `unified-cuda13-272`. See [Updating](/docs/getting-started/updating#pinning-versions).
 
 ## Docker Compose
 
@@ -78,10 +80,10 @@ Create a `config.yaml` that declares your models. Model paths are host paths in 
 ```yaml
 models:
   my-model:
-    cmd: llama-server --port ${PORT} --model /srv/models/my-model.gguf
+    cmd: llama-server --host 127.0.0.1 --port ${PORT} --model /srv/models/my-model.gguf
 ```
 
-`my-model` is the model ID clients send. llama-swap replaces `${PORT}` with a free port when it starts the model. See llama-swap's [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md) for TTLs, aliases, groups, and other options.
+`my-model` is the model ID clients send. llama-swap replaces `${PORT}` with a free port when it starts the model. `--host 127.0.0.1` keeps the model port off the network; see [Recommended llama-swap settings](#recommended-llama-swap-settings). For TTLs, aliases, groups, and other options, see llama-swap's [configuration overview](https://github.com/mostlygeek/llama-swap/blob/main/docs/kb/guides/configuration/configuration-overview.md).
 
 ### Start llama-swap [step]
 
@@ -98,6 +100,27 @@ curl http://127.0.0.1:8080/v1/models
 ```
 
 Then continue with [Manual setup](/docs/getting-started/manual-setup) and set `INFERENCE_BASE_URL` to this address and `INFERENCE_CONFIG_FILE` to the absolute path of this `config.yaml`.
+
+## Recommended llama-swap settings
+
+The shipped `config/config.example.yaml` sets these defaults for running llama-swap behind llama-dash:
+
+```yaml
+captureBuffer: 0
+helpagent:
+  disable: true
+
+models:
+  my-model:
+    cmd: llama-server --host 127.0.0.1 --port ${PORT} --model /models/my-model.gguf
+```
+
+- **`--host 127.0.0.1` on every `llama-server`.** With `0.0.0.0`, every model port is reachable from the network without llama-swap or llama-dash auth.
+- **`captureBuffer: 0`.** llama-dash already captures request and response bodies. llama-swap's own buffer would keep a second copy of every prompt.
+- **`helpagent.disable: true`.** This removes llama-swap's Help page and its `/api/mcp` endpoint, which llama-dash doesn't use.
+- **Keep `performance` enabled.** The [System](/docs/dashboard/system) page reads llama-swap's `/api/performance`.
+
+llama-swap v272 has no option to turn off its web UI. The bundled Compose setup doesn't publish llama-swap's port to the host, so only llama-dash can reach it.
 
 ## Where the config fits
 

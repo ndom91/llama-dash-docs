@@ -1,6 +1,6 @@
 ---
 title: Models
-description: List, load, unload, and inspect models.
+description: List, load, unload, pause, and inspect models.
 ---
 
 The Models page lists every model from your backend, merged with live running state and peer info. You can load and unload models, and open a per-model detail view with stats, residency history, recent requests, a config snippet, and a per-key breakdown.
@@ -15,6 +15,7 @@ The table is built from the backend model list and live running-model state:
 - **Peer models** show as remote capacity and are not managed by the local load/unload buttons.
 - **Refresh** re-reads model state from the backend.
 - **Unload all** unloads every currently running local model.
+- **Pause** stops all inference. See [Pausing inference](#pausing-inference).
 
 If no models appear, check the llama-swap `config.yaml` that llama-dash points at with [`INFERENCE_CONFIG_FILE`](/docs/reference/environment-variables).
 
@@ -24,9 +25,28 @@ Open a model to inspect:
 
 - State, kind, context length, TTL, port, and aliases parsed from the model config snippet.
 - Load/unload action for local models.
+- Weights size, parameter count, and quantization, recorded while the model runs. The size covers the main GGUF only, not `--mmproj`.
+- Reasoning effort levels the model's chat template accepts. See [Reasoning effort](#reasoning-effort).
 - Recent residency events.
 - Recent requests for that model.
 - Request stats and per-key usage breakdowns.
 - The command/config snippet that declares the model.
 
 The detail sidecar also links to the [Playground](/docs/dashboard/playground) and the [config editor](/docs/dashboard/config-editor) for quick testing and edits.
+
+## Pausing inference
+
+**Pause** unloads every model and makes llama-swap reject inference until you select **Resume**. It needs llama-swap **v268** or newer.
+
+While inference is paused:
+
+- An **inference paused** indicator with a resume button shows in the top bar on every page.
+- Proxied requests fail with `503`. They are logged on the [Requests](/docs/dashboard/requests) page with an `inference_paused` error.
+
+llama-dash follows llama-swap's own pause state, so a pause made in llama-swap's UI shows here too.
+
+## Reasoning effort
+
+The detail page lists the reasoning effort levels the model's chat template accepts. llama-dash reads them from llama-server's `/props`.
+
+Levels show only for **running** models. Asking a stopped model for `/props` would load it. The [Playground](/docs/dashboard/playground#chat) chat tab uses the same levels for its reasoning-effort select.

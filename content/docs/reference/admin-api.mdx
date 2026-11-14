@@ -12,8 +12,10 @@ The admin API (`/api/*`) serves JSON to the dashboard. When dashboard auth is en
 ## Models
 
 - `GET /api/models` — list models (merged with running state + peer info)
-- `GET /api/models/:id` — model detail (stats, events, recent requests, config snippet, key breakdown)
+- `GET /api/models/:id` — model detail (stats, events, recent requests, config snippet, key breakdown, last recorded weights specs)
 - `POST /api/models/:id/load`, `/api/models/:id/unload`, `/api/models/unload`
+- `POST /api/models/pause`, `POST /api/models/resume` — pause or resume all inference (llama-swap v268+)
+- `GET /api/models/:id/reasoning-effort` — reasoning effort levels from llama-server `/props`; `null` unless the model is running, so it never triggers a load
 - `GET /api/model-timeline` — load/unload events for the timeline
 - `GET /api/model-activity` — bucketed request counts by model
 
@@ -35,7 +37,7 @@ See [Usage](/docs/dashboard/usage) for the reporting and retention behavior.
 
 ## System & events
 
-- `GET /api/health` — upstream reachability, version, latency
+- `GET /api/health` — upstream reachability, version, latency, and `paused`
 - `GET /api/system` — runtime, update and pricing status, DB, proxy, log queue, poller status, GPU details, and measured model footprints
 - `GET /api/system/telemetry?range=5m|15m|1h|6h|24h` — telemetry series, latest sample, model events, and recent system events
 - `GET/PATCH /api/settings/system-thresholds` — read or update System page thresholds

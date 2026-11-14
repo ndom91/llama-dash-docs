@@ -64,6 +64,8 @@ console.log(resp.choices[0].message.content);
 
 ## Other clients
 
+- **Realtime voice** — connect a WebSocket to `/v1/realtime`. See [Realtime voice](/docs/clients/realtime).
+- **llama.cpp native, Automatic1111, and ComfyUI routes** — use the llama-dash host in place of llama-swap's. See [llama.cpp and llama-swap routes](/docs/concepts/proxy#llamacpp-and-llama-swap-routes).
 - **Open WebUI** — set the OpenAI-compatible base URL to `http://<host>:3000/v1` and paste a llama-dash key.
 - **Home Assistant** — use the OpenAI conversation integration pointed at the same base URL.
 - **Claude Code & Anthropic SDKs** — see [Claude Code passthrough](/docs/clients/claude-code).

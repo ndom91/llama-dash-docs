@@ -1,0 +1,104 @@
+---
+title: Realtime voice
+description: Proxy OpenAI Realtime-style WebSocket sessions to llama-server.
+---
+
+llama-dash proxies OpenAI Realtime-style WebSockets at `/v1/realtime`. Sessions go through llama-swap to `llama-server`, which handles speech-to-speech and live transcription with audio models such as LFM3-Audio-2B.
+
+You need the **latest llama.cpp** and **llama-swap v270** or newer. See [Supported llama-swap versions](/docs/getting-started/llama-swap#supported-llama-swap-versions).
+
+To try it without writing a client, use the [Playground's Realtime tab](/docs/dashboard/playground#realtime).
+
+## Connect
+
+Use the same host and port as the HTTP proxy, with `ws://` or `wss://`:
+
+```text
+ws://<llama-dash-host>:3000/v1/realtime?model=<model-id>
+```
+
+<Tabs items={["Browser", "websocat"]}>
+
+<Tab value="Browser">
+
+```ts
+const ws = new WebSocket(
+  "ws://localhost:3000/v1/realtime?model=lfm3-audio-2b",
+  ["realtime", "openai-insecure-api-key.sk-..."],
+);
+```
+
+</Tab>
+
+<Tab value="websocat">
+
+```bash
+websocat -H "Authorization: Bearer sk-..." \
+  "ws://localhost:3000/v1/realtime?model=lfm3-audio-2b"
+```
+
+</Tab>
+
+</Tabs>
+
+## Authentication
+
+llama-dash reads the API key from the first of these that is present:
+
+- The `x-llama-dash-api-key` header.
+- The `Authorization: Bearer` header.
+- The `openai-insecure-api-key.<key>` subprotocol. This is the OpenAI SDK convention for browsers, which can't set headers on a WebSocket.
+- The `?api_key=` query parameter.
+
+llama-dash strips the key before it connects upstream and never logs it.
+
+## Model selection
+
+llama-dash takes the model from `?model=`. Without it, the model comes from the first `session.update` event: `session.model`, then the transcription model keys.
+
+Until a model is known, llama-dash buffers the frames the client sends. It then connects upstream and replays them. The buffer is capped at **8 MiB** and the wait at **30 seconds**.
+
+<Callout type="info">
+  With `?model=`, a rejected model fails as an HTTP error before the WebSocket
+  opens. Without it, the failure arrives as an OpenAI-style `error` event
+  followed by a close frame.
+</Callout>
+
+## Access policy
+
+Realtime sessions get the same checks as HTTP requests:
+
+- The API key's [model allow-list](/docs/access-policy/api-keys).
+- [Routing rules](/docs/access-policy/routing-rules), including `rewrite_model` and `reject`.
+- [Model aliases](/docs/access-policy/model-aliases).
+
+Only llama-swap targets are allowed. A routing rule that sends a Realtime session to a direct upstream, or binds an upstream credential, is rejected with `422`.
+
+## Logging
+
+Each session is one row on the [Requests](/docs/dashboard/requests) page, written when the session closes:
+
+- A clean session is logged with status **200**, and its stream mode shows as **WebSocket**.
+- Token counts are summed from every `response.done` event and from transcription usage.
+- The request and response body columns hold a count of events per event type. Audio is never stored.
+
+## Example llama-swap model
+
+An LFM3 audio model needs its `--mmproj` file and a repeat penalty.
+
+```yaml
+models:
+  lfm3-audio-2b:
+    cmd: |
+      llama-server
+        --model /models/lfm3-audio-2b.gguf
+        --mmproj /models/lfm3-audio-2b-mmproj.gguf
+        --repeat-penalty 1.1
+        --repeat-last-n 2048
+        --host 127.0.0.1
+        --port ${PORT}
+    capabilities:
+      voices: [female, male]
+```
+
+`capabilities.voices` is optional for Realtime. It makes `/v1/audio/voices` list the voices for [speech](/docs/concepts/proxy#speech) requests.
