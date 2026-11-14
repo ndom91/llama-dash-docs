@@ -1,0 +1,57 @@
+---
+title: Sessions
+description: Read every request in a chat or coding-agent session as one transcript.
+---
+
+The session history page shows all requests that share a session ID as one read-only transcript. It is built from the request and response bodies llama-dash already logs, so it works for any client that sends a session ID.
+
+<img src="/screenshots/session_history.png" alt="Session history transcript with the session rail" />
+
+## Open a session
+
+In a [request's detail view](/docs/dashboard/requests#detail-view), select the session ID or **view session history**. The page URL is `/sessions/<request-id>`, and it shows the whole session that request belongs to.
+
+The link only appears when the request has a session ID. llama-dash takes it from the first of these headers that is present:
+
+- The session header set on the [Attribution](/docs/access-policy/attribution) page.
+- `x-claude-code-session-id`, which Claude Code sends.
+- `session-id`.
+
+## Transcript
+
+The transcript reads the OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages formats. It shows:
+
+- User and assistant messages. Long messages are collapsed until you expand them.
+- Tool calls, each paired with its result.
+- Thinking and reasoning summaries.
+- Context pills for injected context, such as system prompts and `<system-reminder>` blocks.
+- Side requests, such as title generation, quota probes, helper calls, and token counts. These are marked so they don't break up the main conversation.
+
+Requests load in pages of 20. Select **Load more requests** at the end of the transcript to load the next page.
+
+## Session rail
+
+The rail beside the transcript has three sections:
+
+- **Session**: client, models used, request count, input and output tokens, cache-read share, tool calls and errors, estimated cost, and API key.
+- **Requests**: every request in order, with a latency bar. Errors are red and side requests use the accent color. Select a request to jump to it.
+- **Show**: toggles for messages, tool calls, expanded tool results, thinking, side requests, and context pills.
+
+On narrow screens, the rail moves into a collapsible **Session details & filters** panel above the transcript.
+
+## Actions
+
+- **raw JSONL** downloads every request in the session, one JSON object per line.
+- **export .md** downloads the transcript as Markdown, with each request's new messages under its own heading.
+- **open in requests** opens the [Requests](/docs/dashboard/requests) page filtered to this session.
+- **← request detail** returns to the request you came from.
+
+## Limits
+
+The transcript can only show what llama-dash still has stored:
+
+- Body text is cleared after **3 days** by default. Older requests still appear, but without their messages.
+- A max stored body bytes limit truncates bodies, which can cut messages short.
+- Request rows are pruned after 30 days by default.
+
+The **input captured** count in the rail shows how many main requests still have their input. It turns amber when some are missing. See [Log retention](/docs/operations/retention) to keep bodies longer.

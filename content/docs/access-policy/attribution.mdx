@@ -3,7 +3,7 @@ title: Attribution
 description: Capture client, end-user, and session identity from headers.
 ---
 
-Attribution maps inbound request headers to client, end-user, and session identifiers, which are persisted with each request log. Request detail surfaces this metadata, the request list can filter by it, and session IDs deep-link back into the filtered log.
+Attribution maps inbound request headers to client, end-user, and session identifiers, which are persisted with each request log. Request detail surfaces this metadata, the request list can filter by it, and session IDs open the [session history](/docs/dashboard/sessions).
 
 Configure the header mapping on the Attribution page (or via `/api/settings/attribution`).
 
@@ -15,7 +15,9 @@ llama-dash stores three attribution fields per request:
 - `endUserId` - the user inside that application.
 - `sessionId` - a conversation, workflow, trace, or other session identifier.
 
-The Requests page can filter by all three. Request detail links a session ID back to the filtered request list.
+The Requests page can filter by all three. Request detail links a session ID to its [session history](/docs/dashboard/sessions).
+
+When the configured session header is missing, llama-dash falls back to `x-claude-code-session-id`, then `session-id`. Claude Code sessions are grouped without extra setup.
 
 ## Header mapping
 

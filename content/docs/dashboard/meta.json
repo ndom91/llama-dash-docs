@@ -5,6 +5,7 @@
     "index",
     "models",
     "requests",
+    "sessions",
     "usage",
     "logs",
     "playground",

@@ -26,6 +26,7 @@ The admin API (`/api/*`) serves JSON to the dashboard. When dashboard auth is en
 - `GET /api/requests/histogram` — bucketed req/s histogram
 - `GET /api/requests/:id/metadata` — request details and adjacent navigation
 - `GET /api/requests/:id/payloads` — request and response payloads
+- `GET /api/requests/:id/session?cursor=` — cursor-paginated requests with payloads for the session that request belongs to
 
 ## Usage
 

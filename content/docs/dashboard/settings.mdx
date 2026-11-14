@@ -26,9 +26,9 @@ These settings control what the proxy persists after a request completes:
 - **Request bodies** - store forwarded request payloads for request detail inspection.
 - **Response bodies** - store upstream response payloads for debugging. Token usage scanning still works when disabled.
 - **MCP success bodies** - persist snippets for successful MCP relay calls. Disabled by default to reduce database growth.
-- **Max stored body bytes** - truncates persisted request and response bodies. Set to `0` to store no body text.
+- **Max stored body bytes** - full bodies are stored by default. Clear **Store full bodies** to set a limit that truncates persisted request and response bodies. Set it to `0` to store no body text.
 
-Defaults are request-body capture on, response-body capture on, MCP success-body capture off, and `32 KiB` max stored body bytes.
+Defaults are request-body capture on, response-body capture on, MCP success-body capture off, and full bodies with no byte limit.
 
 ## Retention
 

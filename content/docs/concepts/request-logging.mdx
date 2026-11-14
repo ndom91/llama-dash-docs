@@ -24,14 +24,14 @@ A row is written when an exchange finishes (or the client disconnects), never on
 
 ## Privacy
 
-By default, llama-dash persists request and response body snippets for inference requests, truncated at `32 KiB`, and clears stored body/header text after 3 days. Successful MCP relay calls do not persist body snippets by default; relay errors keep bounded snippets for investigation.
+By default, llama-dash stores full request and response bodies for inference requests, and clears stored body/header text after 3 days. Successful MCP relay calls do not persist body snippets by default; relay errors keep bounded snippets for investigation.
 
 You can change this on the [Settings](/docs/dashboard/settings) page:
 
 - Disable request-body persistence.
 - Disable response-body persistence.
 - Enable or disable successful MCP relay body persistence.
-- Set max stored body bytes from `0` to `1 MiB`.
+- Set a max stored body bytes limit from `0` to `1 MiB`, or store full bodies.
 
 <Callout type="warn">
   Prompts and responses can contain sensitive data. Set max stored body bytes to

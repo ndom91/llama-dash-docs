@@ -17,7 +17,7 @@ The default retention policy is:
 | Successful MCP relay rows | 7 days |
 | Failed MCP relay rows | 30 days |
 | Stored body/header text | 3 days |
-| Max stored body bytes | 32 KiB |
+| Max stored body bytes | No limit (full bodies) |
 
 Successful MCP relay rows are shorter-lived because relays can be high-frequency and metadata-heavy. Failed relay rows are kept longer to preserve debugging context.
 
