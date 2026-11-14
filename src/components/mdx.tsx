@@ -28,6 +28,7 @@ export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
     img: DocsImage,
+    DocsImage,
     Tab,
     Tabs,
     Step,
