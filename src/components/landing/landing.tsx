@@ -780,7 +780,7 @@ export function LandingPage() {
             <p className="ld-section-lede">
               llama-dash sits between your clients and llama-swap, so every
               request is authenticated, routed, logged and measured in one
-              place. llama-swap itself is never exposed.
+              place.
             </p>
             <div className="ld-pipeline">
               <div className="ld-pipe-box">
