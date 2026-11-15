@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Copy, Thermometer } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Check, Copy, Thermometer } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { gitConfig } from "@/lib/shared";
 import "./landing.css";
 
@@ -64,6 +64,43 @@ function DocsLink({
     <Link to="/docs/$" params={{ _splat: path }} className={className}>
       {children}
     </Link>
+  );
+}
+function CTAArrow() {
+  return (
+    <span className="t-learn-chevron ld-hero-arrow" aria-hidden="true">
+      <svg
+        width="16"
+        height="16"
+        aria-hidden="true"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M3 8h7" />
+        <path className="t-learn-arm t-learn-arm-top" d="M6 4L10 8" />
+        <path className="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" />
+      </svg>
+    </span>
+  );
+}
+function CopyIcon({ copied }: { copied: boolean }) {
+  return (
+    <span
+      className="t-icon-swap"
+      data-state={copied ? "b" : "a"}
+      aria-hidden="true"
+    >
+      <span className="t-icon" data-icon="a">
+        <Copy size={15} />
+      </span>
+      <span className="t-icon" data-icon="b">
+        <Check size={15} />
+      </span>
+    </span>
   );
 }
 function GitHubStar() {
@@ -136,11 +173,7 @@ function CodeBlock({
           aria-label={`Copy ${label} commands`}
           onClick={() => copy(text)}
         >
-          {status === "copied" ? (
-            <Check size={15} aria-hidden="true" />
-          ) : (
-            <Copy size={15} aria-hidden="true" />
-          )}
+          <CopyIcon copied={status === "copied"} />
         </button>
         <span className="ld-copy-status" role="status">
           {status === "copied"
@@ -155,19 +188,58 @@ function CodeBlock({
 }
 function Install() {
   const [vendor, setVendor] = useState<"amd" | "nvidia">("amd");
+  const vendorBar = useRef<HTMLDivElement>(null);
+  const indicator = useRef<HTMLSpanElement>(null);
+  const moveIndicator = useCallback(
+    (button: HTMLButtonElement, animate: boolean) => {
+      const pill = indicator.current;
+      if (!pill) return;
+      const previous = pill.style.transition;
+      if (!animate) pill.style.transition = "none";
+      pill.style.transform = `translateX(${button.offsetLeft}px)`;
+      pill.style.width = `${button.offsetWidth}px`;
+      if (!animate) {
+        void pill.offsetWidth;
+        pill.style.transition = previous;
+      }
+    },
+    [],
+  );
+  useEffect(() => {
+    const bar = vendorBar.current;
+    if (!bar) return;
+    const sync = () => {
+      const active = bar.querySelector<HTMLButtonElement>(
+        '[aria-pressed="true"]',
+      );
+      if (active) {
+        moveIndicator(active, false);
+        bar.dataset.ready = "true";
+      }
+    };
+    const frame = requestAnimationFrame(sync);
+    const observer = new ResizeObserver(sync);
+    observer.observe(bar);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [moveIndicator]);
   const { status: copyStatus, copy, reset } = useCopyFeedback();
   const commands = `git clone https://github.com/ndom91/llama-dash.git && cd llama-dash\ndocker compose -f docker-compose.${vendor}.yaml up -d`;
   return (
     <div className="ld-install">
       <div className="ld-install-head">
-        <div className="ld-vendors">
+        <div className="ld-vendors t-tabs" ref={vendorBar}>
+          <span className="t-tabs-pill" ref={indicator} aria-hidden="true" />
           {(["amd", "nvidia"] as const).map((v) => (
             <button
               key={v}
               type="button"
               aria-pressed={vendor === v}
-              className={vendor === v ? "active" : ""}
-              onClick={() => {
+              className={`t-tab${vendor === v ? " active" : ""}`}
+              onClick={(event) => {
+                moveIndicator(event.currentTarget, true);
                 setVendor(v);
                 reset();
               }}
@@ -182,11 +254,7 @@ function Install() {
           onClick={() => copy(commands)}
           aria-label="Copy install commands"
         >
-          {copyStatus === "copied" ? (
-            <Check size={15} aria-hidden="true" />
-          ) : (
-            <Copy size={15} aria-hidden="true" />
-          )}
+          <CopyIcon copied={copyStatus === "copied"} />
         </button>
         <span className="ld-install-copy-status" role="status">
           {copyStatus === "copied"
@@ -472,7 +540,7 @@ export function LandingPage() {
           </a>
           <div className="ld-nav-links">
             <DocsLink path={quickStart}>01 / QUICK START</DocsLink>
-            <a href="#sessions">02 / SESSIONS</a>
+            <DocsLink path="reference/screenshots">02 / SCREENSHOTS</DocsLink>
             <DocsLink path="concepts/architecture">03 / ARCHITECTURE</DocsLink>
             <DocsLink>04 / DOCS</DocsLink>
             <a className="green" href={githubUrl}>
@@ -505,13 +573,8 @@ export function LandingPage() {
                 runs through it.
               </p>
               <div className="ld-actions">
-                <DocsLink className="ld-btn ld-primary">
-                  Read the docs{" "}
-                  <ArrowRight
-                    className="ld-hero-arrow"
-                    size={16}
-                    aria-hidden="true"
-                  />
+                <DocsLink className="ld-btn ld-primary t-learn">
+                  Read the docs <CTAArrow />
                 </DocsLink>
                 <a className="ld-btn ld-secondary" href={githubUrl}>
                   Star on GitHub <GitHubStar />
@@ -711,19 +774,14 @@ export function LandingPage() {
             <div className="ld-final">
               <div>
                 <h2>Run it on your box tonight.</h2>
-                <p>
-                  MIT licensed and self-hosted. Two compose commands and you're
-                  live on :3000.
-                </p>
+                <p>MIT licensed and self-hosted.</p>
               </div>
               <div className="ld-actions">
-                <DocsLink path={quickStart} className="ld-btn ld-primary">
-                  Quick start{" "}
-                  <ArrowRight
-                    className="ld-hero-arrow"
-                    size={16}
-                    aria-hidden="true"
-                  />
+                <DocsLink
+                  path={quickStart}
+                  className="ld-btn ld-primary t-learn"
+                >
+                  Quick start <CTAArrow />
                 </DocsLink>
                 <a className="ld-btn ld-secondary" href={githubUrl}>
                   Star on GitHub <GitHubStar />

@@ -178,6 +178,7 @@
 }
 .ld-install-head {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--line);
   padding: 0 12px;
@@ -203,7 +204,11 @@
   border-color: var(--accent);
 }
 .ld-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px;
+  margin-right: -8px;
 }
 .ld-install pre,
 .ld-steps pre {
@@ -1066,4 +1071,189 @@
 }
 .ld-hero-star {
   font-size: 1.25rem;
+}
+
+.ld-root {
+  --icon-swap-dur: 250ms;
+  --icon-swap-blur: 2px;
+  --icon-swap-start-scale: 0.25;
+  --icon-swap-ease: ease-in-out;
+  --tabs-dur: 250ms;
+  --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tabs-text-muted: #77827d;
+  --tabs-text-active: #dce3df;
+  --tabs-bar-bg: transparent;
+  --tabs-pill-bg: var(--accent);
+  --learn-shift: 2px;
+  --learn-spread: 8deg;
+  --learn-in: 350ms;
+  --learn-out: 350ms;
+  --learn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.t-icon-swap {
+  position: relative;
+  display: inline-grid;
+}
+.t-icon-swap .t-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--icon-swap-dur) var(--icon-swap-ease),
+    filter var(--icon-swap-dur) var(--icon-swap-ease),
+    transform var(--icon-swap-dur) var(--icon-swap-ease);
+  will-change: opacity, filter, transform;
+}
+.t-icon-swap[data-state="a"] .t-icon[data-icon="a"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="b"] {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+.t-icon-swap[data-state="a"] .t-icon[data-icon="b"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="a"] {
+  opacity: 0;
+  filter: blur(var(--icon-swap-blur));
+  transform: scale(var(--icon-swap-start-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-icon-swap .t-icon {
+    /* biome-ignore lint/complexity/noImportantStyles: Ensure reduced motion overrides the transition. */
+    transition: none !important;
+  }
+}
+
+/* The bar is just a flex container with padding for the pill
+   to sit inside. Tabs sit on z-index: 1, the pill on z-index: 0,
+   so labels read above the pill background. */
+.t-tabs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 48px;
+  background: var(--tabs-bar-bg);
+}
+.t-tab {
+  position: relative;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 30px;
+  padding: 4px 12px;
+  color: var(--tabs-text-muted);
+  cursor: pointer;
+  border-radius: 48px;
+  z-index: 1;
+  transition: color var(--tabs-dur) var(--tabs-ease);
+}
+.t-tab:not([aria-selected="true"]):hover,
+.t-tab[aria-selected="true"] {
+  color: var(--tabs-text-active);
+}
+
+/* The pill: width + transform are written inline by JS so
+   the transition tweens between the previous and next
+   measured positions. */
+.t-tabs-pill {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 30px;
+  width: 0;
+  background: var(--tabs-pill-bg);
+  border-radius: 48px;
+  transform: translateX(0);
+  transition:
+    transform var(--tabs-dur) var(--tabs-ease),
+    width var(--tabs-dur) var(--tabs-ease);
+  will-change: transform, width;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-tabs-pill,
+  .t-tab {
+    /* biome-ignore lint/complexity/noImportantStyles: Ensure reduced motion overrides the transition. */
+    transition: none !important;
+  }
+}
+
+.t-learn-chevron {
+  display: inline-flex;
+  transform: translateX(0);
+  transition: transform var(--learn-out) var(--learn-ease);
+}
+.t-learn-arm {
+  transform-box: view-box;
+  transform-origin: 10px 8px;
+  vector-effect: non-scaling-stroke;
+  transition: transform var(--learn-out) var(--learn-ease);
+}
+.t-learn:hover .t-learn-chevron {
+  transform: translateX(var(--learn-shift));
+  transition-duration: var(--learn-in);
+}
+.t-learn:hover .t-learn-arm {
+  transition-duration: var(--learn-in);
+}
+.t-learn:hover .t-learn-arm-top {
+  transform: rotate(var(--learn-spread));
+}
+.t-learn:hover .t-learn-arm-bot {
+  transform: rotate(calc(var(--learn-spread) * -1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-learn-chevron,
+  .t-learn-arm {
+    /* biome-ignore lint/complexity/noImportantStyles: Ensure reduced motion overrides the transition. */
+    transition: none !important;
+  }
+}
+
+.ld-vendors.t-tabs {
+  gap: 8px;
+  margin-left: -4px;
+  padding: 0;
+  border-radius: 0;
+}
+.ld-vendors .t-tab {
+  height: auto;
+  padding: 10px 4px;
+  border-radius: 0;
+}
+.ld-vendors .t-tabs-pill {
+  top: auto;
+  bottom: 0;
+  height: 2px;
+  border-radius: 0;
+}
+.ld-vendors[data-ready="true"] button.active {
+  border-bottom-color: transparent;
+}
+.t-learn:focus-visible .t-learn-chevron {
+  transform: translateX(var(--learn-shift));
+  transition-duration: var(--learn-in);
+}
+.t-learn:focus-visible .t-learn-arm {
+  transition-duration: var(--learn-in);
+}
+.t-learn:focus-visible .t-learn-arm-top {
+  transform: rotate(var(--learn-spread));
+}
+.t-learn:focus-visible .t-learn-arm-bot {
+  transform: rotate(calc(var(--learn-spread) * -1));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ld-hero-star {
+    transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ld-secondary:hover .ld-hero-star,
+  .ld-secondary:focus-visible .ld-hero-star {
+    transform: rotate(15deg) scale(1.2);
+  }
 }
