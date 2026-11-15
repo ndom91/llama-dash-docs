@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, Copy, Thermometer } from "lucide-react";
+import { Check, Copy, CornerDownRight, Thermometer } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { gitConfig } from "@/lib/shared";
 import "./landing.css";
@@ -161,28 +161,31 @@ function CodeBlock({
   const { status, copy } = useCopyFeedback();
   return (
     <div className="ld-code-block">
+      <div className="ld-code-head">
+        <span>SHELL</span>
+        <div className="ld-code-copy-wrap">
+          <button
+            type="button"
+            className="ld-code-copy"
+            aria-label={`Copy ${label} commands`}
+            onClick={() => copy(text)}
+          >
+            <CopyIcon copied={status === "copied"} />
+          </button>
+          <span className="ld-copy-status" role="status">
+            {status === "copied"
+              ? "Copied"
+              : status === "error"
+                ? "Copy failed"
+                : ""}
+          </span>
+        </div>
+      </div>
       {/* biome-ignore lint/a11y/useSemanticElements: A named, focusable scroll region allows keyboard scrolling of code. */}
       {/* biome-ignore lint/a11y/noNoninteractiveTabindex: The code region needs keyboard scrolling. */}
       <pre role="region" tabIndex={0} aria-label={`${label} code`}>
         {children}
       </pre>
-      <div className="ld-code-copy-wrap">
-        <button
-          type="button"
-          className="ld-code-copy"
-          aria-label={`Copy ${label} commands`}
-          onClick={() => copy(text)}
-        >
-          <CopyIcon copied={status === "copied"} />
-        </button>
-        <span className="ld-copy-status" role="status">
-          {status === "copied"
-            ? "Copied"
-            : status === "error"
-              ? "Copy failed"
-              : ""}
-        </span>
-      </div>
     </div>
   );
 }
@@ -276,24 +279,88 @@ function Install() {
     </div>
   );
 }
+const reelDigits = Array.from({ length: 30 }, (_, index) => ({
+  id: `cell-${index}`,
+  value: index % 10,
+}));
+const reelSlots = ["ones", "tenths", "hundredths", "thousandths"];
+
+function ReelDigit({ digit }: { digit: number }) {
+  const strip = useRef<HTMLSpanElement>(null);
+  const previous = useRef(digit);
+  const initial = useRef(digit);
+  useEffect(() => {
+    const element = strip.current;
+    if (!element || previous.current === digit) return;
+    let distance = digit - previous.current;
+    if (distance > 5) distance -= 10;
+    if (distance < -5) distance += 10;
+    element.style.transition = "transform var(--reel-dur) var(--reel-ease)";
+    element.style.transform = `translateY(calc(var(--reel-cell) * ${-(10 + previous.current + distance)}))`;
+    previous.current = digit;
+    const settle = () => {
+      element.style.transition = "none";
+      element.style.transform = `translateY(calc(var(--reel-cell) * ${-(10 + digit)}))`;
+      void element.offsetHeight;
+    };
+    element.addEventListener("transitionend", settle, { once: true });
+    return () => element.removeEventListener("transitionend", settle);
+  }, [digit]);
+  return (
+    <span className="t-reel-col">
+      <span
+        className="t-reel-strip"
+        ref={strip}
+        style={{
+          transform: `translateY(calc(var(--reel-cell) * ${-(10 + initial.current)}))`,
+        }}
+      >
+        {reelDigits.map((number) => (
+          <span className="t-reel-digit" key={number.id}>
+            {number.value}
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+}
+
+function RollingNumber({ value }: { value: string }) {
+  return (
+    <span className="t-reel" role="img" aria-label={value}>
+      {reelSlots.slice(0, value.length).map((slot, index) => {
+        const character = value[index];
+        return character === "." ? (
+          <span aria-hidden="true" key={slot}>
+            .
+          </span>
+        ) : (
+          <ReelDigit key={slot} digit={Number(character)} />
+        );
+      })}
+    </span>
+  );
+}
 function Stat({
   label,
   value,
   unit,
   amber = false,
   width = "45%",
+  animate = false,
 }: {
   label: string;
   value: string;
   unit?: string;
   amber?: boolean;
   width?: string;
+  animate?: boolean;
 }) {
   return (
     <div className="ld-stat">
       <div className="ld-stat-label">{label}</div>
       <div className={amber ? "ld-stat-value amber" : "ld-stat-value"}>
-        {value}
+        {animate ? <RollingNumber value={value} /> : value}
         <small>{unit}</small>
       </div>
       <div className="ld-meter">
@@ -302,7 +369,25 @@ function Stat({
     </div>
   );
 }
+const dashboardSamples = [
+  { rate: "0.87", latency: "1.83", gpu: 72, memory: "22.8" },
+  { rate: "0.94", latency: "1.79", gpu: 74, memory: "22.9" },
+  { rate: "0.81", latency: "1.91", gpu: 69, memory: "22.9" },
+  { rate: "0.89", latency: "1.85", gpu: 73, memory: "22.8" },
+  { rate: "0.92", latency: "1.81", gpu: 71, memory: "22.7" },
+];
+
 function Dashboard() {
+  const [sampleIndex, setSampleIndex] = useState(0);
+  useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const timer = window.setInterval(() => {
+      if (!motion.matches && !document.hidden)
+        setSampleIndex((index) => (index + 1) % dashboardSamples.length);
+    }, 2000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const sample = dashboardSamples[sampleIndex];
   const models = [
     ["gemma-4-26B-A4B", "ready", "47m"],
     ["embeddinggemma-2", "ready", "60m"],
@@ -316,14 +401,37 @@ function Dashboard() {
         <span className="ld-window-tab active">DASHBOARD</span>
         <span className="ld-window-tab">SESSIONS</span>
         <span className="ld-window-tab">SYSTEM</span>
-        <time>2026-11-15 · 22:01</time>
       </div>
       <div className="ld-window-body">
         <div className="ld-stats">
-          <Stat label="REQ/S" value="0.87" />
-          <Stat label="P50" value="1.83" unit=" s" />
-          <Stat label="GPU" value="72" unit="%" amber width="72%" />
-          <Stat label="MEMORY" value="22.8" unit="/ 48 GiB" width="48%" />
+          <Stat
+            label="REQ/S"
+            value={sample.rate}
+            width={`${Number(sample.rate) * 50}%`}
+            animate
+          />
+          <Stat
+            label="P50"
+            value={sample.latency}
+            unit="s"
+            width={`${(Number(sample.latency) / 4) * 100}%`}
+            animate
+          />
+          <Stat
+            label="GPU"
+            value={String(sample.gpu)}
+            unit="%"
+            amber
+            width={`${sample.gpu}%`}
+            animate
+          />
+          <Stat
+            label="MEMORY"
+            value={sample.memory}
+            unit="/ 48"
+            width={`${(Number(sample.memory) / 48) * 100}%`}
+            animate
+          />
         </div>
         <div className="ld-mini-heading">
           MODELS · RESIDENCY 60M <span>2 running · 1 peer</span>
@@ -612,11 +720,17 @@ export function LandingPage() {
                 the agent sent, what came back, and what it cost.
               </p>
               <div className="ld-bullets">
-                <Bullet glyph="↳" title="Only what's new">
+                <Bullet
+                  glyph={<CornerDownRight size={14} aria-hidden="true" />}
+                  title="Only what's new"
+                >
                   Each request is diffed against the last one. Repeated system
                   prompts and reminders collapse into pills with token counts.
                 </Bullet>
-                <Bullet glyph="$" title="Tool calls, paired">
+                <Bullet
+                  glyph={<span className="ld-tool-glyph">$</span>}
+                  title="Tool calls, paired"
+                >
                   Commands are parsed out of the payload and joined to their
                   results across requests, with exit codes and run time.
                 </Bullet>

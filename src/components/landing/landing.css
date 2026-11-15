@@ -284,6 +284,8 @@
   gap: 8px;
 }
 .ld-stat {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   background: #090c0d;
   border: 1px solid var(--line);
@@ -301,18 +303,21 @@
 .ld-stat-value {
   font-size: 1.375rem;
   line-height: 1.3;
-  margin: 5px 0;
+  margin: 5px 0 10px;
   color: #dce2de;
 }
 .ld-stat-value.amber {
   color: #e3b66d;
 }
-.ld-stat-value small {
+.ld-stat-value small:not(:empty) {
+  margin-inline-start: 0.35em;
   font-size: 0.625rem;
   color: #a0aba5;
 }
 .ld-meter {
+  margin-top: auto;
   height: 3px;
+  flex: none;
   background: #242c29;
 }
 .ld-meter span {
@@ -512,6 +517,10 @@
   width: 28px;
   height: 28px;
   font-size: 16px;
+  line-height: 1;
+}
+.ld-tool-glyph {
+  font-size: 13px;
   line-height: 1;
 }
 .ld-bullet h3,
@@ -769,6 +778,8 @@
 }
 .ld-arrow {
   align-self: center;
+  font-size: 1.25rem;
+  line-height: 1;
   color: var(--accent);
 }
 .ld-pipe-stack {
@@ -800,8 +811,6 @@
 }
 .ld-steps pre {
   background: #080b0c;
-  border: 1px solid var(--line);
-  border-radius: 3px;
   font-size: 0.75rem;
 }
 .ld-feature-grid {
@@ -987,16 +996,20 @@
   scrollbar-color: #64736a transparent;
 }
 .ld-code-block {
-  position: relative;
   min-width: 0;
   margin-top: 14px;
-  display: flex;
-  align-items: start;
-  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
 }
-.ld-code-block pre {
-  flex: 1;
-  min-width: 0;
+.ld-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px 2px 12px;
+  border-bottom: 1px solid var(--line);
+  color: #8a9490;
+  font-size: 0.6875rem;
 }
 .ld-code-copy-wrap {
   flex: none;
@@ -1007,11 +1020,15 @@
   place-items: center;
   min-width: 32px;
   min-height: 32px;
-  border: 1px solid #34413a;
+  border: 1px solid transparent;
   border-radius: 4px;
-  background: #141b17;
-  color: #c2cec6;
+  background: transparent;
+  color: #aab8ae;
   cursor: pointer;
+}
+.ld-code-copy:hover,
+.ld-code-copy:focus-visible {
+  color: #e3ebe5;
 }
 .ld-copy-status {
   position: absolute;
@@ -1029,20 +1046,9 @@
 .ld-copy-status:not(:empty) {
   padding: 4px 6px;
 }
-@media (hover: hover) {
-  .ld-code-block {
-    display: block;
-  }
-  .ld-code-copy-wrap {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    opacity: 0;
-  }
-  .ld-code-block:hover .ld-code-copy-wrap,
-  .ld-code-block:focus-within .ld-code-copy-wrap,
-  .ld-code-copy-wrap:has(.ld-copy-status:not(:empty)) {
-    opacity: 1;
+@media (prefers-reduced-motion: no-preference) {
+  .ld-code-copy {
+    transition: color 160ms ease-out;
   }
 }
 .ld-install-head {
@@ -1255,5 +1261,70 @@
   .ld-secondary:hover .ld-hero-star,
   .ld-secondary:focus-visible .ld-hero-star {
     transform: rotate(15deg) scale(1.2);
+  }
+}
+
+.ld-dashboard {
+  --reel-dur: 650ms;
+  --reel-cell: 1.3em;
+  --reel-spin-blur: 3px;
+  --reel-stagger: 90ms;
+  --reel-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.t-reel {
+  display: inline-flex;
+  align-items: center;
+  height: var(--reel-cell);
+  font-variant-numeric: tabular-nums;
+}
+.t-reel-col {
+  position: relative;
+  height: var(--reel-cell);
+  overflow: hidden;
+  /* Soft-fade the window edges instead of hard-cropping. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+}
+.t-reel-strip {
+  display: flex;
+  flex-direction: column;
+  will-change: transform, filter;
+}
+.t-reel-digit {
+  height: var(--reel-cell);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* JS drives the tween: strip.style.transition =
+     'transform var(--reel-dur) var(--reel-ease) ' + (col*var(--reel-stagger)) + 'ms';
+   and decays each column's feGaussianBlur stdDeviation from
+   var(--reel-spin-blur) to 0 over its own window. */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-reel-strip {
+    /* biome-ignore lint/complexity/noImportantStyles: Respect reduced-motion preferences. */
+    transition: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: Respect reduced-motion preferences. */
+    filter: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ld-dashboard .ld-meter span {
+    transition: width 650ms ease-out;
   }
 }
