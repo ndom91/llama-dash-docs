@@ -675,10 +675,9 @@ export function LandingPage() {
                 for <span>local inference.</span>
               </h1>
               <p className="ld-lede">
-                Monitor models, requests, API keys, routing rules and GPU
-                telemetry for llama-swap and compatible upstreams, and{" "}
-                <strong>audit every Claude Code or Codex session</strong> that
-                runs through it.
+                Keep an eye on your local models and GPU while routing requests
+                across local and upstream providers. Control access, track
+                usage, and audit Claude Code and Codex sessions from one place.
               </p>
               <div className="ld-actions">
                 <DocsLink className="ld-btn ld-primary t-learn">
