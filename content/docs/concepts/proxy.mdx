@@ -18,9 +18,12 @@ The proxy is the client-facing `/v1/*` endpoint, plus llama-swap's routes outsid
 The proxy supports these request families:
 
 - **OpenAI**: `/v1/chat/completions` and other `/v1/*` endpoints with flat `usage` fields.
+- **Transcription**: `POST /v1/audio/transcriptions` forwards multipart audio uploads to a transcription-capable model on the selected backend. The [Playground](/docs/dashboard/playground) also provides a transcription tab.
 - **Anthropic**: `/v1/messages` and `/v1/messages/count_tokens`, with nested `message.usage` and a `message_stop` stream terminator.
 - **Realtime**: the `/v1/realtime` WebSocket. See [Realtime voice](/docs/clients/realtime).
 - **llama.cpp and llama-swap extensions**: the routes listed below.
+
+Multipart uploads are streamed without inspecting or logging their bodies. API key authentication applies, but model permissions, model-based routing, aliases, and body transforms do not. A multipart request with a declared content length over 10 MiB is rejected.
 
 ## llama.cpp and llama-swap routes
 
@@ -65,7 +68,7 @@ llama-dash estimates cost from upstream usage counters and a [models.dev](https:
 
 ## Transform pipeline
 
-POST `/v1/*` requests pass through an ordered transform pipeline between auth and forwarding. The body is parsed once when needed and re-serialized only if mutated. GET routes that name the model in `?model=` (`/props`, `/v1/audio/voices`, and `/sdapi/v1/loras`) get the same allow-list, rewrite, and alias checks:
+For JSON POST `/v1/*` requests, an ordered transform pipeline runs between auth and forwarding. The body is parsed once when needed and re-serialized only if mutated. GET routes that name the model in `?model=` (`/props`, `/v1/audio/voices`, and `/sdapi/v1/loras`) get the same allow-list, rewrite, and alias checks:
 
 1. API key allow-list check
 2. [Routing rule](/docs/access-policy/routing-rules) evaluation
